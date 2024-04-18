@@ -1,6 +1,9 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
+import dbConnect from '@/lib/dbConnect';
+import User from '@/models/User';
+import { verifyPassword } from '@/lib/auth';
 
 export default NextAuth({
   session: {
