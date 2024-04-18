@@ -6,6 +6,7 @@ import Playlist from './components/Playlist';
 import PlayerControl from './components/PlayerControl';
 import Layout from './components/Layout';
 import { useSession, signIn, signOut } from "next-auth/react"
+import Register from './components/Register';
 
 function App() {
   const { data: session } = useSession();
@@ -14,6 +15,7 @@ function App() {
       <Layout>
         <div className='text-center'>
           <button onClick={() => signIn('google')} className='bg-orange-100 rounded-lg px-3 py-1 font-semibold'>Login with Google</button>
+          <Register />
         </div>
       </Layout>
     );
