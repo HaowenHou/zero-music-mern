@@ -1,21 +1,9 @@
 import { createRouter } from 'next-connect';
-// import multer from 'multer';
 import bcrypt from 'bcryptjs';
 import dbConnect from '../../lib/dbConnect';
 import User from '../../models/User';
 
-// Set up multer for file upload
-// const upload = multer({
-//     storage: multer.diskStorage({
-//         destination: './public/avatars', // make sure this path exists
-//         filename: (req, file, cb) => cb(null, file.originalname),
-//     }),
-//     limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB upload limit
-// });
-
 const apiRoute = createRouter();
-
-// apiRoute.use(upload.single('avatar'));
 
 apiRoute.post(async (req, res) => {
     await dbConnect();

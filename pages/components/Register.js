@@ -9,29 +9,10 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // const formData = new FormData();
-        // formData.append('username', username);
-        // formData.append('password', password);
-        // if (avatar) {
-            //     formData.append('avatar', avatar);
-            // }
         const formData = {username, password};
 
-        // const response = await axios.post('/api/register', formData);
-
-        // const response = await fetch('/api/register', {
-        //     method: 'POST',
-        //     body: formData
-        // });
-
         try {
-            const response = await axios.post('/api/register', formData
-            // , {
-            //     headers: {
-            //         'Content-Type': 'multipart/form-data'
-            //     }
-            // }
-            );
+            const response = await axios.post('/api/register', formData);
             console.log('Registration successful', response.data);
         } catch (error) {
             console.error('Registration failed', error.response.data);
@@ -66,16 +47,6 @@ const Register = () => {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
-                {/* <div className="mb-6">
-                    <label htmlFor="avatar" className="block mb-2">Avatar (optional)</label>
-                    <input
-                        type="file"
-                        id="avatar"
-                        name="avatar"
-                        className="w-full p-2 border border-gray-300 rounded"
-                        onChange={(e) => setAvatar(e.target.files[0])}
-                    />
-                </div> */}
                 <button type="submit" className="w-full p-3 bg-orange-400 text-white rounded hover:bg-orange-500">
                     注册
                 </button>
