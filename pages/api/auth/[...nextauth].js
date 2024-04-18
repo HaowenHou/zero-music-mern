@@ -50,13 +50,13 @@ export default NextAuth({
     // error: '/auth/error', // Error page URL
   },
   callbacks: {
-    jwt: async (token, user) => {
+    jwt: async ({token, user}) => {
       if (user) {
         token.id = user.id;
       }
       return token;
     },
-    session: async (session, token) => {
+    session: async ({session, token}) => {
       session.user.id = token.id;
       return session;
     },

@@ -8,7 +8,7 @@ const Profile = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+        <div className="flex flex-col items-center justify-center py-2 bg-gray-100">
             {session ? (
                 <div className="p-6 bg-white rounded shadow-md">
                     <h2 className="text-lg font-bold mb-4">Profile</h2>
