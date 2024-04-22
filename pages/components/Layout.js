@@ -1,6 +1,5 @@
 import Sidebar from './Sidebar'
-import SearchBar from './SearchBar'
-import PlayerControl from './PlayerControl'
+import SearchBar from './TopBar'
 
 const Layout = ({ children }) => {
   return (
