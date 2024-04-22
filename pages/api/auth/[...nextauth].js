@@ -6,6 +6,7 @@ import User from '@/models/User';
 import { verifyPassword } from '@/lib/auth';
 
 export default NextAuth({
+  secret: process.env.AUTH_SECRET,
   session: {
     jwt: true,
   },
@@ -43,6 +44,7 @@ export default NextAuth({
   ],
   jwt: {
     signingKey: process.env.JWT_SIGNING_PRIVATE_KEY,
+    encryption: true,
   },
   pages: {
     signIn: '/auth/signin',  // Specifies the URL of the signin page.
