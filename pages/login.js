@@ -28,7 +28,17 @@ const Login = () => {
 
     return (
         <div className="flex flex-col items-center justify-center py-2">
-            <form className="p-6 bg-white rounded shadow-md" onSubmit={handleSubmit}>
+            <form className="px-12 py-8 bg-white rounded shadow-md" onSubmit={handleSubmit}>
+                <div className='flex justify-between pb-8'>
+                    <a href="/" className='flex items-center'>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 mt-0.5">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                        </svg>
+                        首页
+                    </a>
+                    <a href="/register" className='pr-2'>注册</a>
+                </div>
+
                 <h2 className="text-lg font-bold mb-8">用户登录</h2>
                 <div className="mb-4">
                     <label htmlFor="username" className="block mb-2">用户名</label>
