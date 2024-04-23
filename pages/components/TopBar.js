@@ -46,6 +46,7 @@ const SearchBar = () => {
                     </div>
                 ))
             }
+            <div className='mx-24'></div>
 
         </div>
     );
