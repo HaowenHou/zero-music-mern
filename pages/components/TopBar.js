@@ -33,14 +33,14 @@ const SearchBar = () => {
                         <div className="px-3">
                             {session.user.name}
                         </div>
-                        <div class="relative group">
+                        <div className="relative group">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
                                 className="size-5 mr-1">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                             </svg>
-                            <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-md w-24">
-                                <a href="" class="block px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100">个人主页</a>
-                                <button onClick={() => signOut()} class="px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100">退出登录</button>
+                            <div className="absolute hidden group-hover:block bg-white shadow-lg rounded-md w-24">
+                                <a href="" className="block px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100">个人主页</a>
+                                <button onClick={() => signOut()} className="px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100">退出登录</button>
                             </div>
                         </div>
                     </div>

@@ -32,6 +32,9 @@ const Sidebar = () => {
                 <a href='/' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>
                     私信
                 </a>
+                <a href='/upload' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>
+                    上传
+                </a>
             </nav>
         </aside>
     );

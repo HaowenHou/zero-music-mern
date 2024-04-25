@@ -12,6 +12,7 @@
     "axios": "^1.6.8",
     "bcryptjs": "^2.4.3",
     "formidable": "^3.5.1",
+    "https-proxy-agent": "^7.0.4",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.3.2",
     "multer": "^1.4.5-lts.1",
