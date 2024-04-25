@@ -12,15 +12,6 @@ export const config = {
 const proxy = process.env.PROXY_ADDR;
 const agent = new HttpsProxyAgent(proxy);
 
-// AWS.config.update({
-//   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-//   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-//   region: process.env.AWS_REGION,
-//   httpOptions: {
-//     agent: agent
-//   }
-// });
-
 export default async function handle(req, res) {
   const { method } = req;
 
@@ -32,8 +23,6 @@ export default async function handle(req, res) {
         res.end();
         return;
       }
-      res.status(200).json({ fields, files });
-      res.end();
 
       const client = new AWS.S3({
         region: process.env.AWS_REGION,
@@ -57,7 +46,8 @@ export default async function handle(req, res) {
           console.error(err);
           return;
         }
-        console.log(data.Location);
+        res.status(200).json({'link': data.Location});
+        res.end();
       });
     });
   }
