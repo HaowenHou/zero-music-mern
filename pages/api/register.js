@@ -1,13 +1,12 @@
 import { createRouter } from 'next-connect';
 import bcrypt from 'bcryptjs';
-import dbConnect from '../../lib/dbConnect';
-import User from '../../models/User';
+import dbConnect from '@/lib/dbConnect';
+import User from '@/models/User';
 
 const apiRoute = createRouter();
 
 apiRoute.post(async (req, res) => {
     await dbConnect();
-    // console.log(req.body);
     const { username, password } = req.body;
     if (!username || !password) {
         return res.status(400).json({ error: 'Username and password are required.' });

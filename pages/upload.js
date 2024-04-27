@@ -1,9 +1,9 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Layout from "./components/Layout";
 import axios from "axios";
 
 export default function Upload() {
-  const [musicName, setMusicName] = useState('');
+  const [name, setName] = useState('');
   const [artist, setArtist] = useState('');
   const [cover, setCover] = useState('');
 
@@ -24,23 +24,11 @@ export default function Upload() {
     }
   }
 
-  function saveMusic() {
+  function saveMusic(ev) {
+    ev.preventDefault();
+    const data = {name, artist, cover};
+    axios.post('/api/uploadMusic', data)
   }
-
-  const fileInputRef = useRef(null); // Reference to the hidden file input
-
-  const handleChange = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImage(reader.result);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleOverlayClick = () => {
-    fileInputRef.current.click(); // Programmatically triggers the hidden file input
-  };
 
   return (
     <Layout>
@@ -49,7 +37,7 @@ export default function Upload() {
 
         <label className="text-lg my-2">歌曲名</label>
         <input type="text" className="border w-64 p-1 rounded-md focus:border-orange-200"
-          placeholder="歌曲名" value={musicName} onChange={ev => setMusicName(ev.target.value)} required />
+          placeholder="歌曲名" value={name} onChange={ev => setName(ev.target.value)} required />
 
         <label className="text-lg my-2">歌手</label>
         <input type="text" className="border w-64 p-1 rounded-md focus:border-orange-200"
