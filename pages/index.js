@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from './components/Layout';
+import AudioPlayer from './components/AudioPlayer';
 
 function App() {
   return (
@@ -61,6 +62,8 @@ function App() {
             <span className="ml-auto">02:45</span>
           </div>
         </div>
+
+        {/* <AudioPlayer /> */}
       </div>
     </Layout>
   );
