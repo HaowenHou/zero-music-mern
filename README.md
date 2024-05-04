@@ -19,5 +19,7 @@ AWS_REGION=
 AWS_BUCKET_NAME=
 AWS_ACCESS_KEY_ID=
 AWS_SECRET_ACCESS_KEY=
-PROXY_ADDR= # Proxy for uplaoding files to AWS
+PROXY_ADDR= # Proxy for uploading files to AWS
+# SPOTIFY_ID=
+# SPOTIFY_SECRET=
 ```

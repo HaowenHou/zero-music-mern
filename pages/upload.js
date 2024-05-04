@@ -26,7 +26,7 @@ export default function Upload() {
 
   function saveMusic(ev) {
     ev.preventDefault();
-    const data = {name, artist, cover};
+    const data = { name, artist, cover };
     axios.post('/api/uploadMusic', data)
   }
 
@@ -62,6 +62,9 @@ export default function Upload() {
               </div>
             </label>
           )}
+
+        <label className="text-lg my-2">音乐文件</label>
+        <input type="file" />
 
         <button type="submit" className="mr-auto mt-4 bg-orange-200 rounded-md py-1 px-2 hover:bg-orange-400">
           上传

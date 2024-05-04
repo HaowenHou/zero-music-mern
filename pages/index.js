@@ -1,6 +1,5 @@
 import React from 'react';
 import Layout from './components/Layout';
-import AudioPlayer from './components/AudioPlayer';
 
 function App() {
   return (
@@ -63,7 +62,6 @@ function App() {
           </div>
         </div>
 
-        {/* <AudioPlayer /> */}
       </div>
     </Layout>
   );
