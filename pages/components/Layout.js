@@ -3,6 +3,10 @@ import SearchBar from './TopBar'
 import PlayerControl from './PlayerControl'
 
 const Layout = ({ children }) => {
+  const tracks = [
+    { file: 'tracks/Stars In Her Eyes.mp3' },
+    { file: 'tracks/banbado_piano.mp3' },
+  ]
   return (
     <div className='flex flex-col'>
       <div className="flex">
@@ -12,7 +16,7 @@ const Layout = ({ children }) => {
           <div className="content">{children}</div>
         </div>
       </div>
-      <PlayerControl />
+      <PlayerControl tracks={tracks} />
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const PlayerControl = () => {
+const PlayerControl = ({ tracks }) => {
+    // tracks: [{file: str}, ...]
     const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef(null);
@@ -8,7 +9,9 @@ const PlayerControl = () => {
 
     // Load track when track changes
     useEffect(() => {
-        audioRef.current = new Audio('Stars In Her Eyes.mp3');
+        // audioRef.current = new Audio('Stars In Her Eyes.mp3');
+        audioRef.current = new Audio(tracks[currentTrackIndex].file);
+        console.log(currentTrackIndex, tracks[currentTrackIndex].file);
         if (isPlaying) {
             audioRef.current.play();
         } else {
@@ -16,7 +19,8 @@ const PlayerControl = () => {
         }
         // audioRef.current.src = 'Stars In Her Eyes.mp3';
         // tracks[currentTrackIndex].file;
-        setTrackProgress(0);
+        // setTrackProgress(0);
+
     }, [currentTrackIndex]);
 
     // Update progress as audio plays
@@ -39,12 +43,14 @@ const PlayerControl = () => {
     };
 
     const nextTrack = () => {
+        audioRef.current.pause();
         setCurrentTrackIndex((prevIndex) => {
             return (prevIndex + 1) % tracks.length;
         });
     };
 
     const prevTrack = () => {
+        audioRef.current.pause();
         setCurrentTrackIndex((prevIndex) => {
             return prevIndex === 0 ? tracks.length - 1 : prevIndex - 1;
         });
@@ -83,7 +89,7 @@ const PlayerControl = () => {
                     </button>
                 </div>
                 <input type="range" value={trackProgress} step="0.01" min="0" max="1" onChange={onProgressChange}
-                className='my-2 h-1.5 bg-gray-200 rounded-lg cursor-pointer' />
+                    className='my-2 h-1.5 bg-gray-200 rounded-lg cursor-pointer' />
             </div>
         </div>
     );
