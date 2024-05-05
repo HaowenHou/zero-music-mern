@@ -3,6 +3,11 @@
 - Log in immediately after registering.
 - Upload avatar when registering.
 
+**Player Control:**
+
+- Mute
+- Change prev/next track icon
+
 ## Done
 - If refreshed after logging in, the topbar briefly shows as not logged in (before the session is retrieved).
 
