@@ -1,4 +1,3 @@
-import next from 'next';
 import React, { useState, useEffect, useRef } from 'react';
 
 function formatTime(time) {

@@ -6,6 +6,7 @@ export default function Upload() {
   const [name, setName] = useState('');
   const [artist, setArtist] = useState('');
   const [cover, setCover] = useState('');
+  const [musicFile, setMusicFile] = useState(null); // State to hold the music file
 
   async function uploadCover(ev) {
     const file = ev.target.files[0];
@@ -24,10 +25,33 @@ export default function Upload() {
     }
   }
 
-  function saveMusic(ev) {
+  function handleMusicFileChange(ev) {
+    setMusicFile(ev.target.files[0]); // Save the music file to state
+    // console.log(ev.target.files[0]);
+  }
+
+  async function saveMusic(ev) {
     ev.preventDefault();
-    const data = { name, artist, cover };
-    axios.post('/api/uploadMusic', data)
+    const data = new FormData();
+    data.append('name', name);
+    data.append('artist', artist);
+    data.append('cover', cover);
+    // console.log(musicFile);
+    if (musicFile) {
+      data.append('file', musicFile); // Append the music file to FormData
+    }
+    try {
+      const response = await axios.post('/api/uploadMusic', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error('Upload error', error);
+    }
+    // const data = { name, artist, cover };
+    // axios.post('/api/uploadMusic', data)
   }
 
   return (
@@ -64,7 +88,7 @@ export default function Upload() {
           )}
 
         <label className="text-lg my-2">音乐文件</label>
-        <input type="file" />
+        <input type="file" onChange={handleMusicFileChange} />
 
         <button type="submit" className="mr-auto mt-4 bg-orange-200 rounded-md py-1 px-2 hover:bg-orange-400">
           上传
