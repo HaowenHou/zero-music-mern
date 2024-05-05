@@ -1,3 +1,4 @@
+import next from 'next';
 import React, { useState, useEffect, useRef } from 'react';
 
 function formatTime(time) {
@@ -34,7 +35,12 @@ const PlayerControl = ({ tracks }) => {
             }
         };
 
+        const onAudioEnded = () => {
+            nextTrack();
+        };
+
         newAudio.addEventListener('loadedmetadata', onMetadataLoaded);
+        newAudio.addEventListener('ended', onAudioEnded);
 
         return () => {
             newAudio.removeEventListener('loadedmetadata', onMetadataLoaded);
