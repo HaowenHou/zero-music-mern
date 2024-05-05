@@ -1,26 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 const PlayerControl = ({ tracks }) => {
-    // tracks: [{file: str}, ...]
+    // tracks: [{id, title, artist, file, cover}, ...]
     const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef(null);
     const [trackProgress, setTrackProgress] = useState(0);
+    const [volume, setVolume] = useState(1); // Default volume is 100%
 
     // Load track when track changes
     useEffect(() => {
-        // audioRef.current = new Audio('Stars In Her Eyes.mp3');
         audioRef.current = new Audio(tracks[currentTrackIndex].file);
-        console.log(currentTrackIndex, tracks[currentTrackIndex].file);
+        audioRef.current.volume = volume;
         if (isPlaying) {
             audioRef.current.play();
         } else {
             audioRef.current.pause();
         }
-        // audioRef.current.src = 'Stars In Her Eyes.mp3';
-        // tracks[currentTrackIndex].file;
-        // setTrackProgress(0);
-
     }, [currentTrackIndex]);
 
     // Update progress as audio plays
@@ -62,9 +58,23 @@ const PlayerControl = ({ tracks }) => {
         setTrackProgress(audioRef.current.currentTime / audioRef.current.duration);
     };
 
+    const onVolumeChange = (e) => {
+        setVolume(e.target.value);
+        if (audioRef.current) {
+            audioRef.current.volume = e.target.value;
+        }
+    };
+
     return (
-        <div>
-            <div className='flex flex-col'>
+        <div className='w-full flex bg-gray-50 h-20'>
+            <div className='flex flex-[3] items-center'>
+                <img src={tracks[currentTrackIndex].cover} className='ml-3 w-14 h-14 rounded-md' />
+                <div className='ml-4 flex flex-col'>
+                    <span className='text-lg font-bold'>{tracks[currentTrackIndex].title}</span>
+                    <span className='text-sm'>{tracks[currentTrackIndex].artist}</span>
+                </div>
+            </div>
+            <div className='flex flex-col items-center justify-center flex-[4]'>
                 <div className='flex justify-center'>
                     <button onClick={prevTrack}>
                         <svg className="size-7 fill-gray-700" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -88,8 +98,26 @@ const PlayerControl = ({ tracks }) => {
                         </svg>
                     </button>
                 </div>
+                {/* <div className='w-1/2'> */}
                 <input type="range" value={trackProgress} step="0.01" min="0" max="1" onChange={onProgressChange}
-                    className='my-2 h-1.5 bg-gray-200 rounded-lg cursor-pointer' />
+                    className='my-2 h-1 bg-gray-200 rounded-lg cursor-pointer w-full accent-orange-400' />
+                {/* </div> */}
+            </div>
+            <div className='flex flex-[3] items-center justify-center gap-4'>
+                {true ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 ml-4">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                    </svg>
+                ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-7 h-7 ml-4">
+                        <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clipRule="evenodd" />
+                    </svg>
+                )}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+                </svg>
+                <input type="range" className='accent-orange-400 h-1'
+                value={volume} min="0" max="1" step="0.01" onChange={onVolumeChange} />
             </div>
         </div>
     );
