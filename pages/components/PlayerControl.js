@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 
+function formatTime(time) {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+}
+
 const PlayerControl = ({ tracks }) => {
     // tracks: [{id, title, artist, file, cover}, ...]
     const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
@@ -7,16 +13,33 @@ const PlayerControl = ({ tracks }) => {
     const audioRef = useRef(null);
     const [trackProgress, setTrackProgress] = useState(0);
     const [volume, setVolume] = useState(1); // Default volume is 100%
+    const [currentTime, setCurrentTime] = useState("0:00");
+    const [duration, setDuration] = useState("0:00");
 
     // Load track when track changes
     useEffect(() => {
-        audioRef.current = new Audio(tracks[currentTrackIndex].file);
-        audioRef.current.volume = volume;
-        if (isPlaying) {
-            audioRef.current.play();
-        } else {
-            audioRef.current.pause();
-        }
+        const newAudio = new Audio(tracks[currentTrackIndex].file);
+        audioRef.current = newAudio;
+        newAudio.volume = volume;
+
+        const current = formatTime(0);
+        setCurrentTime(current);
+
+        const onMetadataLoaded = () => {
+            const dur = formatTime(newAudio.duration);
+            setDuration(dur);
+
+            if (isPlaying) {
+                newAudio.play();
+            }
+        };
+
+        newAudio.addEventListener('loadedmetadata', onMetadataLoaded);
+
+        return () => {
+            newAudio.removeEventListener('loadedmetadata', onMetadataLoaded);
+            newAudio.pause();
+        };
     }, [currentTrackIndex]);
 
     // Update progress as audio plays
@@ -24,6 +47,8 @@ const PlayerControl = ({ tracks }) => {
         const interval = setInterval(() => {
             if (audioRef.current) {
                 setTrackProgress(audioRef.current.currentTime / audioRef.current.duration);
+                const current = formatTime(audioRef.current.currentTime);
+                setCurrentTime(current);
             }
         }, 500);
         return () => clearInterval(interval);
@@ -56,6 +81,8 @@ const PlayerControl = ({ tracks }) => {
         const newTime = e.target.value * audioRef.current.duration;
         audioRef.current.currentTime = newTime;
         setTrackProgress(audioRef.current.currentTime / audioRef.current.duration);
+        const current = formatTime(audioRef.current.currentTime);
+        setCurrentTime(current);
     };
 
     const onVolumeChange = (e) => {
@@ -66,7 +93,7 @@ const PlayerControl = ({ tracks }) => {
     };
 
     return (
-        <div className='w-full flex bg-gray-50 h-20'>
+        <div className='max-w-5xl flex bg-gray-50 h-20'>
             <div className='flex flex-[3] items-center'>
                 <img src={tracks[currentTrackIndex].cover} className='ml-3 w-14 h-14 rounded-md' />
                 <div className='ml-4 flex flex-col'>
@@ -74,6 +101,7 @@ const PlayerControl = ({ tracks }) => {
                     <span className='text-sm'>{tracks[currentTrackIndex].artist}</span>
                 </div>
             </div>
+
             <div className='flex flex-col items-center justify-center flex-[4]'>
                 <div className='flex justify-center'>
                     <button onClick={prevTrack}>
@@ -98,11 +126,14 @@ const PlayerControl = ({ tracks }) => {
                         </svg>
                     </button>
                 </div>
-                {/* <div className='w-1/2'> */}
-                <input type="range" value={trackProgress} step="0.01" min="0" max="1" onChange={onProgressChange}
-                    className='my-2 h-1 bg-gray-200 rounded-lg cursor-pointer w-full accent-orange-400' />
-                {/* </div> */}
+                <div className='flex w-full items-center gap-1'>
+                    <span>{currentTime}</span>
+                    <input type="range" value={trackProgress} step="0.01" min="0" max="1" onChange={onProgressChange}
+                        className='my-2 h-1 bg-gray-200 rounded-lg cursor-pointer w-full accent-orange-400' />
+                    <span>{duration}</span>
+                </div>
             </div>
+
             <div className='flex flex-[3] items-center justify-center gap-4'>
                 {true ? (
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 ml-4">
@@ -117,7 +148,7 @@ const PlayerControl = ({ tracks }) => {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
                 </svg>
                 <input type="range" className='accent-orange-400 h-1'
-                value={volume} min="0" max="1" step="0.01" onChange={onVolumeChange} />
+                    value={volume} min="0" max="1" step="0.01" onChange={onVolumeChange} />
             </div>
         </div>
     );
