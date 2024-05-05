@@ -6,28 +6,23 @@ export default function Upload() {
   const [name, setName] = useState('');
   const [artist, setArtist] = useState('');
   const [cover, setCover] = useState('');
+  const [coverFile, setCoverFile] = useState(null);
   const [musicFile, setMusicFile] = useState(null); // State to hold the music file
 
-  async function uploadCover(ev) {
+  function handleCoverChange(ev) {
     const file = ev.target.files[0];
-    const data = new FormData();
-    data.append('file', file);
-    // const res = await axios.post('/api/uploadCover', data);
-    const res = await fetch('/api/uploadCover', {
-      method: 'POST',
-      body: data
-    });
-    if (res.ok) {
-      const responseJson = await res.json();
-      setCover(responseJson.link);
-    } else {
-      console.error('HTTP error', res.status, await res.text());
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setCover(reader.result); // Set the cover state to the read data URL
+      };
+      reader.readAsDataURL(file);
+      setCoverFile(file);
     }
   }
 
   function handleMusicFileChange(ev) {
     setMusicFile(ev.target.files[0]); // Save the music file to state
-    // console.log(ev.target.files[0]);
   }
 
   async function saveMusic(ev) {
@@ -35,11 +30,13 @@ export default function Upload() {
     const data = new FormData();
     data.append('name', name);
     data.append('artist', artist);
-    data.append('cover', cover);
-    // console.log(musicFile);
-    if (musicFile) {
-      data.append('file', musicFile); // Append the music file to FormData
+    if (coverFile) {
+      data.append('cover', coverFile);
     }
+    if (musicFile) {
+      data.append('track', musicFile);
+    }
+    
     try {
       const response = await axios.post('/api/uploadMusic', data, {
         headers: {
@@ -50,8 +47,6 @@ export default function Upload() {
     } catch (error) {
       console.error('Upload error', error);
     }
-    // const data = { name, artist, cover };
-    // axios.post('/api/uploadMusic', data)
   }
 
   return (
@@ -73,13 +68,13 @@ export default function Upload() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
             </svg>
 
-            <input type="file" className="hidden" onChange={uploadCover} />
+            <input type="file" className="hidden" onChange={handleCoverChange} />
             上传封面
           </label>
         ) :
           (
             <label className="mt-4 cursor-pointer relative w-36 h-36">
-              <input type="file" className="hidden" onChange={uploadCover} />
+              <input type="file" className="hidden" onChange={handleCoverChange} />
               <img src={cover} className="w-full h-full object-cover border rounded-lg" />
               <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300">
                 <span className="text-black font-semibold">更换封面</span>
