@@ -29,7 +29,7 @@ export default async function handle(req, res) {
         const uploadsDir = path.resolve('./public/tracks');
         const oldPath = file.filepath;
         const newPath = path.join(uploadsDir, newName + path.extname(file.originalFilename));
-        trackPath = newPath;
+        trackPath = '/public/tracks' + newName + path.extname(file.originalFilename);
 
         if (!fs.existsSync(uploadsDir)) {
           fs.mkdirSync(uploadsDir, { recursive: true }); // 'recursive: true' ensures that nested directories are created
@@ -62,7 +62,7 @@ export default async function handle(req, res) {
         const uploadsDir = path.resolve('./public/covers');
         const oldPath = file.filepath;
         const newPath = path.join(uploadsDir, newName + path.extname(file.originalFilename));
-        coverPath = newPath;
+        coverPath = '/public/covers' + newName + path.extname(file.originalFilename);
 
         if (!fs.existsSync(uploadsDir)) {
           fs.mkdirSync(uploadsDir, { recursive: true }); // 'recursive: true' ensures that nested directories are created
@@ -75,8 +75,6 @@ export default async function handle(req, res) {
             res.status(500).json({ error: 'Failed to move file' });
             return;
           }
-
-
         });
       }
 
