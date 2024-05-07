@@ -50,7 +50,7 @@ const PlayerControl = ({ tracks }) => {
     // Update progress as audio plays
     useEffect(() => {
         const interval = setInterval(() => {
-            if (audioRef.current) {
+            if (audioRef.current && audioRef.current.readyState) {
                 setTrackProgress(audioRef.current.currentTime / audioRef.current.duration);
                 const current = formatTime(audioRef.current.currentTime);
                 setCurrentTime(current);

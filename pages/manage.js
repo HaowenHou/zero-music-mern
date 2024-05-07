@@ -55,7 +55,8 @@ export default function Manage() {
                 <p>{track.artist}</p>
               </td>
               <td>
-                <Link className="bg-white text-gray-800 px-2 mx-2 py-1 rounded-sm border border-gray-200 shadow-sm" href="a">
+                <Link className="bg-white text-gray-800 px-2 mx-2 py-1 rounded-sm border border-gray-200 shadow-sm"
+                  href={`/tracks/edit/${track._id}`}>
                   编辑
                 </Link>
                 {/* <Link className="bg-red-200 text-red-600 px-2 py-1 rounded-sm shadow-sm" href={'/tracks/delete/' + track._id}>
