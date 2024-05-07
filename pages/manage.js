@@ -13,7 +13,6 @@ export default function Manage() {
   }, []);
 
   const handleDelete = async (id) => {
-    console.log(id);
     // Confirm before proceeding
     if (window.confirm("Are you sure you want to delete this track?")) {
       try {
