@@ -8,6 +8,10 @@
 - Mute
 - Change prev/next track icon
 
+**Favorites:**
+
+- Change the default cover when there is no favorite track.
+
 ## Done
 - If refreshed after logging in, the topbar briefly shows as not logged in (before the session is retrieved).
 

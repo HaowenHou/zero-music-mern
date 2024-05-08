@@ -1,7 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from './components/Layout';
+import axios from 'axios';
 
 function App() {
+  const [tracks, setTracks] = useState([]);
+
+  useEffect(() => {
+    const fetchPlaylist = async () => {
+      try {
+        const { data: playlistData } = await axios.get('/api/managePlaylists');
+
+        const musicDataPromises = playlistData.musics.map(async (item) => {
+          const { data: trackData } = await axios.get('/api/tracks?id=' + item);
+          return trackData;
+        });
+
+        const musicData = await Promise.all(musicDataPromises);
+        console.log('music', musicData);
+        setTracks(musicData); // TODO
+      } catch (error) {
+        console.error('Error fetching data', error);
+      }
+    };
+    fetchPlaylist();
+  }, []);
+
+
+
   return (
     <Layout>
       <div className='text-center'>
@@ -20,7 +45,7 @@ function App() {
           </div>
 
           <div className='pl-8'>
-            <h1 className="text-2xl font-bold">我的收藏</h1>
+            <h1 className="text-2xl font-bold">音乐推荐</h1>
             <button className='flex mt-4 items-center'>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-8 bg-orange-400 rounded-full fill-white p-1.5 pl-2">
                 <path fillRule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clipRule="evenodd" />
@@ -31,40 +56,33 @@ function App() {
         </div>
 
         <div className="mt-8">
-          <div className="flex items-center mb-6">
-            <img
-              src="/albums/2.png"
-              alt="Album Cover"
-              className="w-12 h-12 mr-6 rounded-md"
-            />
-            <div className='flex'>
-              <div className='w-64'>
-                <h2 className="font-semibold ml-6">Wonderful U</h2>
+          {tracks && tracks.map((track) => (
+            <div className="flex items-center mb-6" key={track._id}>
+              <img
+                src={track.cover || '/albums/3.png'}
+                alt="Album Cover"
+                className="w-12 h-12 mr-6 rounded-md"
+              />
+              <div className='flex'>
+                <div className='w-64'>
+                  <h2 className="font-semibold ml-6">{track.name}</h2>
+                </div>
+                <p className=''>{track.artist}</p>
               </div>
-              <p className=''>AGA</p>
+              <span className="ml-auto">{formatTime(track.duration)}</span>
             </div>
-            <span className="ml-auto">04:08</span>
-          </div>
-
-          <div className="flex items-center mb-6">
-            <img
-              src="/albums/3.png"
-              alt="Album Cover"
-              className="w-12 h-12 mr-6 rounded-md"
-            />
-            <div className='flex'>
-              <div className='w-64'>
-                <h2 className="font-semibold ml-6">Shadow of Mine</h2>
-              </div>
-              <p className=''>Alec Benjamin</p>
-            </div>
-            <span className="ml-auto">02:45</span>
-          </div>
+          ))}
         </div>
 
       </div>
     </Layout>
   );
+}
+
+function formatTime(time) {
+  const minutes = Math.floor(time / 60);
+  const seconds = Math.floor(time % 60);
+  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 }
 
 export default App;
