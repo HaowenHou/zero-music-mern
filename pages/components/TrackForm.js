@@ -1,6 +1,6 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
 import axios from "axios";
-import { set } from "mongoose";
 
 export default function TrackForm({
   _id,
@@ -15,6 +15,7 @@ export default function TrackForm({
   const [coverFile, setCoverFile] = useState(null);
   const [musicFile, setMusicFile] = useState(null);
   const [trackChanged, setTrackChanged] = useState(false);
+  const router = useRouter();
 
   function handleCoverChange(ev) {
     const file = ev.target.files[0];
@@ -32,7 +33,6 @@ export default function TrackForm({
     setMusicFile(ev.target.files[0]);
     setTrackChanged(true);
   }
-  console.log(_id);
 
   async function saveMusic(ev) {
     ev.preventDefault();
@@ -50,12 +50,17 @@ export default function TrackForm({
       data.append('id', _id);
     }
     try {
-      const response = await axios.post('/api/uploadMusic', data, {
+      const response = await axios.post('/api/tracks', data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
-      console.log(response.data);
+      // If successful, redirect to the track page
+      if (response.status === 201 || response.status === 200) {
+        router.push('/tracks/manage');
+      } else {
+        throw new Error('Failed to save music');
+      }
     } catch (error) {
       console.error('Upload error', error);
     }
@@ -74,18 +79,19 @@ export default function TrackForm({
       <input type="text" className="border w-64 p-1 rounded-md focus:border-orange-200"
         placeholder="歌手" value={artist} onChange={ev => setArtist(ev.target.value)} required />
 
+      <label className="text-lg mt-2">封面</label>
       {!cover ? (
-        <label className="mt-4 border aspect-square size-36 rounded-lg flex flex-col items-center justify-center cursor-pointer text-sm">
+        <label className="mt-2 border aspect-square size-36 rounded-lg flex flex-col items-center justify-center cursor-pointer text-sm">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
           </svg>
 
           <input type="file" className="hidden" onChange={handleCoverChange} />
-          上传封面
+          上传
         </label>
       ) :
         (
-          <label className="mt-4 cursor-pointer relative w-36 h-36">
+          <label className="mt-2 cursor-pointer relative w-36 h-36">
             <input type="file" className="hidden" onChange={handleCoverChange} />
             <img src={cover} className="w-full h-full object-cover border rounded-lg" />
             <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300">
@@ -95,10 +101,10 @@ export default function TrackForm({
         )}
 
       <label className="text-lg my-2">音乐文件</label>
-      <input type="file" onChange={handleMusicFileChange} />
+      <input className="mb-2" type="file" onChange={handleMusicFileChange} />
 
       {initialTrack && !trackChanged && (
-        <div className="my-2">
+        <div className="my-2 w-4/6">
           <audio controls src={initialTrack} className="w-full">
             Your browser does not support the audio element.
           </audio>
