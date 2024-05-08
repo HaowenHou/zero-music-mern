@@ -5,10 +5,30 @@ import musicMetadata from 'music-metadata';
 
 import dbConnect from '@/lib/dbConnect';
 import Music from '@/models/Music';
+import Playlist from '@/models/Playlist';
 
 export default async function handle(req, res) {
   await dbConnect();
   const { method } = req;
+
+  // // If there is not a global playlist, create one
+  // const globalPlaylist = await Playlist.findOne({ name: 'Global' });
+  // if (!globalPlaylist) {
+  //   const newPlaylist = new Playlist({
+  //     name: 'Global',
+  //     description: 'The global playlist',
+  //     musics: []
+  //   });
+  //   await newPlaylist.save();
+  // }
+
+  // // Ensure all the tracks are in the global playlist
+  // const allMusics = await Music.find({});
+  // const globalMusics = globalPlaylist.musics.map((id) => id.toString());
+  // const newMusics = allMusics.filter((music) => !globalMusics.includes(music._id.toString()));
+  // if (newMusics.length > 0) {
+  //   await Playlist.updateOne({ name: 'Global' }, { $push: { musics: { $each: newMusics.map((music) => music._id.toString() )} } });
+  // }
 
   if (method == 'GET') {
     try {
@@ -25,9 +45,22 @@ export default async function handle(req, res) {
   };
 
   if (method === 'DELETE') {
-    if (req.query?.id) {
-      await Music.deleteOne({ _id: req.query?.id });
-      res.json(true);
+    try {
+      if (req.query?.id) {
+        // Delete the file from the storage
+        const music = await Music.findById(req.query.id);
+        if (music.track) {
+          fs.unlinkSync(path.resolve(`./public${music.track}`));
+        }
+        if (music.cover) {
+          fs.unlinkSync(path.resolve(`./public${music.cover}`));
+        }
+        await Music.deleteOne({ _id: req.query.id });
+        await Playlist.updateMany({}, { $pull: { musics: req.query.id } });
+        res.json(true);
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
   };
 
@@ -107,6 +140,8 @@ export default async function handle(req, res) {
         } else {
           const music = new Music(updateData);
           await music.save();
+          // Add the music to the global playlist
+          await Playlist.updateOne({ name: 'Global' }, { $push: { musics: music._id.toString() } });
           res.status(201).json({ message: 'Music created', data: music });
         }
       } catch (error) {
