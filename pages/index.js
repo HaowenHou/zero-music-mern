@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Layout from './components/Layout';
 import axios from 'axios';
+import { useSession } from 'next-auth/react';
 
 function App() {
   const [tracks, setTracks] = useState([]);
+  // Get user id
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
 
   useEffect(() => {
     const fetchPlaylist = async () => {
@@ -11,21 +15,35 @@ function App() {
         const { data: playlistData } = await axios.get('/api/managePlaylists');
 
         const musicDataPromises = playlistData.musics.map(async (item) => {
-          const { data: trackData } = await axios.get('/api/tracks?id=' + item);
+          const { data: trackData } = await axios.get(`/api/tracks?id=${item}&userId=${userId}`);
           return trackData;
         });
 
         const musicData = await Promise.all(musicDataPromises);
-        console.log('music', musicData);
-        setTracks(musicData); // TODO
+        setTracks(musicData);
       } catch (error) {
         console.error('Error fetching data', error);
       }
     };
     fetchPlaylist();
-  }, []);
+  }, [userId]);
 
-
+  const favoriteTrack = async (trackId) => {
+    try {
+      const response = await axios.post(`/api/manageFavorites?id=${trackId}&userId=${userId}`);
+      if (response.status === 200) {
+        const updatedTracks = tracks.map((track) => {
+          if (track._id === trackId) {
+            return { ...track, favorite: !track.favorite };
+          }
+          return track;
+        });
+        setTracks(updatedTracks);
+      }
+    } catch (error) {
+      console.error('Error favoriting track', error);
+    }
+  };
 
   return (
     <Layout>
@@ -56,7 +74,7 @@ function App() {
         </div>
 
         <div className="mt-8">
-          {tracks && tracks.map((track) => (
+          {userId && tracks && tracks.map((track) => (
             <div className="flex items-center mb-6" key={track._id}>
               <img
                 src={track.cover || '/albums/3.png'}
@@ -69,7 +87,18 @@ function App() {
                 </div>
                 <p className=''>{track.artist}</p>
               </div>
-              <span className="ml-auto">{formatTime(track.duration)}</span>
+              <span className="ml-auto mr-3">{formatTime(track.duration)}</span>
+              <button onClick={() => favoriteTrack(track._id)}>
+                {track.favorite ? (
+                  <svg className=" bg-white rounded-full size-8 p-1 pt-1.5 bg-opacity-90 fill-orange-400 stroke-orange-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                  </svg>
+                ) : (
+                  <svg className=" bg-white rounded-full size-8 p-1 pt-1.5 bg-opacity-90 stroke-orange-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                  </svg>
+                )}
+              </button>
             </div>
           ))}
         </div>

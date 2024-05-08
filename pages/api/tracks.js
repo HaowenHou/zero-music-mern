@@ -6,6 +6,7 @@ import musicMetadata from 'music-metadata';
 import dbConnect from '@/lib/dbConnect';
 import Music from '@/models/Music';
 import Playlist from '@/models/Playlist';
+import { isTrackFavoritedByUser } from "@/lib/userUtils";
 
 export default async function handle(req, res) {
   await dbConnect();
@@ -34,6 +35,10 @@ export default async function handle(req, res) {
     try {
       if (req.query?.id) {
         const music = await Music.findById(req.query.id).lean();
+        if (req.query.userId && req.query.userId !== 'undefined') {
+          const favorite = await isTrackFavoritedByUser(req.query.userId, req.query.id);
+          music.favorite = favorite;
+        }
         res.status(200).json(music);
       } else {
         const music = await Music.find({}).lean();
