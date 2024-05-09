@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { togglePlay, setVolume, setTrackIndex, setCurrentTime } from '@/store/actionCreators';
 
 function formatTime(time) {
     const minutes = Math.floor(time / 60);
@@ -7,15 +9,15 @@ function formatTime(time) {
 }
 
 const PlayerControl = ({ tracks, index }) => {
+    // Use isPlaying state from redux
+    const { isPlaying, volume, currentTrackIndex, currentTime } = useSelector((state) => state.playerState);
+    const dispatch = useDispatch();
+
     // console.log('tracks', tracks);
 
     // tracks: [{id, title, artist, file, cover}, ...]
-    const [currentTrackIndex, setCurrentTrackIndex] = useState(index);
-    const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef(null);
     const [trackProgress, setTrackProgress] = useState(0);
-    const [volume, setVolume] = useState(1); // Default volume is 100%
-    const [currentTime, setCurrentTime] = useState("0:00");
     const [duration, setDuration] = useState("0:00");
     // console.log('Playing playlist from PC', tracks, currentTrackIndex);
 
@@ -26,7 +28,7 @@ const PlayerControl = ({ tracks, index }) => {
         newAudio.volume = volume;
 
         const current = formatTime(0);
-        setCurrentTime(current);
+        dispatch(setCurrentTime(current));
 
         const onMetadataLoaded = () => {
             const dur = formatTime(newAudio.duration);
@@ -57,14 +59,14 @@ const PlayerControl = ({ tracks, index }) => {
             if (audioRef.current && audioRef.current.readyState) {
                 setTrackProgress(audioRef.current.currentTime / audioRef.current.duration);
                 const current = formatTime(audioRef.current.currentTime);
-                setCurrentTime(current);
+                dispatch(setCurrentTime(current));
             }
         }, 500);
         return () => clearInterval(interval);
     }, [isPlaying]);
 
     const playPause = () => {
-        setIsPlaying(!isPlaying);
+        dispatch(togglePlay());
         if (isPlaying) {
             audioRef.current.pause();
         } else {
@@ -74,16 +76,12 @@ const PlayerControl = ({ tracks, index }) => {
 
     const nextTrack = () => {
         audioRef.current.pause();
-        setCurrentTrackIndex((prevIndex) => {
-            return (prevIndex + 1) % tracks.length;
-        });
+        dispatch(setTrackIndex((currentTrackIndex + 1) % tracks.length));
     };
 
     const prevTrack = () => {
         audioRef.current.pause();
-        setCurrentTrackIndex((prevIndex) => {
-            return prevIndex === 0 ? tracks.length - 1 : prevIndex - 1;
-        });
+        dispatch(setTrackIndex((currentTrackIndex === 0) ? tracks.length - 1 : currentTrackIndex - 1));
     };
 
     const onProgressChange = (e) => {
@@ -91,11 +89,11 @@ const PlayerControl = ({ tracks, index }) => {
         audioRef.current.currentTime = newTime;
         setTrackProgress(audioRef.current.currentTime / audioRef.current.duration);
         const current = formatTime(audioRef.current.currentTime);
-        setCurrentTime(current);
+        dispatch(setCurrentTime(current));
     };
 
     const onVolumeChange = (e) => {
-        setVolume(e.target.value);
+        dispatch(setVolume(e.target.value));
         if (audioRef.current) {
             audioRef.current.volume = e.target.value;
         }
