@@ -6,19 +6,22 @@ function formatTime(time) {
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 }
 
-const PlayerControl = ({ tracks }) => {
+const PlayerControl = ({ tracks, index }) => {
+    // console.log('tracks', tracks);
+
     // tracks: [{id, title, artist, file, cover}, ...]
-    const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+    const [currentTrackIndex, setCurrentTrackIndex] = useState(index);
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef(null);
     const [trackProgress, setTrackProgress] = useState(0);
     const [volume, setVolume] = useState(1); // Default volume is 100%
     const [currentTime, setCurrentTime] = useState("0:00");
     const [duration, setDuration] = useState("0:00");
+    // console.log('Playing playlist from PC', tracks, currentTrackIndex);
 
     // Load track when track changes
     useEffect(() => {
-        const newAudio = new Audio(tracks[currentTrackIndex].file);
+        const newAudio = new Audio(tracks[currentTrackIndex].track);
         audioRef.current = newAudio;
         newAudio.volume = volume;
 
@@ -44,6 +47,7 @@ const PlayerControl = ({ tracks }) => {
         return () => {
             newAudio.removeEventListener('loadedmetadata', onMetadataLoaded);
             newAudio.pause();
+            console.log('PC cleaning up');
         };
     }, [currentTrackIndex]);
 
@@ -102,7 +106,7 @@ const PlayerControl = ({ tracks }) => {
             <div className='flex flex-[3] items-center'>
                 <img src={tracks[currentTrackIndex].cover} className='ml-3 w-14 h-14 rounded-md' />
                 <div className='ml-4 flex flex-col'>
-                    <span className='text-lg font-bold'>{tracks[currentTrackIndex].title}</span>
+                    <span className='text-lg font-bold'>{tracks[currentTrackIndex].name}</span>
                     <span className='text-sm'>{tracks[currentTrackIndex].artist}</span>
                 </div>
             </div>
