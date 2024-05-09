@@ -8,9 +8,10 @@ function formatTime(time) {
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 }
 
-const PlayerControl = ({ tracks, index }) => {
+const PlayerControl = () => {
     // Use isPlaying state from redux
-    const { isPlaying, volume, currentTrackIndex, currentTime } = useSelector((state) => state.playerState);
+    const { isPlaying, volume, currentTrackIndex, currentTime } = useSelector(state => state.playerState);
+    const { playlist } = useSelector(state => state.playlistState);
     const dispatch = useDispatch();
 
     // console.log('tracks', tracks);
@@ -23,7 +24,7 @@ const PlayerControl = ({ tracks, index }) => {
 
     // Load track when track changes
     useEffect(() => {
-        const newAudio = new Audio(tracks[currentTrackIndex].track);
+        const newAudio = new Audio(playlist[currentTrackIndex].file);
         audioRef.current = newAudio;
         newAudio.volume = volume;
 
@@ -76,12 +77,12 @@ const PlayerControl = ({ tracks, index }) => {
 
     const nextTrack = () => {
         audioRef.current.pause();
-        dispatch(setTrackIndex((currentTrackIndex + 1) % tracks.length));
+        dispatch(setTrackIndex((currentTrackIndex + 1) % playlist.length));
     };
 
     const prevTrack = () => {
         audioRef.current.pause();
-        dispatch(setTrackIndex((currentTrackIndex === 0) ? tracks.length - 1 : currentTrackIndex - 1));
+        dispatch(setTrackIndex((currentTrackIndex === 0) ? playlist.length - 1 : currentTrackIndex - 1));
     };
 
     const onProgressChange = (e) => {
@@ -102,10 +103,10 @@ const PlayerControl = ({ tracks, index }) => {
     return (
         <div className='max-w-5xl flex bg-gray-50 h-20'>
             <div className='flex flex-[3] items-center'>
-                <img src={tracks[currentTrackIndex].cover} className='ml-3 w-14 h-14 rounded-md' />
+                <img src={playlist[currentTrackIndex].cover} className='ml-3 w-14 h-14 rounded-md' />
                 <div className='ml-4 flex flex-col'>
-                    <span className='text-lg font-bold'>{tracks[currentTrackIndex].name}</span>
-                    <span className='text-sm'>{tracks[currentTrackIndex].artist}</span>
+                    <span className='text-lg font-bold'>{playlist[currentTrackIndex].title}</span>
+                    <span className='text-sm'>{playlist[currentTrackIndex].artist}</span>
                 </div>
             </div>
 

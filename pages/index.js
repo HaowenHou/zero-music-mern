@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Layout from './components/Layout';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
-import store from '../store/store';
-import { Provider } from 'react-redux'
 
 function App() {
   const [tracks, setTracks] = useState([]);
@@ -54,8 +52,7 @@ function App() {
   }
 
   return (
-    <Provider store={store}>
-      <Layout tracks={tracks} index={index}>
+      <Layout>
         {/* {console.log('Playing playlist from index', tracks, index)} */}
 
         <div className='text-center'>
@@ -121,7 +118,6 @@ function App() {
 
         </div>
       </Layout>
-    </Provider>
   );
 }
 

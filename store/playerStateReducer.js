@@ -1,4 +1,3 @@
-// isPlayingReducer.js
 const initialState = {
   isPlaying: false,
   volume: 1, // Default volume (0.0 - 1.0)

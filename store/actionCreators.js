@@ -16,3 +16,8 @@ export const setCurrentTime = (time) => ({
   type: 'SET_CURRENT_TIME',
   payload: time
 });
+
+export const setPlaylist = (playlist) => ({
+  type: 'SET_PLAYLIST',
+  payload: playlist
+});
