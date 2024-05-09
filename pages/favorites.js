@@ -1,5 +1,4 @@
 import axios from "axios";
-import Layout from "./components/Layout";
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from "react";
 
@@ -14,7 +13,7 @@ export default function Favorites() {
     if (!userId) return;
     const fetchPlaylist = async () => {
       try {
-        const { data: favoriteList } = await axios.get('/api/manageFavorites?id=' + userId);
+        const { data: favoriteList } = await axios.get(`/api/manageFavorites?id=${userId}`);
 
         const musicDataPromises = favoriteList.map(async (item) => {
           const { data: trackData } = await axios.get(`/api/tracks?id=${item}&userId=${userId}`);
@@ -39,7 +38,7 @@ export default function Favorites() {
   // }, [userId]);
 
   return (
-    <Layout>
+    <>
       <div className='text-center'>
       </div>
 
@@ -86,7 +85,7 @@ export default function Favorites() {
         </div>
 
       </div>
-    </Layout>
+    </>
   );
 }
 

@@ -1,4 +1,3 @@
-import Layout from "@/pages/components/Layout";
 import TrackForm from "@/pages/components/TrackForm";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -19,8 +18,8 @@ export default function EditTrack() {
   }, [id]);
 
   return (
-    <Layout>
+    <>
       {trackInfo && <TrackForm {...trackInfo}></TrackForm>}
-    </Layout>
+    </>
   );
 };
