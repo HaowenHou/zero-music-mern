@@ -34,6 +34,14 @@ export default async function handle(req, res) {
   if (method == 'GET') {
     try {
       if (req.query?.id) {
+        // Rename the name field to title
+        // Music.updateMany({}, { $rename: { "name": "title" } })
+        //   .then(result => {
+        //     console.log('Update successful', result);
+        //   })
+        //   .catch(err => {
+        //     console.error('Error updating documents', err);
+        //   });
         const music = await Music.findById(req.query.id).lean();
         if (req.query.userId && req.query.userId !== 'undefined') {
           const favorite = await isTrackFavoritedByUser(req.query.userId, req.query.id);

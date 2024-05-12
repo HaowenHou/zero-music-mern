@@ -13,7 +13,7 @@ export default function Favorites() {
     if (!userId) return;
     const fetchPlaylist = async () => {
       try {
-        const { data: favoriteList } = await axios.get(`/api/manageFavorites?id=${userId}`);
+        const { data: favoriteList } = await axios.get(`/api/favorites?id=${userId}`);
 
         const musicDataPromises = favoriteList.map(async (item) => {
           const { data: trackData } = await axios.get(`/api/tracks?id=${item}&userId=${userId}`);
@@ -31,7 +31,7 @@ export default function Favorites() {
 
   // useEffect(() => {
   //   if (!userId) return;
-  //   axios.get('/api/manageFavorites?id=' + userId).then((res) => {
+  //   axios.get('/api/favorites?id=' + userId).then((res) => {
   //     console.log(res.data);
   //     // setFavorites(res.data);
   //   });
@@ -67,20 +67,26 @@ export default function Favorites() {
 
         <div className="mt-8">
           {userId && tracks && tracks.map((track) => (
-            <div className="flex items-center mb-6" key={track._id}>
-              <img
-                src={track.cover || '/albums/3.png'}
-                alt="Album Cover"
-                className="w-12 h-12 mr-6 rounded-md"
-              />
-              <div className='flex'>
-                <div className='w-64'>
-                  <h2 className="font-semibold ml-6">{track.name}</h2>
-                </div>
-                <p className=''>{track.artist}</p>
-              </div>
-              <span className="ml-auto mr-3">{formatTime(track.duration)}</span>
-            </div>
+            <TrackItem
+              key={track._id}
+              track={track}
+              onPlayClick={() => playPlaylist(tracks, index)}
+              showFavoriteButton={false}
+            />
+            // <div className="flex items-center mb-6" key={track._id}>
+            //   <img
+            //     src={track.cover || '/albums/3.png'}
+            //     alt="Album Cover"
+            //     className="w-12 h-12 mr-6 rounded-md"
+            //   />
+            //   <div className='flex'>
+            //     <div className='w-64'>
+            //       <h2 className="font-semibold ml-6">{track.name}</h2>
+            //     </div>
+            //     <p className=''>{track.artist}</p>
+            //   </div>
+            //   <span className="ml-auto mr-3">{formatTime(track.duration)}</span>
+            // </div>
           ))}
         </div>
 

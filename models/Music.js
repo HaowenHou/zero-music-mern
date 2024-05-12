@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const musicSchema = new mongoose.Schema({
-  name: { type: String, required: true },
+  title: { type: String, required: true },
   artist: { type: String, required: true },
   duration: { type: Number, required: true }, // duration in seconds
   cover: { type: String, required: true }, // URL to the cover image
