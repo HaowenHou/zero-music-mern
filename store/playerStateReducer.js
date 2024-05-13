@@ -12,6 +12,11 @@ const playerStateReducer = (state = initialState, action) => {
         ...state,
         isPlaying: !state.isPlaying
       };
+    case 'SET_PLAY':
+      return {
+        ...state,
+        isPlaying: action.payload
+      };
     case 'SET_VOLUME':
       return {
         ...state,

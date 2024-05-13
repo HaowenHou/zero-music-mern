@@ -2,6 +2,11 @@ export const togglePlay = () => ({
   type: 'TOGGLE_PLAY'
 });
 
+export const setPlay = (isPlaying) => ({
+  type: 'SET_PLAY',
+  payload: isPlaying
+});
+
 export const setVolume = (volume) => ({
   type: 'SET_VOLUME',
   payload: volume

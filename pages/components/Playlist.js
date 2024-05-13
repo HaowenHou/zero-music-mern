@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import TrackItem from "./TrackItem";
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setPlaylist, setTrackIndex, setPlay } from "@/store/actionCreators";
 
 export default function Playlist({ tracks: initialTracks, showFavoriteButton, userId }) {
   const [tracks, setTracks] = useState(initialTracks);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setTracks(initialTracks);
@@ -22,6 +25,12 @@ export default function Playlist({ tracks: initialTracks, showFavoriteButton, us
       console.error('Error toggling favorite status', error);
     }
   }
+
+  const onPlayClick = (tracks, index) => {
+    dispatch(setPlaylist(tracks));
+    dispatch(setTrackIndex(index));
+    dispatch(setPlay(true));
+  };
 
   return (
     <div className="mt-8">
