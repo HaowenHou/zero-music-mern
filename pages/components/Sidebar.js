@@ -17,7 +17,7 @@ const Sidebar = () => {
                 <a href='/favorites' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>
                     我的收藏
                 </a>
-                <a href='/my_list' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>
+                <a href='/playlists' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>
                     我的歌单
                 </a>
                 <a href='/' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>

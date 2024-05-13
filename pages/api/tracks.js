@@ -4,7 +4,7 @@ import path from "path";
 import musicMetadata from 'music-metadata';
 
 import dbConnect from '@/lib/dbConnect';
-import Music from '@/models/Music';
+import Track from '@/models/Track';
 import Playlist from '@/models/Playlist';
 import { isTrackFavoritedByUser } from "@/lib/userUtils";
 
@@ -24,7 +24,7 @@ export default async function handle(req, res) {
   // }
 
   // // Ensure all the tracks are in the global playlist
-  // const allMusics = await Music.find({});
+  // const allMusics = await Track.find({});
   // const globalMusics = globalPlaylist.musics.map((id) => id.toString());
   // const newMusics = allMusics.filter((music) => !globalMusics.includes(music._id.toString()));
   // if (newMusics.length > 0) {
@@ -35,22 +35,22 @@ export default async function handle(req, res) {
     try {
       if (req.query?.id) {
         // Rename the name field to title
-        // Music.updateMany({}, { $rename: { "name": "title" } })
+        // Track.updateMany({}, { $rename: { "name": "title" } })
         //   .then(result => {
         //     console.log('Update successful', result);
         //   })
         //   .catch(err => {
         //     console.error('Error updating documents', err);
         //   });
-        const music = await Music.findById(req.query.id).lean();
+        const track = await Track.findById(req.query.id).lean();
         if (req.query.userId && req.query.userId !== 'undefined') {
           const favorite = await isTrackFavoritedByUser(req.query.userId, req.query.id);
-          music.favorite = favorite;
+          track.favorite = favorite;
         }
-        res.status(200).json(music);
+        res.status(200).json(track);
       } else {
-        const music = await Music.find({}).lean();
-        res.status(200).json(music);
+        const track = await Track.find({}).lean();
+        res.status(200).json(track);
       }
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -61,14 +61,14 @@ export default async function handle(req, res) {
     try {
       if (req.query?.id) {
         // Delete the file from the storage
-        const music = await Music.findById(req.query.id);
-        if (music.track) {
-          fs.unlinkSync(path.resolve(`./public${music.track}`));
+        const track = await Track.findById(req.query.id);
+        if (track.track) {
+          fs.unlinkSync(path.resolve(`./public${track.track}`));
         }
-        if (music.cover) {
-          fs.unlinkSync(path.resolve(`./public${music.cover}`));
+        if (track.cover) {
+          fs.unlinkSync(path.resolve(`./public${track.cover}`));
         }
-        await Music.deleteOne({ _id: req.query.id });
+        await Track.deleteOne({ _id: req.query.id });
         await Playlist.updateMany({}, { $pull: { musics: req.query.id } });
         res.json(true);
       }
@@ -87,7 +87,7 @@ export default async function handle(req, res) {
 
       const newName = `${fields.name} - ${fields.artist}`;
 
-      let musicDuration = 0;
+      let trackDuration = 0;
       let trackPath = '';
       let coverPath = '';
 
@@ -118,7 +118,7 @@ export default async function handle(req, res) {
         // Read music duration
         try {
           const metadata = await musicMetadata.parseFile(result.newPath);
-          musicDuration = Math.round(metadata.format.duration);
+          trackDuration = Math.round(metadata.format.duration);
         } catch (error) {
           console.error('Error reading metadata', error);
           res.status(500).json({ error: 'Failed to read file metadata' });
@@ -135,7 +135,7 @@ export default async function handle(req, res) {
       const updateData = {
         name: fields.name[0],
         artist: fields.artist[0],
-        duration: musicDuration,
+        duration: trackDuration,
         cover: coverPath || undefined, // Use undefined to avoid overwriting with empty if no new file
         track: trackPath || undefined,
       };
@@ -143,19 +143,19 @@ export default async function handle(req, res) {
       try {
         // Check if the request contains an ID, if so, update the existing music
         if (fields.id) {
-          const musicId = fields.id;
-          const music = await Music.findByIdAndUpdate(musicId, updateData, { new: true });
-          if (!music) {
-            res.status(404).json({ error: 'Music not found' });
+          const trackId = fields.id;
+          const track = await Track.findByIdAndUpdate(trackId, updateData, { new: true });
+          if (!track) {
+            res.status(404).json({ error: 'Track not found' });
             return;
           }
-          res.status(200).json({ message: 'Music updated', data: music });
+          res.status(200).json({ message: 'Track updated', data: track });
         } else {
-          const music = new Music(updateData);
-          await music.save();
-          // Add the music to the global playlist
-          await Playlist.updateOne({ name: 'Global' }, { $push: { musics: music._id.toString() } });
-          res.status(201).json({ message: 'Music created', data: music });
+          const track = new Track(updateData);
+          await track.save();
+          // Add the track to the global playlist
+          await Playlist.updateOne({ name: 'Global' }, { $push: { tracks: track._id.toString() } });
+          res.status(201).json({ message: 'Track created', data: track });
         }
       } catch (error) {
         console.error('Database operation failed', error);

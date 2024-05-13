@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   password: { type: String, required: true },
   avatar: { type: String, required: false }, // URL to the image in the /public/avatars directory
-  favorites: { type: [String], required: false }, // Array of music IDs
+  favorites: { type: [String], required: false }, // Array of track IDs
   playlists: { type: [String], required: false }, // Array of playlist IDs
   role: { type: String, required: true, default: 'user' }, // 'user' or 'admin'
   drive: { type: [String], required: false },

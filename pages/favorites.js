@@ -16,13 +16,13 @@ export default function Favorites() {
       try {
         const { data: favoriteList } = await axios.get(`/api/favorites?id=${userId}`);
 
-        const musicDataPromises = favoriteList.map(async (item) => {
+        const trackDataPromises = favoriteList.map(async (item) => {
           const { data: trackData } = await axios.get(`/api/tracks?id=${item}&userId=${userId}`);
           return trackData;
         });
 
-        const musicData = await Promise.all(musicDataPromises);
-        setTracks(musicData);
+        const trackData = await Promise.all(trackDataPromises);
+        setTracks(trackData);
       } catch (error) {
         console.error('Error fetching data', error);
       }

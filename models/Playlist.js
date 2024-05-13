@@ -5,7 +5,7 @@ const playlistSchema = new mongoose.Schema({
   description: { type: String, required: true },
   // musics is array of ObjectId, and is required
   // musics: [{ type: mongoose.Schema.Types.ObjectId, ref: "Music", required: true }],
-  musics: [{ type: [String], required: true }],
+  tracks: [{ type: [String], required: true }],
 });
 
 export default mongoose.models.Playlist || mongoose.model("Playlist", playlistSchema);

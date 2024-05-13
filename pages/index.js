@@ -16,13 +16,13 @@ function App() {
       try {
         const { data: playlistData } = await axios.get('/api/playlist');
 
-        const musicDataPromises = playlistData.musics.map(async (item) => {
+        const trackDataPromises = playlistData.tracks.map(async (item) => {
           const { data: trackData } = await axios.get(`/api/tracks?id=${item}&userId=${userId}`);
           return trackData;
         });
 
-        const musicData = await Promise.all(musicDataPromises);
-        setTracks(musicData);
+        const trackData = await Promise.all(trackDataPromises);
+        setTracks(trackData);
       } catch (error) {
         console.error('Error fetching data', error);
       }
