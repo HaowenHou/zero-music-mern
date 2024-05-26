@@ -29,6 +29,10 @@ export default function Playlists() {
     setManageMode(!manageMode);
   }
 
+  const handleDelete = (playlistId) => {
+    setPlaylists(currentPlaylists => currentPlaylists.filter(p => p._id !== playlistId));
+  };
+
   return (
     <>
       <div className="bg-white p-12">
@@ -66,7 +70,7 @@ export default function Playlists() {
 
         <div className="mt-8">
           {playlists.length > 0 && playlists.map((playlist) => (
-            <PlaylistAsItem key={playlist._id} playlist={playlist} manageMode={manageMode} />
+            <PlaylistAsItem key={playlist._id} playlist={playlist} manageMode={manageMode} onDelete={handleDelete} />
           ))}
         </div>
 

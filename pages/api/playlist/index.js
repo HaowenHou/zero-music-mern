@@ -102,6 +102,19 @@ export default async function handler(req, res) {
       res.status(200).json(globalPlaylist);
     }
   }
+
+  if (method === "DELETE") {
+    const { id } = req.query;
+    try {
+      const playlist = await Playlist.findByIdAndDelete(id);
+      if (!playlist) {
+        return res.status(404).json({ error: "Playlist not found" });
+      }
+      res.status(200).json({ message: "Playlist deleted" });
+    } catch (error) {
+      res.status(500).json({ message: 'Server error', error: error.message });
+    }
+  }
 }
 
 export const config = {
