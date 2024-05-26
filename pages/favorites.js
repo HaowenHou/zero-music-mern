@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from "react";
-import Playlist from "./components/Playlist";
+import Tracklist from "./components/Tracklist";
 
 export default function Favorites() {
   const [tracks, setTracks] = useState([]);
@@ -56,7 +56,7 @@ export default function Favorites() {
         </div>
 
         <div className="mt-8">
-          <Playlist tracks={tracks} showFavoriteButton={true} userId={userId} />
+          <Tracklist tracks={tracks} showFavoriteButton={true} userId={userId} />
         </div>
 
       </div>

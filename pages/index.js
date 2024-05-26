@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
-import Playlist from './components/Playlist';
+import Tracklist from './components/Tracklist';
 
 function App() {
   const [tracks, setTracks] = useState([]);
@@ -64,7 +64,7 @@ function App() {
         </div>
 
         <div className="mt-8">
-          {userId && tracks.length > 0 && <Playlist tracks={tracks} showFavoriteButton={true} userId={userId} />}
+          {userId && tracks.length > 0 && <Tracklist tracks={tracks} showFavoriteButton={true} userId={userId} />}
           {/* {userId && tracks && tracks.map((track, index) => (
             <TrackItem
               key={track._id}

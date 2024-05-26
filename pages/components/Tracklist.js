@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setPlaylist, setTrackIndex, setPlay } from "@/store/actionCreators";
 
-export default function Playlist({ tracks: initialTracks, showFavoriteButton, userId }) {
+export default function Tracklist({ tracks: initialTracks, showFavoriteButton, userId }) {
   const [tracks, setTracks] = useState(initialTracks);
   const dispatch = useDispatch();
 

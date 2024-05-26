@@ -11,7 +11,7 @@ export default async function handler(req, res) {
 
   await dbConnect();
 
-  if (method === 'POST') {
+  if (method === 'POST' || method === 'PUT') {
     const form = formidable({});
     form.parse(req, async (err, fields, files) => {
       if (err) {
@@ -19,8 +19,8 @@ export default async function handler(req, res) {
         return;
       }
 
+      const { id } = req.query;
       const userId = fields.userId[0];
-
       const newFilename = `${fields.title}-${userId}`;
 
       let coverPath = '';
@@ -57,16 +57,7 @@ export default async function handler(req, res) {
       };
 
       try {
-        // Check if the request contains an ID, if so, update the existing music
-        // if (fields.id) {
-        //   const trackId = fields.id;
-        //   const track = await Track.findByIdAndUpdate(trackId, updateData, { new: true });
-        //   if (!track) {
-        //     res.status(404).json({ error: 'Track not found' });
-        //     return;
-        //   }
-        //   res.status(200).json({ message: 'Track updated', data: track });
-        // } else {
+        if (method === 'POST') {
           const playlist = new Playlist(updateData);
           await playlist.save();
           await User.findByIdAndUpdate(
@@ -76,6 +67,13 @@ export default async function handler(req, res) {
           );
           // Add the track to the global playlist
           res.status(201).json({ message: 'Playlist created', data: playlist });
+        } else if (method === 'PUT' && id) {
+          const playlist = await Playlist.findByIdAndUpdate(id, updateData, { new: true });
+          if (!playlist) {
+            return res.status(404).json({ error: 'Playlist not found' });
+          }
+          res.status(200).json({ message: 'Playlist updated', data: playlist });
+        }
         // }
       } catch (error) {
         console.error('Database operation failed', error);
@@ -84,13 +82,25 @@ export default async function handler(req, res) {
     });
   }
 
+  // if id is provided, fetch the specific playlist
+  // otherwise, fetch the global playlist
   if (method === "GET") {
-    // Get the Global playlist
-    const globalPlaylist = await Playlist.findOne({ name: "Global" });
-    if (!globalPlaylist) {
-      return res.status(404).json({ error: "Global playlist not found" });
+    const { id } = req.query;
+    if (id) {
+      try {
+        const playlist = await Playlist.findById(id).exec();
+        res.status(200).json(playlist);
+      } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+      }
+    } else {
+      // Get the Global playlist
+      const globalPlaylist = await Playlist.findOne({ name: "Global" });
+      if (!globalPlaylist) {
+        return res.status(404).json({ error: "Global playlist not found" });
+      }
+      res.status(200).json(globalPlaylist);
     }
-    res.status(200).json(globalPlaylist);
   }
 }
 

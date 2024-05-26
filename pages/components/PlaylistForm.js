@@ -32,12 +32,15 @@ export default function PlaylistForm({
     data.append('userId', userId);
     if (coverFile) {
       data.append('cover', coverFile);
+    } else if (_id && !coverFile) {
+      // If editing and no new file has been chosen, don't append a new cover key
+      data.append('cover', initialCover);
     }
 
     try {
       let response;
       if (_id) {
-        response = await axios.put(`/api/playlist/${_id}`, data, {
+        response = await axios.put(`/api/playlist?id=${_id}`, data, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -63,7 +66,7 @@ export default function PlaylistForm({
 
   return (
     <form onSubmit={savePlaylist} className="flex flex-col m-8">
-      <h1 className="font-bold text-2xl mb-2">新建歌单</h1>
+      <h1 className="font-bold text-2xl mb-2">{_id ? '编辑歌单' : '新建歌单'}</h1>
 
       <label className="text-lg my-2">歌单名</label>
       <input type="text" className="border w-64 p-1 rounded-md focus:border-orange-200"
@@ -91,7 +94,7 @@ export default function PlaylistForm({
         )}
 
       <button type="submit" className="mr-auto mt-4 bg-orange-200 rounded-md py-1 px-2 hover:bg-orange-400">
-        上传
+        {_id ? '更新' : '上传'}
       </button>
 
     </form>
