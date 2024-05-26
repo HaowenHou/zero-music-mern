@@ -1,5 +1,5 @@
 import Sidebar from './Sidebar'
-import SearchBar from './TopBar'
+import TopBar from './TopBar'
 import PlayerControl from './PlayerControl'
 import store from '@/store/store';
 import { Provider } from 'react-redux'
@@ -11,7 +11,7 @@ const Layout = ({ children }) => {
         <div className="flex">
           <Sidebar />
           <div className="flex flex-col">
-            <SearchBar />
+            <TopBar />
             <div className="content">{children}</div>
           </div>
         </div>

@@ -1,20 +1,38 @@
 import React from 'react';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
+import SearchBar from './SearchBar';
+import axios from 'axios';
 
-const SearchBar = () => {
+const TopBar = () => {
   const { data: session, status } = useSession();
   const userId = session?.user?.id;
   const isLoading = status === 'loading';
+
+  const fetchSearchResults = async (query) => {
+    try {
+      console.log('Fetching search results for:', query);
+      const response = await axios.get(`/api/search?q=${query}`);
+      return response.data; // Assuming the response data is the array of results
+    } catch (error) {
+      console.error('Failed to fetch search results', error);
+      return [];
+    }
+  };
+
   return (
     <div className="bg-gray-50 h-16 py-4 flex items-center">
-      <div className='flex'>
+      <div className="container mx-auto p-4">
+        <SearchBar onSearch={fetchSearchResults} />
+      </div>
+
+      {/* <div className='flex'>
         <input type="text" className='ml-10 w-48 rounded-xl outline-none pl-3' placeholder="搜索音乐" />
 
         <svg className="size-4 ml-1 w-6 h-6 stroke-2 stroke-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
         </svg>
-      </div>
+      </div> */}
 
       <div className='mx-24'></div>
 
@@ -54,4 +72,4 @@ const SearchBar = () => {
   );
 };
 
-export default SearchBar;
+export default TopBar;
