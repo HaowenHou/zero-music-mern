@@ -5,7 +5,7 @@ import PlaylistAsItem from "../components/PlaylistAsItem";
 import Link from "next/link";
 
 export default function Playlists() {
-  const [tracks, setTracks] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
   // Get user id
   const { data: session } = useSession();
   const userId = session?.user?.id;
@@ -13,6 +13,15 @@ export default function Playlists() {
   // Get user favorites
   useEffect(() => {
     if (!userId) return;
+    const fetchPlaylists = async () => {
+      try {
+        const response = await axios.get(`/api/playlist/${userId}`);
+        setPlaylists(response.data);
+      } catch (error) {
+        console.error('Error fetching data', error);
+      }
+    };
+    fetchPlaylists();
   }, [userId]);
 
   return (
@@ -40,7 +49,9 @@ export default function Playlists() {
         </div>
 
         <div className="mt-8">
-          <PlaylistAsItem />
+          {playlists.length > 0 && playlists.map((playlist) => (
+            <PlaylistAsItem key={playlist._id} playlist={playlist} />
+          ))}
         </div>
 
       </div>

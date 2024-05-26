@@ -19,7 +19,9 @@ export default async function handler(req, res) {
         return;
       }
 
-      const newName = `${fields.title}`;
+      const userId = fields.userId[0];
+
+      const newFilename = `${fields.title}-${userId}`;
 
       let coverPath = '';
 
@@ -27,8 +29,8 @@ export default async function handler(req, res) {
       const storeFile = async (file, type) => {
         const uploadsDir = path.resolve(`./public/${type}`);
         const oldPath = file.filepath;
-        const newPath = path.join(uploadsDir, newName + path.extname(file.originalFilename));
-        const webPath = `/${type}/` + newName + path.extname(file.originalFilename);
+        const newPath = path.join(uploadsDir, newFilename + path.extname(file.originalFilename));
+        const webPath = `/${type}/` + newFilename + path.extname(file.originalFilename);
 
         if (!fs.existsSync(uploadsDir)) {
           fs.mkdirSync(uploadsDir, { recursive: true });
@@ -48,7 +50,6 @@ export default async function handler(req, res) {
         coverPath = result.webPath;
       }
 
-      const userId = fields.userId[0];
       const updateData = {
         title: fields.title[0],
         userId: userId,
