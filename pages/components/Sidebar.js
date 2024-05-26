@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 const Sidebar = () => {
     return (
@@ -14,30 +15,30 @@ const Sidebar = () => {
                 <div className='text-2xl font-bold text-left pl-6 mb-4'>
                     我的
                 </div>
-                <a href='/favorites' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>
+                <Link href='/favorites' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>
                     我的收藏
-                </a>
-                <a href='/playlists' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>
+                </Link>
+                <Link href='/playlists' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>
                     我的歌单
-                </a>
-                <a href='/' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>
+                </Link>
+                <Link href='/' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>
                     我的云盘
-                </a>
+                </Link>
                 <div href='/' className='text-2xl font-bold text-left pl-6 mb-4 mt-4'>
                     社区
                 </div>
-                <a href='/' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>
+                <Link href='/' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>
                     动态
-                </a>
-                <a href='/' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>
+                </Link>
+                <Link href='/' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>
                     私信
-                </a>
-                {/* <a href='/test' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>
+                </Link>
+                {/* <Link href='/test' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>
                     测试
-                </a> */}
-                <a href='/tracks/manage' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>
+                </Link> */}
+                <Link href='/tracks/manage' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>
                     管理曲库
-                </a>
+                </Link>
             </nav>
         </aside>
     );

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -17,11 +18,8 @@ const Login = () => {
         });
 
         if (!result.error) {
-            // set some form of success state
-            console.log("Logged in successfully!");
             router.push('/');
         } else {
-            // Handle errors here, such as showing a notification
             console.error(result.error);
         }
     };
@@ -30,13 +28,13 @@ const Login = () => {
         <div className="flex flex-col items-center justify-center py-2">
             <form className="px-12 py-8 bg-white rounded shadow-md" onSubmit={handleSubmit}>
                 <div className='flex justify-between pb-8'>
-                    <a href="/" className='flex items-center'>
+                    <Link href="/" className='flex items-center'>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 mt-0.5">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                         </svg>
                         首页
-                    </a>
-                    <a href="/register" className='pr-2'>注册</a>
+                    </Link>
+                    <Link href="/register" className='pr-2'>注册</Link>
                 </div>
 
                 <h2 className="text-lg font-bold mb-8">用户登录</h2>
