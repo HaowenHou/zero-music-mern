@@ -4,6 +4,7 @@ import path from "path";
 
 import dbConnect from '@/lib/dbConnect';
 import Playlist from '@/models/Playlist';
+import User from "@/models/User";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -19,7 +20,6 @@ export default async function handler(req, res) {
       }
 
       const newName = `${fields.title}`;
-      console.log('newName', newName);
 
       let coverPath = '';
 
@@ -48,12 +48,12 @@ export default async function handler(req, res) {
         coverPath = result.webPath;
       }
 
+      const userId = fields.userId[0];
       const updateData = {
         title: fields.title[0],
+        userId: userId,
         cover: coverPath || undefined, // Use undefined to avoid overwriting with empty if no new file
       };
-
-      console.log('updateData', updateData);
 
       try {
         // Check if the request contains an ID, if so, update the existing music
@@ -68,6 +68,11 @@ export default async function handler(req, res) {
         // } else {
           const playlist = new Playlist(updateData);
           await playlist.save();
+          await User.findByIdAndUpdate(
+            userId,
+            { $push: { playlists: playlist._id.toString() } },
+            { new: true, safe: true, upsert: true }
+          );
           // Add the track to the global playlist
           res.status(201).json({ message: 'Playlist created', data: playlist });
         // }
@@ -77,7 +82,7 @@ export default async function handler(req, res) {
       }
     });
   }
-  
+
   if (method === "GET") {
     // Get the Global playlist
     const globalPlaylist = await Playlist.findOne({ name: "Global" });

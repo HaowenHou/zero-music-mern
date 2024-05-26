@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const playlistSchema = new mongoose.Schema({
   title: { type: String, required: true },
+  userId: { type: String, required: true },
   cover: { type: String, required: false },
   description: { type: String, required: false },
   // musics is array of ObjectId, and is required

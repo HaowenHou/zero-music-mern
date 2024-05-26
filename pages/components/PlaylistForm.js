@@ -6,6 +6,7 @@ export default function PlaylistForm({
   _id,
   title: initialTitle = '',
   cover: initialCover = '',
+  userId
 }) {
   const [title, setTitle] = useState(initialTitle);
   const [cover, setCover] = useState(initialCover);
@@ -28,10 +29,11 @@ export default function PlaylistForm({
     ev.preventDefault();
     const data = new FormData();
     data.append('title', title);
+    data.append('userId', userId);
     if (coverFile) {
       data.append('cover', coverFile);
     }
-    
+
     try {
       let response;
       if (_id) {
