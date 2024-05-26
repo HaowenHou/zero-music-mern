@@ -2,6 +2,7 @@ public/tracks
 public/covers
 public/albums
 public/avatars
+public/playlistCovers
 
 manipDb.js
 
