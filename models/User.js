@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
   playlists: { type: [String], required: false }, // Array of playlist IDs
   role: { type: String, required: true, default: 'user' }, // 'user' or 'admin'
   drive: { type: [String], required: false },
-  followed: { type: [String], required: false },
+  following: { type: [String], required: false },
   followers: { type: [String], required: false },
   location: { type: String, required: false },
 });

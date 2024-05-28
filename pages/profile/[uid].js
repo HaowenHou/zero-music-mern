@@ -9,9 +9,15 @@ export default function Profile() {
   const [user, setUser] = useState(null);
   const [tracks, setTracks] = useState([]);
   const [playlists, setPlaylists] = useState([]);
+  const [isFollowing, setIsFollowing] = useState(false);
   const [activeTab, setActiveTab] = useState('favorites');
   const router = useRouter();
   const { uid: userId } = router.query;
+
+  // Get current user id to check whether this is the user's own profile.
+  const { data: session, status } = useSession();
+  const currentUid = session?.user?.id;
+  const isLoading = status === 'loading';
 
   useEffect(() => {
     if (!userId) return;
@@ -25,6 +31,23 @@ export default function Profile() {
     };
     fetchUser();
   }, [userId]);
+
+  const fetchFollowingStatus = async () => {
+    if (!currentUid) return;
+    try {
+      const response = await axios.post('/api/profile/isFollowing', {
+        userId: currentUid,
+        profileId: userId
+      });
+      setIsFollowing(response.data.isFollowing);
+    } catch (error) {
+      console.error('Error fetching following status', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchFollowingStatus();
+  }, [currentUid, userId]);
 
   // Fetch favorites
   useEffect(() => {
@@ -69,7 +92,7 @@ export default function Profile() {
       case 'favorites':
         // return <div>{tracks.length > 0 && tracks.map(track => <div key={track._id}>{track.title}</div>)}</div>;
         return <div className='mx-12 h-52 overflow-hidden hover:overflow-y-auto'>
-          <Tracklist tracks={tracks} showFavoriteButton={true} userId={userId} />;
+          <Tracklist tracks={tracks} showFavoriteButton={true} userId={userId} />
         </div>
       case 'playlists':
         return <div className='mt-6 mx-12 h-52 overflow-hidden hover:overflow-y-auto'>
@@ -96,7 +119,10 @@ export default function Profile() {
                 <span>关注：{user.followed?.length || 0}</span>
                 <span>粉丝：{user.followers?.length || 0}</span>
               </div>
-              {!user.location && <span className="text-lg">地区：{user.location}</span>}
+              {/* {!user.location && <span className="text-lg">地区：{user.location}</span>} */}
+              {!isLoading && currentUid !== userId && (
+                <button className="mx-4 py-2 bg-orange-300 rounded-3xl">{isFollowing ? '取消关注' : '已关注'}</button>
+              )}
             </div>
           </div>
 
