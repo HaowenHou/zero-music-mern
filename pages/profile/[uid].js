@@ -121,6 +121,11 @@ export default function Profile() {
     }
   }
 
+  const handleMessaging = () => {
+    // jump to /chat/targetUserId
+    router.push(`/chat/${userId}`);
+  }
+
   return (
     <>
       {user && (
@@ -135,7 +140,10 @@ export default function Profile() {
               </div>
               {/* {!user.location && <span className="text-lg">地区：{user.location}</span>} */}
               {!isLoading && currentUid !== userId && (
-                <button onClick={handleFollow} className="mx-4 py-2 bg-orange-300 rounded-3xl">{isFollowing ? '已关注' : '关注'}</button>
+                <>
+                  <button onClick={handleFollow} className="mx-4 py-2 bg-orange-300 rounded-3xl">{isFollowing ? '已关注' : '关注'}</button>
+                  <button onClick={handleMessaging} className="py-2 bg-orange-300 rounded-3xl">私信</button>
+                </>
               )}
             </div>
           </div>

@@ -17,7 +17,8 @@ app.prepare().then(() => {
   const io = new Server(httpServer);
 
   io.on("connection", (socket) => {
-    console.log('a user connected');
+    const userId = socket.handshake.query.userId;
+    socket.join(userId);
 
     socket.on('privateMessage', async ({ senderId, receiverId, message }) => {
       await sendMessage(senderId, receiverId, message);
@@ -25,7 +26,7 @@ app.prepare().then(() => {
     });
 
     socket.on('disconnect', () => {
-      console.log('user disconnected');
+      socket.leave(userId);
     });
   });
 
@@ -48,7 +49,6 @@ async function sendMessage(senderId, receiverId, text) {
     });
 
     await newMessage.save();
-    console.log('Message saved successfully!');
   } catch (error) {
     console.error('Error saving the message:', error);
   }
