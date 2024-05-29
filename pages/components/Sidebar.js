@@ -30,7 +30,7 @@ const Sidebar = () => {
                 <Link href='/' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>
                     动态
                 </Link>
-                <Link href='/' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>
+                <Link href='/chat' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>
                     私信
                 </Link>
                 {/* <Link href='/test' className='text-lg pl-12 mx-4 py-2 hover:bg-orange-200 hover:rounded-lg'>
