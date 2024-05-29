@@ -10,7 +10,6 @@ const SearchResults = () => {
   const router = useRouter();
   const { q } = router.query;
   const { data: results, error } = useSWR(q ? `/api/search?q=${q}` : null, fetcher);
-  console.log(results);
 
   if (error) return <div>Failed to load results.</div>;
   if (!results) return <div></div>;

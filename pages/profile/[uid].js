@@ -107,6 +107,20 @@ export default function Profile() {
     }
   };
 
+  const handleFollow = async () => {
+    try {
+      const response = await axios.post('/api/profile/follow', {
+        userId: currentUid,
+        profileId: userId
+      });
+      if (response.data.success) {
+        setIsFollowing(!isFollowing);
+      }
+    } catch (error) {
+      console.error('Error following user', error);
+    }
+  }
+
   return (
     <>
       {user && (
@@ -121,7 +135,7 @@ export default function Profile() {
               </div>
               {/* {!user.location && <span className="text-lg">地区：{user.location}</span>} */}
               {!isLoading && currentUid !== userId && (
-                <button className="mx-4 py-2 bg-orange-300 rounded-3xl">{isFollowing ? '取消关注' : '已关注'}</button>
+                <button onClick={handleFollow} className="mx-4 py-2 bg-orange-300 rounded-3xl">{isFollowing ? '已关注' : '关注'}</button>
               )}
             </div>
           </div>
