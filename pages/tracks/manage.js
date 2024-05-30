@@ -47,10 +47,10 @@ export default function Manage() {
           {tracks.map((track) => (
             <tr key={track._id} className="gap-1 m-2 h-14">
               <td className="w-20">
-                <img className="size-10 rounded-md" src={track.cover} alt={track.name} />
+                <img className="size-10 rounded-md" src={track.cover} alt={track.title} />
               </td>
               <td className="w-60">
-                <h2>{track.name}</h2>
+                <h2>{track.title}</h2>
               </td>
               <td>
                 <p>{track.artist}</p>

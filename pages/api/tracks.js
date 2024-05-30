@@ -12,36 +12,9 @@ export default async function handle(req, res) {
   await dbConnect();
   const { method } = req;
 
-  // // If there is not a global playlist, create one
-  // const globalPlaylist = await Playlist.findOne({ name: 'Global' });
-  // if (!globalPlaylist) {
-  //   const newPlaylist = new Playlist({
-  //     name: 'Global',
-  //     description: 'The global playlist',
-  //     musics: []
-  //   });
-  //   await newPlaylist.save();
-  // }
-
-  // // Ensure all the tracks are in the global playlist
-  // const allMusics = await Track.find({});
-  // const globalMusics = globalPlaylist.musics.map((id) => id.toString());
-  // const newMusics = allMusics.filter((music) => !globalMusics.includes(music._id.toString()));
-  // if (newMusics.length > 0) {
-  //   await Playlist.updateOne({ name: 'Global' }, { $push: { musics: { $each: newMusics.map((music) => music._id.toString() )} } });
-  // }
-
   if (method == 'GET') {
     try {
       if (req.query?.id) {
-        // Rename the name field to title
-        // Track.updateMany({}, { $rename: { "name": "title" } })
-        //   .then(result => {
-        //     console.log('Update successful', result);
-        //   })
-        //   .catch(err => {
-        //     console.error('Error updating documents', err);
-        //   });
         const track = await Track.findById(req.query.id).lean();
         if (req.query.userId && req.query.userId !== 'undefined') {
           const favorite = await isTrackFavoritedByUser(req.query.userId, req.query.id);
@@ -69,7 +42,7 @@ export default async function handle(req, res) {
           fs.unlinkSync(path.resolve(`./public${track.cover}`));
         }
         await Track.deleteOne({ _id: req.query.id });
-        await Playlist.updateMany({}, { $pull: { musics: req.query.id } });
+        // await Playlist.updateMany({}, { $pull: { musics: req.query.id } });
         res.json(true);
       }
     } catch (error) {
@@ -85,7 +58,7 @@ export default async function handle(req, res) {
         return;
       }
 
-      const newName = `${fields.name} - ${fields.artist}`;
+      const newName = `${fields.title} - ${fields.artist}`;
 
       let trackDuration = 0;
       let trackPath = '';
@@ -133,7 +106,7 @@ export default async function handle(req, res) {
       }
 
       const updateData = {
-        name: fields.name[0],
+        title: fields.title[0],
         artist: fields.artist[0],
         duration: trackDuration,
         cover: coverPath || undefined, // Use undefined to avoid overwriting with empty if no new file
@@ -154,7 +127,7 @@ export default async function handle(req, res) {
           const track = new Track(updateData);
           await track.save();
           // Add the track to the global playlist
-          await Playlist.updateOne({ name: 'Global' }, { $push: { tracks: track._id.toString() } });
+          await Playlist.updateOne({ name: 'Global' }, { $push: { tracks: track._id } });
           res.status(201).json({ message: 'Track created', data: track });
         }
       } catch (error) {
@@ -167,6 +140,6 @@ export default async function handle(req, res) {
 
 export const config = {
   api: {
-    bodyParser: false, // Disabling body parser, letting formidable handle multipart/form-data
+    bodyParser: false,
   },
 };

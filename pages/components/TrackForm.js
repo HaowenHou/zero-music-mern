@@ -4,12 +4,12 @@ import axios from "axios";
 
 export default function TrackForm({
   _id,
-  name: initialName = '',
+  title: initialTitle = '',
   artist: initialArtist = '',
   cover: initialCover = '',
   track: initialTrack = '' // URI to the track
 }) {
-  const [name, setName] = useState(initialName);
+  const [title, setTitle] = useState(initialTitle);
   const [artist, setArtist] = useState(initialArtist);
   const [cover, setCover] = useState(initialCover);
   const [coverFile, setCoverFile] = useState(null);
@@ -37,7 +37,7 @@ export default function TrackForm({
   async function saveMusic(ev) {
     ev.preventDefault();
     const data = new FormData();
-    data.append('name', name);
+    data.append('title', title);
     data.append('artist', artist);
     if (coverFile) {
       data.append('cover', coverFile);
@@ -73,7 +73,7 @@ export default function TrackForm({
 
       <label className="text-lg my-2">歌曲名</label>
       <input type="text" className="border w-64 p-1 rounded-md focus:border-orange-200"
-        placeholder="歌曲名" value={name} onChange={ev => setName(ev.target.value)} required />
+        placeholder="歌曲名" value={title} onChange={ev => setTitle(ev.target.value)} required />
 
       <label className="text-lg my-2">歌手</label>
       <input type="text" className="border w-64 p-1 rounded-md focus:border-orange-200"

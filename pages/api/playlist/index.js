@@ -5,6 +5,7 @@ import path from "path";
 import dbConnect from '@/lib/dbConnect';
 import Playlist from '@/models/Playlist';
 import User from "@/models/User";
+import mongoose from "mongoose";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -52,7 +53,7 @@ export default async function handler(req, res) {
 
       const updateData = {
         title: fields.title[0],
-        userId: userId,
+        userId: new mongoose.Types.ObjectId(userId),
         cover: coverPath || undefined, // Use undefined to avoid overwriting with empty if no new file
       };
 
@@ -62,7 +63,7 @@ export default async function handler(req, res) {
           await playlist.save();
           await User.findByIdAndUpdate(
             userId,
-            { $push: { playlists: playlist._id.toString() } },
+            { $push: { playlists: playlist._id } },
             { new: true, safe: true, upsert: true }
           );
           // Add the track to the global playlist
@@ -74,7 +75,6 @@ export default async function handler(req, res) {
           }
           res.status(200).json({ message: 'Playlist updated', data: playlist });
         }
-        // }
       } catch (error) {
         console.error('Database operation failed', error);
         res.status(500).json({ error: 'Database operation failed' });
@@ -119,6 +119,6 @@ export default async function handler(req, res) {
 
 export const config = {
   api: {
-    bodyParser: false, // Disabling body parser, letting formidable handle multipart/form-data
+    bodyParser: false,
   },
 };
