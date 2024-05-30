@@ -4,7 +4,7 @@ import axios from 'axios';
 
 let socket
 
-export default function ChatUI({userId, receiverId, senderAvatar, receiverAvatar}) {
+export default function ChatUI({ userId, receiverId, senderAvatar, receiverAvatar }) {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
 
@@ -38,7 +38,8 @@ export default function ChatUI({userId, receiverId, senderAvatar, receiverAvatar
     fetchMessages();
   }, [userId, receiverId]);
 
-  const sendMessage = () => {
+  const sendMessage = (event) => {
+    event.preventDefault();
     if (message) {
       const newMessage = {
         senderId: userId,
@@ -54,20 +55,20 @@ export default function ChatUI({userId, receiverId, senderAvatar, receiverAvatar
 
   return (
     <div className="p-4">
-      <div className="messages space-y-2">
+      <div className="messages space-y-3 h-96">
         {messages.map((msg, index) => (
           <div key={index} className="flex">
             {msg.senderId === userId ? (
               <div className='flex items-center gap-2 ml-auto'>
-                <div className="bg-orange-400 text-white p-2 rounded-lg max-w-xs break-words" style={{wordWrap: 'break-word'}}>
+                <div className="bg-orange-400 text-white p-2 rounded-lg max-w-xs break-words px-3" style={{ wordWrap: 'break-word' }}>
                   {msg.message}
                 </div>
-                <img src={senderAvatar} alt="Avatar" className="w-8 h-8 rounded-full mr-2"/>
+                <img src={senderAvatar} alt="Avatar" className="w-8 h-8 rounded-full mr-2" />
               </div>
             ) : (
               <div className='flex items-center gap-2'>
-                <img src={receiverAvatar} alt="Avatar" className="w-8 h-8 rounded-full ml-2"/>
-                <div className="bg-gray-300 p-2 rounded-lg max-w-xs break-words" style={{wordWrap: 'break-word'}}>
+                <img src={receiverAvatar} alt="Avatar" className="w-8 h-8 rounded-full ml-2" />
+                <div className="bg-gray-100 p-2 rounded-lg max-w-xs break-words px-3" style={{ wordWrap: 'break-word' }}>
                   {msg.message}
                 </div>
               </div>
@@ -75,11 +76,11 @@ export default function ChatUI({userId, receiverId, senderAvatar, receiverAvatar
           </div>
         ))}
       </div>
-      <div className="mt-4 flex items-center">
-        <input type="text" value={message} 
-        onChange={(e) => setMessage(e.target.value)} className="border w-full h-8 rounded-lg px-2" />
-        <button onClick={sendMessage} className="bg-orange-400 text-white p-1 ml-2 w-12 rounded-lg">发送</button>
-      </div>
+      <form onSubmit={sendMessage} className="mt-4 flex items-center">
+        <input type="text" value={message}
+          onChange={(e) => setMessage(e.target.value)} className="border w-full h-10 rounded-lg px-2" />
+        <button type="submit" className="bg-orange-400 text-white ml-2 w-16 h-10 rounded-lg">发送</button>
+      </form>
     </div>
   );
 }

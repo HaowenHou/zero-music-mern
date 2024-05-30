@@ -21,7 +21,7 @@ const TopBar = () => {
   };
 
   return (
-    <div className="bg-gray-50 h-16 py-4 flex items-center">
+    <div className="bg-gray-50 h-16 w-[48rem] py-4 flex items-center">
       <div className="container mx-auto p-4">
         <SearchBar onSearch={fetchSearchResults} />
       </div>
@@ -34,7 +34,7 @@ const TopBar = () => {
         </svg>
       </div> */}
 
-      <div className='mx-24'></div>
+      {/* <div className='mx-24'></div> */}
 
       {!isLoading &&
         (!session ? (

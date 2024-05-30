@@ -135,15 +135,15 @@ export default function Profile() {
             <div className="flex flex-col ml-20 mt-4 gap-4">
               <h1 className="text-2xl font-bold">{user.name}</h1>
               <div className="flex gap-4 text-lg">
-                <span>关注：{user.followed?.length || 0}</span>
+                <span>关注：{user.following?.length || 0}</span>
                 <span>粉丝：{user.followers?.length || 0}</span>
               </div>
               {/* {!user.location && <span className="text-lg">地区：{user.location}</span>} */}
               {!isLoading && currentUid !== userId && (
-                <>
-                  <button onClick={handleFollow} className="mx-4 py-2 bg-orange-300 rounded-3xl">{isFollowing ? '已关注' : '关注'}</button>
-                  <button onClick={handleMessaging} className="py-2 bg-orange-300 rounded-3xl">私信</button>
-                </>
+                <div className="flex">
+                  <button onClick={handleFollow} className="mx-4 py-1.5 bg-orange-300 rounded-3xl w-20">{isFollowing ? '已关注' : '关注'}</button>
+                  <button onClick={handleMessaging} className="py-1.5 bg-orange-300 rounded-3xl w-20">私信</button>
+                </div>
               )}
             </div>
           </div>
@@ -151,15 +151,15 @@ export default function Profile() {
           <div>
             <div className="flex gap-20 justify-center text-lg mt-4 pb-3 mx-12 border-b">
               <button
-                className={`px-1.5 py-0.5 rounded-lg ${activeTab === 'favorites' ? 'bg-orange-300' : ''}`}
+                className={`px-3 py-1 rounded-2xl ${activeTab === 'favorites' ? 'bg-orange-300' : ''}`}
                 onClick={() => handleTabClick('favorites')}
               >收藏</button>
               <button
-                className={`px-1.5 py-0.5 rounded-lg ${activeTab === 'playlists' ? 'bg-orange-300' : ''}`}
+                className={`px-3 py-1 rounded-2xl ${activeTab === 'playlists' ? 'bg-orange-300' : ''}`}
                 onClick={() => handleTabClick('playlists')}
               >歌单</button>
               <button
-                className={`px-1.5 py-0.5 rounded-lg ${activeTab === 'posts' ? 'bg-orange-300' : ''}`}
+                className={`px-3 py-1 rounded-2xl ${activeTab === 'posts' ? 'bg-orange-300' : ''}`}
                 onClick={() => handleTabClick('posts')}
               >动态</button>
             </div>

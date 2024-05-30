@@ -31,7 +31,7 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
-    <div>
+    <div className='max-w-72'>
       <form onSubmit={handleSubmit} className="relative flex">
         <input
           type="text"

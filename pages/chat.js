@@ -24,23 +24,25 @@ export default function Chat() {
     const fetchChatList = async () => {
       try {
         const res = await axios.get(`/api/chat/${userId}`);
+        const chatList = res.data.data;
 
         // If there is an additional user id in the URL, and the user is not already in the chat list,
         // fetch the name and avatar, and set it as the active tab
-        if (additionalUserId && !res.data.data.find(chat => chat.partnerId === additionalUserId)) {
-          const additionalUser = await axios.get(`/api/user?uid=${additionalUserId}`);
-          // Add this user info to the response chat list
-          res.data.data.push({
-            partnerId: additionalUserId,
-            partnerName: additionalUser.data.name,
-            partnerAvatar: additionalUser.data.avatar
-          });
-          console.log(res.data.data);
-          setReceiverAvatar(additionalUser.data.avatar);
+        if (additionalUserId) {
+          if (!chatList.find(chat => chat.partnerId === additionalUserId)) {
+            const additionalUser = await axios.get(`/api/user?uid=${additionalUserId}`);
+            // Add this user info to the response chat list
+            chatList.push({
+              partnerId: additionalUserId,
+              partnerName: additionalUser.data.name,
+              partnerAvatar: additionalUser.data.avatar
+            });
+          }
+          setReceiverAvatar(chatList.find(chat => chat.partnerId === additionalUserId).partnerAvatar);
           setActiveTab(additionalUserId);
         }
 
-        setChatList(res.data.data);
+        setChatList(chatList);
         setSenderAvatar(res.data.userAvatar);
       } catch (err) {
         console.error('Failed to fetch chat list', err);
@@ -65,8 +67,8 @@ export default function Chat() {
             onClick={() => handleChatClick(chat.partnerId)}
             key={chat.partnerId}
             className={(activeTab === chat.partnerId ?
-              `hover:bg-gray-100 h-16 flex items-center space-x-2 bg-gray-100 p-2 rounded-lg` :
-              `hover:bg-gray-100 h-16 flex items-center space-x-2 bg-white p-2 rounded-lg`)}>
+              `h-16 flex items-center space-x-2 bg-gray-100 p-2 rounded-lg` :
+              `hover:bg-gray-50 h-16 flex items-center space-x-2 bg-white p-2 rounded-lg`)}>
             <img src={chat.partnerAvatar} alt={chat.partnerName} className='w-10 h-10 rounded-full' />
             <span className='pl-2'>{chat.partnerName}</span>
           </button>
