@@ -31,7 +31,7 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
-    <div className='max-w-72'>
+    <div>
       <form onSubmit={handleSubmit} className="relative flex">
         <input
           type="text"
@@ -39,7 +39,7 @@ const SearchBar = ({ onSearch }) => {
           onChange={handleSearch}
           onBlur={handleBlur}
           placeholder="搜索"
-          className="h-9 w-full px-4 py-1 border border-gray-300 rounded-md focus:outline-none focus:border-orange-400"
+          className="h-9 w-64 px-4 py-1 border border-gray-300 rounded-2xl focus:outline-none focus:border-orange-400"
         />
         {showResults && results.length > 0 && (
           <div className="absolute left-0 right-0 mt-1 bg-white shadow-lg z-10">

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
+import Link from 'next/link';
 
 let socket
 
@@ -63,11 +64,15 @@ export default function ChatUI({ userId, receiverId, senderAvatar, receiverAvata
                 <div className="bg-orange-400 text-white p-2 rounded-lg max-w-xs break-words px-3" style={{ wordWrap: 'break-word' }}>
                   {msg.message}
                 </div>
-                <img src={senderAvatar} alt="Avatar" className="w-8 h-8 rounded-full mr-2" />
+                <Link href={`/profile/${userId}`}>
+                  <img src={senderAvatar} alt="Avatar" className="w-8 h-8 rounded-full mr-2" />
+                </Link>
               </div>
             ) : (
               <div className='flex items-center gap-2'>
-                <img src={receiverAvatar} alt="Avatar" className="w-8 h-8 rounded-full ml-2" />
+                <Link href={`/profile/${receiverId}`}>
+                  <img src={receiverAvatar} alt="Avatar" className="w-8 h-8 rounded-full ml-2" />
+                </Link>
                 <div className="bg-gray-100 p-2 rounded-lg max-w-xs break-words px-3" style={{ wordWrap: 'break-word' }}>
                   {msg.message}
                 </div>

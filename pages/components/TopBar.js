@@ -3,8 +3,10 @@ import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import SearchBar from './SearchBar';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 const TopBar = () => {
+  const [name, setName] = useState('');
   const { data: session, status } = useSession();
   const userId = session?.user?.id;
   const isLoading = status === 'loading';
@@ -20,21 +22,24 @@ const TopBar = () => {
     }
   };
 
+  useEffect(() => {
+    if (!userId) return;
+    const fetchUser = async () => {
+      try {
+        const { data: userData } = await axios.get(`/api/user?uid=${userId}`);
+        setName(userData.name);
+      } catch (error) {
+        console.error('Error fetching data', error);
+      }
+    };
+    fetchUser();
+  }, [userId]);
+
   return (
     <div className="bg-gray-50 h-16 w-[48rem] py-4 flex items-center">
-      <div className="container mx-auto p-4">
+      <div className="p-4">
         <SearchBar onSearch={fetchSearchResults} />
       </div>
-
-      {/* <div className='flex'>
-        <input type="text" className='ml-10 w-48 rounded-xl outline-none pl-3' placeholder="搜索音乐" />
-
-        <svg className="size-4 ml-1 w-6 h-6 stroke-2 stroke-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-        </svg>
-      </div> */}
-
-      {/* <div className='mx-24'></div> */}
 
       {!isLoading &&
         (!session ? (
@@ -48,10 +53,10 @@ const TopBar = () => {
             </div>
           </Link>
         ) : (
-          <div className='flex items-center rounded-2xl border mr-8'>
-            <img src="/avatars/avatar_1.png" alt="" className='size-8 rounded-full' />
+          <div className='flex items-center rounded-3xl border pr-2 mr-4 ml-auto'>
+            <img src="/avatars/avatar_1.png" alt="" className='size-9 rounded-full' />
             <div className="px-3">
-              {session.user.name}
+              {name}
             </div>
             <div className="relative group">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
@@ -66,7 +71,7 @@ const TopBar = () => {
           </div>
         ))
       }
-      <div className='mx-24'></div>
+      {/* <div className='mx-24'></div> */}
 
     </div>
   );
