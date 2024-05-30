@@ -1,4 +1,3 @@
-import router from 'next/router';
 import User from '@/models/User';
 import Message from '@/models/Message';
 

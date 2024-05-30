@@ -59,21 +59,21 @@ export default function Chat() {
 
   return (
     <div className="p-4 flex">
-      <div className='flex flex-col'>
+      <div className='flex flex-col gap-2 w-60'>
         {chatList && chatList.map(chat => (
           <button
             onClick={() => handleChatClick(chat.partnerId)}
             key={chat.partnerId}
-            className={activeTab === chat.partnerId ?
-              `flex items-center space-x-2 bg-gray-100 p-2 rounded-lg` :
-              `flex items-center space-x-2 bg-white p-2 rounded-lg`}>
-            <img src={chat.partnerAvatar} alt={chat.partnerName} className='w-8 h-8 rounded-full' />
-            <span>{chat.partnerName}</span>
+            className={(activeTab === chat.partnerId ?
+              `hover:bg-gray-100 h-16 flex items-center space-x-2 bg-gray-100 p-2 rounded-lg` :
+              `hover:bg-gray-100 h-16 flex items-center space-x-2 bg-white p-2 rounded-lg`)}>
+            <img src={chat.partnerAvatar} alt={chat.partnerName} className='w-10 h-10 rounded-full' />
+            <span className='pl-2'>{chat.partnerName}</span>
           </button>
         ))}
       </div>
 
-      <div>
+      <div className='w-full'>
         {activeTab &&
           <ChatUI
             userId={userId}

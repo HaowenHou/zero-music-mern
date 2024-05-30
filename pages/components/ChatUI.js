@@ -59,7 +59,7 @@ export default function ChatUI({userId, receiverId, senderAvatar, receiverAvatar
           <div key={index} className="flex">
             {msg.senderId === userId ? (
               <div className='flex items-center gap-2 ml-auto'>
-                <div className="bg-blue-500 text-white p-2 rounded-lg max-w-xs break-words" style={{wordWrap: 'break-word'}}>
+                <div className="bg-orange-400 text-white p-2 rounded-lg max-w-xs break-words" style={{wordWrap: 'break-word'}}>
                   {msg.message}
                 </div>
                 <img src={senderAvatar} alt="Avatar" className="w-8 h-8 rounded-full mr-2"/>
@@ -75,9 +75,10 @@ export default function ChatUI({userId, receiverId, senderAvatar, receiverAvatar
           </div>
         ))}
       </div>
-      <div className="mt-4">
-        <input type="text" value={message} onChange={(e) => setMessage(e.target.value)} className="border p-1 w-full" />
-        <button onClick={sendMessage} className="bg-blue-500 text-white p-1 mt-2 w-full">发送</button>
+      <div className="mt-4 flex items-center">
+        <input type="text" value={message} 
+        onChange={(e) => setMessage(e.target.value)} className="border w-full h-8 rounded-lg px-2" />
+        <button onClick={sendMessage} className="bg-orange-400 text-white p-1 ml-2 w-12 rounded-lg">发送</button>
       </div>
     </div>
   );
