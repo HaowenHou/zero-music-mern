@@ -95,7 +95,7 @@ export default async function handler(req, res) {
       }
     } else {
       // Get the Global playlist
-      const globalPlaylist = await Playlist.findOne({ name: "Global" });
+      const globalPlaylist = await Playlist.findOne({ title: "Global" });
       if (!globalPlaylist) {
         return res.status(404).json({ error: "Global playlist not found" });
       }

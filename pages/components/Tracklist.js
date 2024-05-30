@@ -34,7 +34,7 @@ export default function Tracklist({ tracks: initialTracks, showFavoriteButton, u
 
   return (
     <div className="mt-8">
-      {tracks.map((track, index) => (
+      {tracks.length > 0 && tracks.map((track, index) => (
         <TrackItem
           key={track._id}
           track={track}

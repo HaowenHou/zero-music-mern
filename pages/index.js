@@ -30,11 +30,6 @@ function App() {
     fetchPlaylist();
   }, [userId]);
 
-  const playPlaylist = (playlist, index) => {
-    setTracks(playlist);
-    setIndex(index);
-  }
-
   return (
     <>
       <div className='text-center'>
