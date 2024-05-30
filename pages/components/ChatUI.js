@@ -1,23 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
 import io from 'socket.io-client';
-import { useRouter } from 'next/router';
 import axios from 'axios';
 
 let socket
 
-export default function Chat() {
+export default function ChatUI({userId, receiverId, senderAvatar, receiverAvatar}) {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
-  const [senderAvatar, setSenderAvatar] = useState('');
-  const [receiverAvatar, setReceiverAvatar] = useState('');
-
-  const { data: session, status } = useSession();
-  const userId = session?.user?.id;
-  const isLoading = status === 'loading';
-
-  const router = useRouter();
-  const { uid: receiverId } = router.query;
 
   useEffect(() => {
     socket = io({
@@ -33,22 +22,6 @@ export default function Chat() {
       socket.disconnect();
     };
   }, []);
-
-  // Fetch avatars
-  useEffect(() => {
-    if (!userId || !receiverId) return;
-    const fetchAvatars = async () => {
-      try {
-        const res = await axios.get(`/api/profile/avatar/${userId}?partnerId=${receiverId}`);
-        setSenderAvatar(res.data.senderAvatar);
-        setReceiverAvatar(res.data.receiverAvatar);
-      } catch (err) {
-        console.error('Failed to fetch avatars', err);
-      }
-    };
-
-    fetchAvatars();
-  }, [userId, receiverId]);
 
   // Fetch history messages
   useEffect(() => {
@@ -79,8 +52,6 @@ export default function Chat() {
     }
   };
 
-  if (isLoading) return null;
-
   return (
     <div className="p-4">
       <div className="messages space-y-2">
@@ -106,7 +77,7 @@ export default function Chat() {
       </div>
       <div className="mt-4">
         <input type="text" value={message} onChange={(e) => setMessage(e.target.value)} className="border p-1 w-full" />
-        <button onClick={sendMessage} className="bg-blue-500 text-white p-1 mt-2 w-full">Send</button>
+        <button onClick={sendMessage} className="bg-blue-500 text-white p-1 mt-2 w-full">发送</button>
       </div>
     </div>
   );

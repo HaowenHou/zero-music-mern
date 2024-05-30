@@ -123,7 +123,7 @@ export default function Profile() {
 
   const handleMessaging = () => {
     // jump to /chat/targetUserId
-    router.push(`/chat/${userId}`);
+    router.push(`/chat?uid=${userId}`);
   }
 
   return (
