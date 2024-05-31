@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose';  
 
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
   following: { type: [String], required: false },
   followers: { type: [String], required: false },
   location: { type: String, required: false },
+  posts: [{type: mongoose.Schema.Types.ObjectId, ref: 'Post'}],
 });
 
 export default mongoose.models.User || mongoose.model('User', userSchema);
