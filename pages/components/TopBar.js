@@ -13,7 +13,6 @@ const TopBar = () => {
 
   const fetchSearchResults = async (query) => {
     try {
-      console.log('Fetching search results for:', query);
       const response = await axios.get(`/api/search?q=${query}`);
       return response.data; // Assuming the response data is the array of results
     } catch (error) {

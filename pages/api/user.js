@@ -3,7 +3,6 @@ import User from "@/models/User";
 export default async function handler(req, res) {
   const { method } = req;
   const userId = req.query?.uid;
-  console.log(userId);
 
   if (method === 'GET') {
     if (userId) {

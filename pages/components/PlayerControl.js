@@ -41,7 +41,6 @@ const PlayerControl = () => {
         return () => {
             newAudio.removeEventListener('loadedmetadata', onMetadataLoaded);
             newAudio.pause();
-            console.log('PC cleaning up');
         };
     }, [currentTrackIndex]);
 

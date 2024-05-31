@@ -16,7 +16,6 @@ const Register = () => {
 
         try {
             const response = await axios.post('/api/register', formData);
-            console.log('Registration successful', response.data);
             router.push('/login');
         } catch (error) {
             console.error('Registration failed', error.response.data);

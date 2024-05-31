@@ -36,7 +36,6 @@ export default async function handler(req, res) {
     const { userId } = req.query;
     const form = formidable({});
     form.parse(req, async (err, fields, files) => {
-      console.log('fields', fields);
       if (err) {
         res.status(400).json({ error: err.message });
         return;
