@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
+import Post from '../components/Post';
 
 export default function Posts() {
   const [manageMode, setManageMode] = useState(false);
@@ -20,13 +21,12 @@ export default function Posts() {
     const fetchPosts = async () => {
       try {
         const response = await axios.get(`/api/posts?userId=${userId}`);
-        setPosts(response.data);
+        setPosts(response.data.data);
       } catch (error) {
         console.error(error);
       }
     };
     fetchPosts();
-    console.log('posts', posts);
   }, [userId]);
 
   return (
@@ -63,7 +63,10 @@ export default function Posts() {
         </div>
       </div>
 
-      <div className="mt-8">
+      <div className="mt-8 space-y-4">
+        {posts.length > 0 && posts.map((post) => (
+          <Post key={post._id} post={post} />
+        ))}
         {/* {playlists.length > 0 && playlists.map((playlist) => (
           <PlaylistAsItem key={playlist._id} playlist={playlist} manageMode={manageMode} onDelete={handleDelete} />
         ))} */}
