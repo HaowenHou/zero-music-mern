@@ -90,12 +90,11 @@ export default function Profile() {
   const getTabContent = () => {
     switch (activeTab) {
       case 'favorites':
-        // return <div>{tracks.length > 0 && tracks.map(track => <div key={track._id}>{track.title}</div>)}</div>;
-        return <div className='mx-12 h-52 overflow-hidden hover:overflow-y-auto'>
+        return <div className='mx-12 h-52'>
           <Tracklist tracks={tracks} showFavoriteButton={true} userId={userId} />
         </div>
       case 'playlists':
-        return <div className='mt-6 mx-12 h-52 overflow-hidden hover:overflow-y-auto'>
+        return <div className='mt-6 mx-12 h-52'>
           {playlists.length > 0 && playlists.map((playlist) => (
             <PlaylistAsItem key={playlist._id} playlist={playlist} manageMode={false} onDelete={() => { }} />
           ))}
