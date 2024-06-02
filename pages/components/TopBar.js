@@ -35,7 +35,7 @@ const TopBar = () => {
   }, [userId]);
 
   return (
-    <div className="bg-gray-50 h-16 w-[48rem] py-4 flex items-center">
+    <div className="bg-gray-50 h-16 py-4 flex items-center">
       <div className="p-4">
         <SearchBar onSearch={fetchSearchResults} />
       </div>

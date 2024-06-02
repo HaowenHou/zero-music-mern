@@ -30,7 +30,7 @@ export default function Posts() {
   }, [userId]);
 
   return (
-    <div className="bg-white p-12">
+    <div className="bg-white p-12 w-full">
       <div className="flex items-center mb-4 px-4 pb-8 border-b border-gray-600">
 
         <div className='pl-8 flex w-full'>
@@ -63,7 +63,7 @@ export default function Posts() {
         </div>
       </div>
 
-      <div className="mt-8 space-y-4">
+      <div className="mt-8 space-y-4 max-w-2xl w-full mx-auto">
         {posts.length > 0 && posts.map((post) => (
           <Post key={post._id} post={post} />
         ))}

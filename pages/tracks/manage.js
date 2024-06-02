@@ -42,7 +42,7 @@ export default function Manage() {
       <div className="m-4">
         <Link href="/tracks/new" className="m-2 ml-6 bg-orange-300 px-1.5 py-1.5 rounded-lg hover:bg-orange-400">上传</Link>
       </div>
-      <table className="w-full ml-10">
+      <table className="w-full mx-4">
         <tbody>
           {tracks.map((track) => (
             <tr key={track._id} className="gap-1 m-2 h-14">

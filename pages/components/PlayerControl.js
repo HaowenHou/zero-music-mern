@@ -93,7 +93,7 @@ const PlayerControl = () => {
     };
 
     return (
-        <div className='max-w-5xl flex bg-gray-50 h-20'>
+        <div className='flex bg-gray-50 min-h-20'>
             <div className='flex flex-[3] items-center'>
                 <img src={playlist[currentTrackIndex].cover} className='ml-3 w-14 h-14 rounded-md' />
                 <div className='ml-4 flex flex-col'>

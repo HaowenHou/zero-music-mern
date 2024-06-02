@@ -23,19 +23,19 @@ export default function PlaylistAsItem({ playlist, manageMode, onDelete }) {
 
   return (
     <div className="flex items-center mb-6">
-      <div className='flex-[3]'>
+      <div className='flex-[1]'>
         <img
           src={playlist.cover || '/assets/default-cover-1.png'}
           alt="Playlist Cover"
           className="w-12 h-12 mr-6 rounded-md"
         />
       </div>
-      <div className='flex flex-[4]'>
+      <div className='flex flex-[4] justify-center'>
         <div className='w-64'>
           <h2 className="font-semibold ml-6">{playlist.title}</h2>
         </div>
       </div>
-      <div className='flex-[3]'>
+      <div className='flex-[1]'>
         <div className='ml-16'>
           {manageMode ? (
             <>

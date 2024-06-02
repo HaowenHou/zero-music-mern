@@ -60,7 +60,7 @@ export default function Chat() {
   if (isLoading) return null;
 
   return (
-    <div className="p-4 flex">
+    <div className="p-4 flex w-full h-full">
       <div className='flex flex-col gap-2 w-60'>
         {chatList && chatList.map(chat => (
           <button
@@ -75,7 +75,7 @@ export default function Chat() {
         ))}
       </div>
 
-      <div className='w-full'>
+      <div className='w-full h-full'>
         {activeTab &&
           <ChatUI
             userId={userId}

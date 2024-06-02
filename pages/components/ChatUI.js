@@ -55,8 +55,8 @@ export default function ChatUI({ userId, receiverId, senderAvatar, receiverAvata
   };
 
   return (
-    <div className="p-4">
-      <div className="messages space-y-3 h-96">
+    <div className="flex flex-col pt-2 px-4 h-full">
+      <div className="space-y-3 flex-1 overflow-auto">
         {messages.map((msg, index) => (
           <div key={index} className="flex">
             {msg.senderId === userId ? (
@@ -81,7 +81,7 @@ export default function ChatUI({ userId, receiverId, senderAvatar, receiverAvata
           </div>
         ))}
       </div>
-      <form onSubmit={sendMessage} className="mt-4 flex items-center">
+      <form onSubmit={sendMessage} className="flex items-center">
         <input type="text" value={message}
           onChange={(e) => setMessage(e.target.value)} className="border w-full h-10 rounded-lg px-2" />
         <button type="submit" className="bg-orange-400 text-white ml-2 w-16 h-10 rounded-lg">发送</button>
