@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from "react";
-import Tracklist from "../components/Tracklist";
 import Link from "next/link";
 
 export default function Manage() {

@@ -1,6 +1,5 @@
 import dbConnect from '@/lib/dbConnect';
 import User from '@/models/User';
-import Playlist from '@/models/Playlist';
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -10,13 +9,34 @@ export default async function handler(req, res) {
 
   if (method === 'GET') {
     try {
-      const user = await User.findById(userId).exec();
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
+      const playlists = await User.findById(userId)
+        .populate({
+          path: 'playlists',
+          populate: {
+            path: 'userId',
+            select: 'name'
+          }
+        })
+        .populate({
+          path: 'favoritePlaylists',
+          populate: {
+            path: 'userId',
+            select: 'name'
+          }
+        })
+        .select('playlists favoritePlaylists')
+        .lean();
+
+      // If query contains currentUid, check if each playlist in playlists is favorited by current user
+      if (req.query.currentUid) {
+        const currentUid = req.query.currentUid;
+        const { favoritePlaylists: currentUserFavoritePlaylists } = await User.findById(currentUid).lean();
+        playlists.playlists = playlists.playlists.map(playlist => {
+          const isFavorited = currentUserFavoritePlaylists.includes(playlist._id);
+          return { ...playlist, isFavorited };
+        });
       }
-      const playlists = await Playlist.find({
-        '_id': { $in: user.playlists }
-      }).exec();
+
       res.status(200).json(playlists);
     } catch (error) {
       res.status(500).json({ message: 'Server error', error: error.message });

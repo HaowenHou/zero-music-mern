@@ -37,7 +37,8 @@ export default async function handler(req, res) {
           fs.mkdirSync(uploadsDir, { recursive: true });
         }
 
-        fs.renameSync(oldPath, newPath);
+        fs.copyFileSync(oldPath, newPath);
+        fs.unlinkSync(oldPath);
 
         return {
           newPath,
@@ -104,12 +105,23 @@ export default async function handler(req, res) {
   }
 
   if (method === "DELETE") {
-    const { id } = req.query;
+    const { userId, playlistId } = req.query;
     try {
-      const playlist = await Playlist.findByIdAndDelete(id);
+      const playlist = await Playlist.findByIdAndDelete(playlistId);
       if (!playlist) {
         return res.status(404).json({ error: "Playlist not found" });
       }
+      await User.findByIdAndUpdate(
+        userId,
+        { $pull: { playlists: playlistId } },
+        { new: true, safe: true, upsert: true }
+      );
+      // Delete the playlist from all the users' favorite playlists
+      await User.updateMany(
+        { favoritePlaylists: playlistId },
+        { $pull: { favoritePlaylists: playlistId } }
+      );
+
       res.status(200).json({ message: "Playlist deleted" });
     } catch (error) {
       res.status(500).json({ message: 'Server error', error: error.message });

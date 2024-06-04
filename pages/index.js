@@ -58,17 +58,8 @@ function App() {
           </div>
         </div>
 
-        <div className="mt-8">
+        <div className="mt-8 mx-4">
           {userId && tracks.length > 0 && <Tracklist tracks={tracks} showFavoriteButton={true} userId={userId} />}
-          {/* {userId && tracks && tracks.map((track, index) => (
-            <TrackItem
-              key={track._id}
-              track={track}
-              onPlayClick={() => playPlaylist(tracks, index)}
-              showFavoriteButton={true}
-              onFavoriteClick={() => favoriteTrack(track._id)}
-            />
-          ))} */}
         </div>
 
       </div>

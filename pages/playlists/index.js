@@ -6,6 +6,7 @@ import Link from "next/link";
 
 export default function Playlists() {
   const [playlists, setPlaylists] = useState([]);
+  const [favoritePlaylists, setFavoritePlaylists] = useState([]);
   const [manageMode, setManageMode] = useState(false);
   // Get user id
   const { data: session } = useSession();
@@ -17,7 +18,8 @@ export default function Playlists() {
     const fetchPlaylists = async () => {
       try {
         const response = await axios.get(`/api/playlist/${userId}`);
-        setPlaylists(response.data);
+        setPlaylists(response.data.playlists);
+        setFavoritePlaylists(response.data.favoritePlaylists);
       } catch (error) {
         console.error('Error fetching data', error);
       }
@@ -29,8 +31,32 @@ export default function Playlists() {
     setManageMode(!manageMode);
   }
 
-  const handleDelete = (playlistId) => {
+  const handleDeleteMyPlaylist = async (playlistId) => {
     setPlaylists(currentPlaylists => currentPlaylists.filter(p => p._id !== playlistId));
+    try {
+      const response = await axios.delete(`/api/playlist?userId=${userId}&playlistId=${playlistId}`);
+      if (response.status === 200) {
+        // onDelete(playlistId);  // Call the onDelete handler
+      } else {
+        console.error('Failed to delete playlist');
+      }
+    } catch (error) {
+      console.error('Error deleting playlist', error);
+    }
+  };
+
+  const handleDeleteFavoritePlaylist = async (playlistId) => {
+    setFavoritePlaylists(currentPlaylists => currentPlaylists.filter(p => p._id !== playlistId));
+    try {
+      const response = await axios.delete(`/api/playlist/favoritePlaylists?userId=${userId}&playlistId=${playlistId}`);
+      if (response.status === 200) {
+        // onDelete(playlistId);  // Call the onDelete handler
+      } else {
+        console.error('Failed to delete playlist');
+      }
+    } catch (error) {
+      console.error('Error deleting playlist', error);
+    }
   };
 
   return (
@@ -68,9 +94,12 @@ export default function Playlists() {
           </div>
         </div>
 
-        <div className="mt-8">
+        <div className="mt-8 mx-4">
           {playlists.length > 0 && playlists.map((playlist) => (
-            <PlaylistAsItem key={playlist._id} playlist={playlist} manageMode={manageMode} onDelete={handleDelete} />
+            <PlaylistAsItem key={playlist._id} playlist={playlist} manageMode={manageMode} onDelete={handleDeleteMyPlaylist} />
+          ))}
+          {favoritePlaylists.length > 0 && favoritePlaylists.map((playlist) => (
+            <PlaylistAsItem key={playlist._id} playlist={playlist} manageMode={manageMode} onDelete={handleDeleteFavoritePlaylist} />
           ))}
         </div>
 

@@ -55,7 +55,7 @@ export default function Favorites() {
           </div>
         </div>
 
-        <div className="mt-8">
+        <div className="mt-8 mx-4">
           <Tracklist tracks={tracks} showFavoriteButton={true} userId={userId} />
         </div>
       </div>

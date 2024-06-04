@@ -54,7 +54,7 @@ export default function Profile() {
     if (!userId || activeTab !== 'favorites') return;
     const fetchFavorites = async () => {
       try {
-        const { data: favoriteList } = await axios.get(`/api/favorites?id=${userId}`);
+        const { data: favoriteList } = await axios.get(`/api/favoritePlaylists?id=${userId}`);
         // console.log(favoriteList);
         const trackDataPromises = favoriteList.map(item =>
           axios.get(`/api/tracks?id=${item}&userId=${userId}`).then(response => response.data)
@@ -74,8 +74,9 @@ export default function Profile() {
     if (!userId || activeTab !== 'playlists') return;
     const fetchPlaylists = async () => {
       try {
-        const response = await axios.get(`/api/playlist/${userId}`);
-        setPlaylists(response.data);
+        const response = await axios.get(`/api/playlist/${userId}?currentUid=${currentUid}`);
+        setPlaylists(response.data.playlists);
+        console.log(response.data.playlists);
       } catch (error) {
         console.error('Error fetching data', error);
       }
@@ -96,7 +97,8 @@ export default function Profile() {
       case 'playlists':
         return <div className='mt-6 mx-12 h-52'>
           {playlists.length > 0 && playlists.map((playlist) => (
-            <PlaylistAsItem key={playlist._id} playlist={playlist} manageMode={false} onDelete={() => { }} />
+            <PlaylistAsItem key={playlist._id} playlist={playlist} manageMode={false} 
+            showFavorite={currentUid !== userId} onFavoriteClick={handleFavorite} onDelete={() => { }} />
           ))}
         </div>
       case 'posts':
@@ -123,6 +125,26 @@ export default function Profile() {
   const handleMessaging = () => {
     // jump to /chat/targetUserId
     router.push(`/chat?uid=${userId}`);
+  }
+
+  const handleFavorite = async (playlistId) => {
+    try {
+      const response = await axios.post(`/api/playlist/favoritePlaylists`, {
+        userId: currentUid,
+        playlistId
+      });
+      if (response.data.success) {
+        const updatedPlaylists = playlists.map(playlist => {
+          if (playlist._id === playlistId) {
+            return { ...playlist, isFavorited: !playlist.isFavorited };
+          }
+          return playlist;
+        });
+        setPlaylists(updatedPlaylists);
+      }
+    } catch (error) {
+      console.error('Error favoriting playlist', error);
+    }
   }
 
   return (

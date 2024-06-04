@@ -58,7 +58,8 @@ export default async function handler(req, res) {
           fs.mkdirSync(uploadsDir, { recursive: true });
         }
 
-        fs.renameSync(oldPath, newPath);
+        fs.copyFileSync(oldPath, newPath);
+        fs.unlinkSync(oldPath);
 
         return {
           newPath,

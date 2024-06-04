@@ -22,3 +22,12 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+.playlist-item .playlist-button {
+    display: none; /* Hide buttons by default */
+}
+  
+.playlist-item:hover .playlist-button {
+    display: flex; /* Show buttons on hover */
+}
+  
