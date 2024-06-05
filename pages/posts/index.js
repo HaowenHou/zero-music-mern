@@ -7,6 +7,7 @@ import Post from '../components/Post';
 export default function Posts() {
   const [manageMode, setManageMode] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [myPosts, setMyPosts] = useState([]);
 
   const { data: session } = useSession();
   const userId = session?.user?.id;
@@ -22,12 +23,23 @@ export default function Posts() {
       try {
         const response = await axios.get(`/api/posts?userId=${userId}`);
         setPosts(response.data.data);
+        // Filter the user's own posts
+        setMyPosts(response.data.data.filter((post) => post.userId._id === userId));
       } catch (error) {
         console.error(error);
       }
     };
     fetchPosts();
   }, [userId]);
+
+  const handleDelete = async (postId) => {
+    try {
+      await axios.delete(`/api/posts?userId=${userId}&postId=${postId}`);
+      setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="bg-white p-12 w-full">
@@ -64,12 +76,13 @@ export default function Posts() {
       </div>
 
       <div className="mt-8 space-y-4 max-w-2xl w-full mx-auto">
-        {posts.length > 0 && posts.map((post) => (
-          <Post key={post._id} post={post} />
-        ))}
-        {/* {playlists.length > 0 && playlists.map((playlist) => (
-          <PlaylistAsItem key={playlist._id} playlist={playlist} manageMode={manageMode} onDelete={handleDelete} />
-        ))} */}
+        {posts.length > 0 && (manageMode ?
+          myPosts.map((post) => (
+            <Post key={post._id} post={post} manageMode={manageMode} handleDelete={handleDelete} />
+          )) :
+          posts.map((post) => (
+            <Post key={post._id} post={post} manageMode={manageMode} handleDelete={handleDelete} />
+          )))}
       </div>
 
     </div>

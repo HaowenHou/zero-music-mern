@@ -46,4 +46,15 @@ export default async function handler(req, res) {
       res.status(400).json({ success: false });
     }
   }
+
+  if (method === "DELETE") {
+    try {
+      const { userId, postId } = req.query;
+      await User.findByIdAndUpdate(userId, { $pull: { posts: postId } });
+      await Post.findByIdAndDelete(postId);
+      res.status(200).json({ success: true });
+    } catch (error) {
+      res.status(400).json({ success: false });
+    }
+  }
 }
