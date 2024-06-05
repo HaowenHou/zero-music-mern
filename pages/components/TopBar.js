@@ -6,9 +6,9 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 const TopBar = () => {
-  const [name, setName] = useState('');
   const { data: session, status } = useSession();
   const userId = session?.user?.id;
+  const name = session?.user?.name;
   const isLoading = status === 'loading';
   const [inElectron, setInElectron] = useState(false);
 
@@ -33,19 +33,6 @@ const TopBar = () => {
       return [];
     }
   };
-
-  useEffect(() => {
-    if (!userId) return;
-    const fetchUser = async () => {
-      try {
-        const { data: userData } = await axios.get(`/api/user?uid=${userId}`);
-        setName(userData.name);
-      } catch (error) {
-        console.error('Error fetching data', error);
-      }
-    };
-    fetchUser();
-  }, [userId]);
 
   useEffect(() => {
     if (window.electron !== undefined) {

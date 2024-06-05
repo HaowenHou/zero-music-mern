@@ -38,7 +38,7 @@ export default NextAuth({
         }
 
         // Return user object on successful authentication
-        return { id: user._id, name: user.username };
+        return { id: user._id.toString(), username: user.username, name: user.name};
       }
     }),
   ],
@@ -46,20 +46,21 @@ export default NextAuth({
     signingKey: process.env.JWT_SIGNING_PRIVATE_KEY,
     encryption: true,
   },
-  pages: {
-    signIn: '/auth/signin',  // Specifies the URL of the signin page.
-    signOut: '/auth/signout', // Specifies the URL of the signout page.
-    // error: '/auth/error', // Error page URL
-  },
   callbacks: {
     jwt: async ({token, user}) => {
       if (user) {
         token.id = user.id;
+        token.username = user.username;
+        token.name = user.name;
       }
       return token;
     },
     session: async ({session, token}) => {
       session.user.id = token.id;
+      session.user.username = token.username;
+      session.user.name = token.name;
+      // console.log(session); // {user: {id: '123', name: 'johndoe'}, expires: '1234567890'}
+      // console.log(token); // includes name, sub, id, iat, exp, jti
       return session;
     },
   },

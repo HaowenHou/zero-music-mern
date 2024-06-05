@@ -2,7 +2,14 @@ import Track from "@/models/Track";
 import User from "@/models/User";
 import dbConnect from "@/lib/dbConnect";
 
+import { getToken } from "next-auth/jwt"
+
 export default async function handler(req, res) {
+
+  const secret = process.env.AUTH_SECRET
+  const token = await getToken({ req, secret })
+  console.log("JSON Web Token", token)
+
   const { q } = req.query;
   await dbConnect();
 
