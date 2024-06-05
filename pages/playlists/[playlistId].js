@@ -62,7 +62,7 @@ export default function Playlist() {
         </div>
 
         <div className="mt-8 mx-4">
-          <Tracklist tracks={tracks} showFavoriteButton={true} userId={userId} />
+          <Tracklist tracks={tracks} showFavoriteButton={false} userId={userId} />
         </div>
       </div>
     </>

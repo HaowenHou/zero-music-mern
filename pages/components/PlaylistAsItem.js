@@ -15,7 +15,7 @@ export default function PlaylistAsItem({
   };
 
   return (
-    <div className="playlist-item flex items-center mb-6">
+    <div className="playlist-item flex items-center p-2 my-2 rounded-lg hover:bg-gray-50">
       <Link href={`/playlists/${playlist._id}`} className='flex-[1]'>
         <img
           src={playlist.cover || '/assets/default-cover-1.png'}
