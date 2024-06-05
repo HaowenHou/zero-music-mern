@@ -4,7 +4,13 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setPlaylist, setTrackIndex, setPlay } from "@/store/actionCreators";
 
-export default function Tracklist({ tracks: initialTracks, showFavoriteButton, userId }) {
+export default function Tracklist({
+  tracks: initialTracks,
+  showFavoriteButton,
+  userId,
+  manageMode = false,
+  handleRemoveFromPlaylist
+}) {
 
   const [tracks, setTracks] = useState(initialTracks);
   const dispatch = useDispatch();
@@ -81,6 +87,8 @@ export default function Tracklist({ tracks: initialTracks, showFavoriteButton, u
           showFavoriteButton={showFavoriteButton}
           onFavoriteClick={() => toggleFavorite(track._id)}
           handleContextMenu={handleContextMenu}
+          manageMode={manageMode}
+          handleRemoveFromPlaylist={() => handleRemoveFromPlaylist(track._id)}
         />
       ))}
     </div>

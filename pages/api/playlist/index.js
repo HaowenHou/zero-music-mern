@@ -89,7 +89,7 @@ export default async function handler(req, res) {
     const { id } = req.query;
     if (id) {
       try {
-        const playlist = await Playlist.findById(id).populate('tracks').populate('userId', 'name').lean();
+        const playlist = await Playlist.findById(id).populate('tracks').populate('userId', 'name _id').lean();
         res.status(200).json(playlist);
       } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });
@@ -129,12 +129,19 @@ export default async function handler(req, res) {
   }
 
   if (method == "PATCH") {
-    const { playlistId, trackId } = req.query;
+    const { playlistId, trackId, action } = req.query;
     try {
-      await Playlist.findByIdAndUpdate(
-        playlistId,
-        { $addToSet: { tracks: trackId } }
-      );
+      if (action === "remove") {
+        await Playlist.findByIdAndUpdate(
+          playlistId,
+          { $pull: { tracks: trackId } }
+        );
+      } else {
+        await Playlist.findByIdAndUpdate(
+          playlistId,
+          { $addToSet: { tracks: trackId } }
+        );
+      }
       res.status(200).json({ message: "Track added to playlist" });
     } catch (error) {
       res.status(500).json({ message: 'Server error', error: error.message });
