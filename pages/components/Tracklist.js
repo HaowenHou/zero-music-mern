@@ -17,7 +17,6 @@ export default function Tracklist({
 
   // Listen for the context menu action response
   useEffect(() => {
-    console.log('Setting up context menu action response listener...');
     const handleMenuActionResponse = async (menuResopnse) => {
       try {
         console.log('Menu action response:', menuResopnse);
@@ -32,7 +31,6 @@ export default function Tracklist({
     window.electron.onMenuActionResponse(handleMenuActionResponse);
 
     return () => {
-      console.log('Cleanup')
       window.electron.offMenuActionResponse(handleMenuActionResponse);
     };
   }, []);

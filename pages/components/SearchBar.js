@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = useState('');
@@ -10,7 +11,7 @@ const SearchBar = ({ onSearch }) => {
   const handleSearch = async (event) => {
     const value = event.target.value;
     setQuery(value);
-    if (value.length > 2) { // Only search if query length > 2 for performance
+    if (value.length >= 2) { // Only search if query length >= 2 for performance
       const data = await onSearch(value);
       setResults(data);
       setShowResults(true);
@@ -41,12 +42,12 @@ const SearchBar = ({ onSearch }) => {
           placeholder="搜索"
           className="h-9 w-64 px-4 py-1 border border-gray-300 rounded-2xl focus:outline-none focus:border-orange-400"
         />
-        {showResults && results.length > 0 && (
-          <div className="absolute left-0 right-0 mt-1 bg-white shadow-lg z-10">
-            {results.map((item, index) => (
-              <div key={index} className="px-4 py-2 hover:bg-gray-100">
+        {showResults && results.tracks.length > 0 && (
+          <div className="absolute left-0 right-0 top-8 mt-1 bg-white shadow-lg z-10 flex flex-col rounded-lg ">
+            {results.tracks.map((item, index) => (
+              <Link href={`/search/${item.title}`} key={index} className="w-full p-2 hover:bg-gray-100 rounded-lg">
                 {item.title}
-              </div>
+              </Link>
             ))}
           </div>
         )}
