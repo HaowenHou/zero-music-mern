@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import axios from 'axios';
+import Link from 'next/link';
 
 export default function PlaylistAsItem({
   playlist,
@@ -16,13 +16,13 @@ export default function PlaylistAsItem({
 
   return (
     <div className="playlist-item flex items-center mb-6">
-      <div className='flex-[1]'>
+      <Link href={`/playlists/${playlist._id}`} className='flex-[1]'>
         <img
           src={playlist.cover || '/assets/default-cover-1.png'}
           alt="Playlist Cover"
           className="w-12 h-12 mr-6 rounded-md"
         />
-      </div>
+      </Link>
       <div className='flex flex-[4] justify-center'>
         <div className='w-64'>
           <h2 className="font-semibold ml-6">{playlist.title}</h2>

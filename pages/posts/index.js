@@ -13,6 +13,10 @@ export default function Posts() {
   const userId = session?.user?.id;
 
   const toggleManageMode = () => {
+    if (!manageMode) {
+      // Filter the user's own posts
+      setMyPosts(posts.filter((post) => post.userId._id === userId));
+    }
     setManageMode(!manageMode);
   };
 
@@ -23,8 +27,6 @@ export default function Posts() {
       try {
         const response = await axios.get(`/api/posts?userId=${userId}`);
         setPosts(response.data.data);
-        // Filter the user's own posts
-        setMyPosts(response.data.data.filter((post) => post.userId._id === userId));
       } catch (error) {
         console.error(error);
       }

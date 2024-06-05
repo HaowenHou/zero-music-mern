@@ -44,5 +44,5 @@ const convertTimestamp = (timestamp) => {
   const day = date.getDate();
   const hours = date.getHours();
   const minutes = date.getMinutes();
-  return `${year}-${month}-${day} ${hours}:${minutes}`;
+  return `${year}-${month}-${day} ${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
 }

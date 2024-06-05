@@ -1,54 +1,77 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu, MenuItem } = require('electron');
 const path = require('node:path')
 
 function createWindow() {
-    // Create the browser window.
-    const win = new BrowserWindow({
-        width: 1200,
-        height: 800,
-        minWidth: 1000,
-        minHeight: 650,
-        frame: false,
-        webPreferences: {
-            // nodeIntegration: false,
-            contextIsolation: true,
-            preload: path.join(__dirname, 'preload.js')
+  // Create the browser window.
+  const win = new BrowserWindow({
+    width: 1200,
+    height: 800,
+    minWidth: 1000,
+    minHeight: 650,
+    frame: false,
+    webPreferences: {
+      // nodeIntegration: false,
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js')
+    }
+  });
+
+  win.loadURL('http://localhost:3000');
+
+  // win.webContents.openDevTools();
+
+  ipcMain.on('window-minimize', () => {
+    win.minimize();
+  });
+
+  ipcMain.on('window-maximize', () => {
+    if (win.isMaximized()) {
+      win.unmaximize();
+    } else {
+      win.maximize();
+    }
+  });
+
+  ipcMain.on('window-close', () => {
+    win.close();
+  });
+
+  ipcMain.handle('show-context-menu', async (event, menuItems) => {
+    const menu = new Menu();
+    const submenu = new Menu();
+    menuItems.forEach(item => {
+      submenu.append(new MenuItem({
+        label: item.label,
+        click: () => {
+          // Send result back to renderer
+          win.webContents.send('menu-action-response', {
+            playlistId: item.playlistId,
+            trackId: item.trackId
+          });
         }
+      }));
     });
+    menu.append(new MenuItem({
+      label: '添加到歌单',
+      submenu: submenu
+    }));
+    menu.popup({ window: BrowserWindow.fromWebContents(event.sender) });
+  });
 
-    win.loadURL('http://localhost:3000');
-
-    // win.webContents.openDevTools();
-
-    ipcMain.on('window-minimize', () => {
-        win.minimize();
-    });
-
-    ipcMain.on('window-maximize', () => {
-        if (win.isMaximized()) {
-            win.unmaximize();
-        } else {
-            win.maximize();
-        }
-    });
-
-    ipcMain.on('window-close', () => {
-        win.close();
-    });
 }
 
 app.whenReady().then(() => {
-    createWindow();
+  createWindow();
 
-    app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) {
-            createWindow();
-        }
-    });
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow();
+    }
+  });
 });
 
 app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit();
-    }
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
 });

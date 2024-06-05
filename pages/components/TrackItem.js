@@ -4,10 +4,11 @@ export default function TrackItem({
   track,
   onPlayClick,
   showFavoriteButton,
-  onFavoriteClick
+  onFavoriteClick,
+  handleContextMenu
 }) {
   return (
-    <div className="flex items-center mb-6">
+    <div className="flex items-center mb-6" onContextMenu={event => handleContextMenu(event, track._id)}>
       <div className="flex-[1]">
         <img
           src={track.cover || '/assets/default-cover-1.png'}
