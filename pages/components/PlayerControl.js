@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { togglePlay, setPlay, setVolume, setTrackIndex, setCurrentTime } from '@/store/actionCreators';
 import { formatTime } from '@/utils/timeUtils';
+import { useRouter } from 'next/router';
 
 const PlayerControl = () => {
   const { isPlaying, volume, currentTrackIndex, currentTime } = useSelector(state => state.playerState);
@@ -12,6 +13,8 @@ const PlayerControl = () => {
   const audioRef = useRef(null);
   const [trackProgress, setTrackProgress] = useState(0);
   const [duration, setDuration] = useState("0:00");
+
+  const router = useRouter();
 
   // Load track when track changes
   useEffect(() => {
@@ -95,7 +98,7 @@ const PlayerControl = () => {
   return (
     <div className='flex bg-gray-50 min-h-20'>
       <div className='flex flex-[3] items-center'>
-        <button className='relative ml-3' onClick={() => console.log(1)}>
+        <button className='relative ml-3' onClick={() => router.push(`/playing/${playlist[currentTrackIndex]._id}`)}>
           <div className='absolute inset-0 flex items-center justify-center bg-white bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity duration-300'>
             <svg className="size-6 stroke-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 18.75 7.5-7.5 7.5 7.5" />
