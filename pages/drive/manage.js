@@ -48,7 +48,7 @@ export default function Manage() {
       </div>
       <table className="w-full ml-10">
         <tbody>
-          {tracks.length > 0 && tracks.map((track) => (
+          {!!tracks.length && tracks.map((track) => (
             <tr key={track._id} className="gap-1 m-2 h-14">
               <td className="w-20">
                 <img className="size-10 rounded-md" src={track.cover} alt={track.title} />

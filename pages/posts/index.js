@@ -78,7 +78,7 @@ export default function Posts() {
       </div>
 
       <div className="mt-8 space-y-4 max-w-2xl w-full mx-auto">
-        {posts.length > 0 && (manageMode ?
+        {!!posts.length && (manageMode ?
           myPosts.map((post) => (
             <Post key={post._id} post={post} manageMode={manageMode} handleDelete={handleDelete} />
           )) :

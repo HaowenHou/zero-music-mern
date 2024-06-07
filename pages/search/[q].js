@@ -17,14 +17,13 @@ const SearchResults = () => {
   return (
     <div className="p-4">
       <h1 className="text-xl font-semibold">搜索结果</h1>
-      {results.tracks.length > 0 && (
+      {!!results.tracks.length && (
         <>
           <h2 className="text-lg font-semibold mt-4">音乐</h2>
-          {/* {results.tracks.map(item => <div key={item._id} className="p-2">{item.title}</div>)} */}
           <Tracklist tracks={results.tracks} showFavoriteButton={false} />
         </>
       )}
-      {results.users.length > 0 && (
+      {!!results.users.length && (
         <>
           <h2 className="text-lg font-semibold mt-4 mb-2">用户</h2>
           {results.users.map(item =>

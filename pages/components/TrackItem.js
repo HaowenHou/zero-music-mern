@@ -9,6 +9,7 @@ export default function TrackItem({
   manageMode = false,
   handleRemoveFromPlaylist
 }) {
+  if (!track) return null;
   return (
     <div className="flex items-center p-2 my-2 rounded-lg hover:bg-gray-50" onContextMenu={event => handleContextMenu(event, track._id)}>
       <div className="flex-[1]">

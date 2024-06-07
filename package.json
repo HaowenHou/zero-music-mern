@@ -8,7 +8,7 @@
     "electron:build": "electron-builder build",
     "dev": "node server.js",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js",
+    "start": "cross-env NODE_ENV=production node server.js",
     "lint": "next lint"
   },
   "dependencies": {
@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",
+    "cross-env": "^7.0.3",
     "electron": "^30.0.9",
     "electron-builder": "^24.13.3",
     "eslint": "^8",

@@ -96,7 +96,7 @@ export default function Profile() {
         </div>
       case 'playlists':
         return <div className='mt-6 mx-12 h-52'>
-          {playlists.length > 0 && playlists.map((playlist) => (
+          {!!playlists.length && playlists.map((playlist) => (
             <PlaylistAsItem key={playlist._id} playlist={playlist} manageMode={false} 
             showFavorite={currentUid !== userId} onFavoriteClick={handleFavorite} onDelete={() => { }} />
           ))}

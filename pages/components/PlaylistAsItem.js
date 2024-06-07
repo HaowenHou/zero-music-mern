@@ -8,6 +8,8 @@ export default function PlaylistAsItem({
   showFavorite = false,
   onFavoriteClick
 }) {
+  if (!playlist) return null;
+
   const router = useRouter();
 
   const handleEdit = () => {

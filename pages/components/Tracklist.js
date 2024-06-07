@@ -77,7 +77,7 @@ export default function Tracklist({
 
   return (
     <div className="mt-8">
-      {tracks.length > 0 && tracks.map((track, index) => (
+      {tracks && !!tracks.length && tracks.map((track, index) => (
         <TrackItem
           key={track._id}
           track={track}

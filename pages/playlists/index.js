@@ -95,10 +95,10 @@ export default function Playlists() {
         </div>
 
         <div className="mt-8 mx-4">
-          {playlists.length > 0 && playlists.map((playlist) => (
+          {!!playlists.length && playlists.map((playlist) => (
             <PlaylistAsItem key={playlist._id} playlist={playlist} manageMode={manageMode} onDelete={handleDeleteMyPlaylist} />
           ))}
-          {favoritePlaylists.length > 0 && favoritePlaylists.map((playlist) => (
+          {!!favoritePlaylists.length && favoritePlaylists.map((playlist) => (
             <PlaylistAsItem key={playlist._id} playlist={playlist} manageMode={manageMode} onDelete={handleDeleteFavoritePlaylist} />
           ))}
         </div>

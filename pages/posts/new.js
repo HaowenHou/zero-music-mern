@@ -64,7 +64,7 @@ export default function New() {
           className="w-full p-2 border rounded"
         />
         <ul className="mt-2">
-          {tracks.length > 0 && tracks.map(track => (
+          {!!tracks.length && tracks.map(track => (
             <li
               key={track._id}
               className={`p-2 ${trackId === track._id ? 'bg-gray-300' : 'hover:bg-gray-100'} cursor-pointer`}

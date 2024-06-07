@@ -1,6 +1,7 @@
 import { formatTime } from "@/utils/timeUtils";
 
 export default function Post({ post, manageMode = false, handleDelete }) {
+  if (!post) return null;
   const track = post.trackId;
   return (
     <div className="rounded-xl bg-gray-50 flex flex-col">

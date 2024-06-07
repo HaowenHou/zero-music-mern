@@ -59,7 +59,7 @@ function App() {
         </div>
 
         <div className="mt-8 mx-4">
-          {userId && tracks.length > 0 && <Tracklist tracks={tracks} showFavoriteButton={true} userId={userId} />}
+          {userId && !!tracks.length && <Tracklist tracks={tracks} showFavoriteButton={true} userId={userId} />}
         </div>
 
       </div>
