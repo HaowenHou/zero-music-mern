@@ -8,13 +8,13 @@ export default function PlaylistAsItem({
   showFavorite = false,
   onFavoriteClick
 }) {
-  if (!playlist) return null;
-
   const router = useRouter();
-
+  
   const handleEdit = () => {
     router.push(`/playlists/edit/${playlist._id}`);
   };
+
+  if (!playlist) return null;
 
   return (
     <div className="playlist-item flex items-center p-2 my-2 rounded-lg hover:bg-gray-50">
