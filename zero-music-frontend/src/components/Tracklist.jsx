@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import TrackItem from "./TrackItem";
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { setPlaylist, setTrackIndex, setPlay } from "@/store/actionCreators";
+import { setPlaylist, setTrackIndex, setPlay } from "../redux/actionCreators";
 
 export default function Tracklist({
   tracks: initialTracks,
@@ -16,31 +16,31 @@ export default function Tracklist({
   const dispatch = useDispatch();
 
   // Listen for the context menu action response
-  useEffect(() => {
-    const handleMenuActionResponse = async (menuResopnse) => {
-      try {
-        console.log('Menu action response:', menuResopnse);
-        const { playlistId, trackId } = menuResopnse;
-        const apiResponse = await axios.patch(`/api/playlist?playlistId=${playlistId}&trackId=${trackId}`);
-        console.log('Track added:', apiResponse.data);  // Handle success
-      } catch (error) {
-        console.error('Error adding track to playlist:', error);  // Handle errors
-      }
-    };
+  // useEffect(() => {
+  //   const handleMenuActionResponse = async (menuResopnse) => {
+  //     try {
+  //       console.log('Menu action response:', menuResopnse);
+  //       const { playlistId, trackId } = menuResopnse;
+  //       const apiResponse = await axios.patch(import.meta.env.VITE_SERVER_URL + `/api/playlist?playlistId=${playlistId}&trackId=${trackId}`);
+  //       console.log('Track added:', apiResponse.data);  // Handle success
+  //     } catch (error) {
+  //       console.error('Error adding track to playlist:', error);  // Handle errors
+  //     }
+  //   };
 
-    window.electron.onMenuActionResponse(handleMenuActionResponse);
+  //   window.electron.onMenuActionResponse(handleMenuActionResponse);
 
-    return () => {
-      window.electron.offMenuActionResponse(handleMenuActionResponse);
-    };
-  }, []);
+  //   return () => {
+  //     window.electron.offMenuActionResponse(handleMenuActionResponse);
+  //   };
+  // }, []);
 
   // When right clicked on a track item, show the context menu
   const handleContextMenu = async (event, trackId) => {
     console.log(event);
     event.preventDefault();
 
-    const response = await axios.get(`/api/playlist/${userId}`);
+    const response = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/playlist/${userId}`);
     const playlists = response.data.playlists;
     const menuItems = playlists.map((playlist) => ({
       label: playlist.title,
@@ -59,7 +59,7 @@ export default function Tracklist({
     if (!showFavoriteButton) return;
 
     try {
-      await axios.post(`/api/favorites?id=${trackId}&userId=${userId}`);
+      await axios.post(import.meta.env.VITE_SERVER_URL + `/api/favorites?id=${trackId}&userId=${userId}`);
       const updatedTracks = tracks.map((track) =>
         (track._id === trackId) ? { ...track, favorite: !track.favorite } : track
       );

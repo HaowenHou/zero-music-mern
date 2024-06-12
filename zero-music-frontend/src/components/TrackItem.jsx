@@ -1,4 +1,4 @@
-import { formatTime } from "@/utils/timeUtils";
+import { formatTime } from "../utils/timeUtils";
 
 export default function TrackItem({
   track,
@@ -14,7 +14,7 @@ export default function TrackItem({
     <div className="flex items-center p-2 my-2 rounded-lg hover:bg-gray-50" onContextMenu={event => handleContextMenu(event, track._id)}>
       <div className="flex-[1]">
         <img
-          src={track.cover || '/assets/default-cover-1.png'}
+          src={import.meta.env.VITE_SERVER_URL + (track.cover || '/assets/default-cover-1.png')}
           alt="Album Cover"
           className="w-12 h-12 mr-6 rounded-md"
         />
