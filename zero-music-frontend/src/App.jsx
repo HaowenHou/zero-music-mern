@@ -1,9 +1,9 @@
-import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Sidebar from './components/Sidebar'
 import TopBar from './components/TopBar'
 import PlayerControl from './components/PlayerControl'
 import Home from './pages/Home'
+import Login from './pages/login'
 
 function App() {
   return (
@@ -17,6 +17,7 @@ function App() {
               {
                 <Routes>
                   <Route path="/" element={<Home />} />
+                  <Route path="/login" element={<Login />} />
                 </Routes>
               }
             </div>

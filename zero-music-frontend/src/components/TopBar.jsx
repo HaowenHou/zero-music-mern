@@ -1,16 +1,17 @@
 import React from 'react';
-// import { signOut, useSession } from 'next-auth/react'; // TODO: signout
 import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { logoutUser } from '../utils/loginStatus';
+import { useDispatch } from 'react-redux';
 
 const TopBar = () => {
-  const session = undefined;
-  const userId = session?.user?.id;
-  const name = session?.user?.name;
-  const isLoading = true && status === 'loading';
+  const { isLoggedIn, userId, name } = useSelector((state) => state.userState);
   const [inElectron, setInElectron] = useState(false);
+  const dispatch = useDispatch();
+  console.log(userId, name, isLoggedIn)
 
   const handleClose = () => {
     window.electron.close();
@@ -26,7 +27,7 @@ const TopBar = () => {
 
   const fetchSearchResults = async (query) => {
     try {
-      const response = await axios.get(`/api/search?q=${query}`);
+      const response = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/search?q=${query}`);
       return response.data; // Assuming the response data is the array of results
     } catch (error) {
       console.error('Failed to fetch search results', error);
@@ -46,10 +47,9 @@ const TopBar = () => {
         <SearchBar onSearch={fetchSearchResults} />
       </div>
 
-    <div className='h-16 ml-auto flex items-center justify-center' style={{ WebkitAppRegion: 'no-drag' }}>
-      {!isLoading &&
-        (!session ? (
-          <Link href='/login' className='flex items-center p-0.5 rounded-2xl border mr-8'>
+      <div className='h-16 ml-auto flex items-center justify-center' style={{ WebkitAppRegion: 'no-drag' }}>
+        {!isLoggedIn ? (
+          <Link to='/login' className='flex items-center p-0.5 rounded-2xl border mr-8'>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-8">
               <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
             </svg>
@@ -60,7 +60,7 @@ const TopBar = () => {
           </Link>
         ) : (
           <div className='flex items-center rounded-3xl border pr-2 mr-4 ml-auto' style={{ WebkitAppRegion: 'no-drag' }}>
-            <img src="/avatars/avatar_1.png" alt="" className='size-9 rounded-full' />
+            <img src={import.meta.env.VITE_SERVER_URL + "/avatars/avatar_1.png"} alt="" className='size-9 rounded-full' />
             <div className="px-3">
               {name}
             </div>
@@ -70,14 +70,13 @@ const TopBar = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
               </svg>
               <div className="absolute hidden group-hover:block bg-white shadow-lg rounded-md w-24 -left-20">
-                <Link href={`/profile/${userId}`} className="block px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100">个人主页</Link>
-                <button onClick={() => {}} className="px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100">退出登录</button>
+                <Link to={`/profile/${userId}`} className="block px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100">个人主页</Link>
+                <button onClick={() => logoutUser(dispatch)} className="px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100">退出登录</button>
               </div>
             </div>
           </div>
-        ))
-      }
-    </div>
+        )}
+      </div>
 
       {inElectron &&
         <div className="flex justify-end space-x-2 p-2" style={{ WebkitAppRegion: 'no-drag' }}>

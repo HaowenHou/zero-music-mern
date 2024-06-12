@@ -1,6 +1,8 @@
 const initialState = {
-  userId: '66208187e28b6b18bafdb287',
-  name: '炼金术士',
+  userId: '',
+  name: '',
+  token: '',
+  isLoggedIn: false
 };
 
 const userStateReducer = (state = initialState, action) => {
@@ -14,6 +16,21 @@ const userStateReducer = (state = initialState, action) => {
       return {
         ...state,
         name: action.payload
+      };
+    case 'SET_TOKEN':
+      return {
+        ...state,
+        token: action.payload
+      };
+    case 'LOGIN':
+      return {
+        ...state,
+        isLoggedIn: true
+      };
+    case 'LOGOUT':
+      return {
+        ...state,
+        isLoggedIn: false
       };
     default:
       return state;

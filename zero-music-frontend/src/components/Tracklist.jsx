@@ -14,26 +14,34 @@ export default function Tracklist({
 
   const [tracks, setTracks] = useState(initialTracks);
   const dispatch = useDispatch();
+  const [inElectron, setInElectron] = useState(false);
+
+  useEffect(() => {
+    if (window.electron !== undefined) {
+      setInElectron(true);
+    }
+  }, []);
 
   // Listen for the context menu action response
-  // useEffect(() => {
-  //   const handleMenuActionResponse = async (menuResopnse) => {
-  //     try {
-  //       console.log('Menu action response:', menuResopnse);
-  //       const { playlistId, trackId } = menuResopnse;
-  //       const apiResponse = await axios.patch(import.meta.env.VITE_SERVER_URL + `/api/playlist?playlistId=${playlistId}&trackId=${trackId}`);
-  //       console.log('Track added:', apiResponse.data);  // Handle success
-  //     } catch (error) {
-  //       console.error('Error adding track to playlist:', error);  // Handle errors
-  //     }
-  //   };
+  useEffect(() => {
+    if (!inElectron) return;
+    const handleMenuActionResponse = async (menuResopnse) => {
+      try {
+        console.log('Menu action response:', menuResopnse);
+        const { playlistId, trackId } = menuResopnse;
+        const apiResponse = await axios.patch(import.meta.env.VITE_SERVER_URL + `/api/playlist?playlistId=${playlistId}&trackId=${trackId}`);
+        console.log('Track added:', apiResponse.data);  // Handle success
+      } catch (error) {
+        console.error('Error adding track to playlist:', error);  // Handle errors
+      }
+    };
 
-  //   window.electron.onMenuActionResponse(handleMenuActionResponse);
+    window.electron.onMenuActionResponse(handleMenuActionResponse);
 
-  //   return () => {
-  //     window.electron.offMenuActionResponse(handleMenuActionResponse);
-  //   };
-  // }, []);
+    return () => {
+      window.electron.offMenuActionResponse(handleMenuActionResponse);
+    };
+  }, []);
 
   // When right clicked on a track item, show the context menu
   const handleContextMenu = async (event, trackId) => {

@@ -26,3 +26,26 @@ export const setPlaylist = (playlist) => ({
   type: 'SET_PLAYLIST',
   payload: playlist
 });
+
+export const setToken = (token) => ({
+  type: 'SET_TOKEN',
+  payload: token
+});
+
+export const setUserId = (userId) => ({
+  type: 'SET_USER_ID',
+  payload: userId
+});
+
+export const setName = (name) => ({
+  type: 'SET_NAME',
+  payload: name
+});
+
+export const login = () => ({
+  type: 'LOGIN'
+});
+
+export const logout = () => ({
+  type: 'LOGOUT'
+});
