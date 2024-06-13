@@ -29,7 +29,7 @@ router.use((req, res, next) => {
 });
 
 // GET a track by ID or all tracks
-router.get('/:id?', async (req, res) => {
+router.get('/', async (req, res) => {
   await dbConnect();
   const { id } = req.query;
   try {
@@ -53,7 +53,7 @@ router.get('/:id?', async (req, res) => {
 router.post('/', async (req, res) => {
   await dbConnect();
   const { fields, files } = req;
-  const newName = `${fields.title} - ${fields.artist}`;
+  const newName = `${fields.title[0]} - ${fields.artist[0]}`;
 
   let trackDuration = 0;
   let trackPath = '';
@@ -104,8 +104,8 @@ router.post('/', async (req, res) => {
   }
 
   const updateData = {
-    title: fields.title,
-    artist: fields.artist,
+    title: fields.title[0],
+    artist: fields.artist[0],
     duration: trackDuration,
     cover: coverPath || undefined,
     track: trackPath || undefined,
@@ -125,7 +125,7 @@ router.post('/', async (req, res) => {
       const track = new Track(updateData);
       await track.save();
       // Optionally add the track to the global playlist
-      await Playlist.updateOne({ name: 'Global' }, { $push: { tracks: track._id } });
+      await Playlist.updateOne({ title: 'Global' }, { $push: { tracks: track._id } });
       res.status(201).json({ message: 'Track created', data: track });
     }
   } catch (error) {
@@ -135,9 +135,9 @@ router.post('/', async (req, res) => {
 });
 
 // DELETE a track
-router.delete('/:id', async (req, res) => {
+router.delete('/', async (req, res) => {
   await dbConnect();
-  const { id } = req.params;
+  const { id } = req.query;
   try {
     const track = await Track.findById(id);
     // Delete associated files

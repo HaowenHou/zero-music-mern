@@ -3,6 +3,7 @@ import formidable from 'formidable';
 import fs from 'fs';
 import path from 'path';
 import mongoose from 'mongoose';
+import Track from '../models/Track.js';
 import Playlist from '../models/Playlist.js';
 import User from '../models/User.js';
 import dbConnect from '../utils/dbConnect.js';
@@ -37,11 +38,8 @@ router.get('/:id?', async (req, res) => {
       res.status(500).json({ message: 'Server error', error: error.message });
     }
   } else {
-    // Get the Global playlist
-    const globalPlaylist = await Playlist.findOne({ title: "Global" });
-    if (!globalPlaylist) {
-      return res.status(404).json({ error: "Global playlist not found" });
-    }
+    // Get the Global playlist from the Track model
+    const globalPlaylist = await Track.find().lean();
     res.status(200).json(globalPlaylist);
   }
 });
