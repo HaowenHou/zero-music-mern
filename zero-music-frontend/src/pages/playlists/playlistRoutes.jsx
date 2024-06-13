@@ -4,7 +4,7 @@ import Playlist from "./[playlistId]";
 import NewPlaylist from "./new";
 import EditPlaylist from "./edit/[id]";
 
-const playlistRoutes = (
+const PlaylistsRoutes = (
   <>
     <Route path="playlists" element={<Playlists />} />
     <Route path="playlists/:playlistId" element={<Playlist />} />
@@ -13,4 +13,4 @@ const playlistRoutes = (
   </>
 );
 
-export default playlistRoutes;
+export default PlaylistsRoutes;

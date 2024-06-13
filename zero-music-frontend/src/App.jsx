@@ -5,7 +5,8 @@ import PlayerControl from './components/PlayerControl'
 import Home from './pages/Home'
 import Login from './pages/login'
 import Favorites from './pages/favorites'
-import playlistRoutes from './pages/playlists/playlistRoutes'
+import PlaylistsRoutes from './pages/playlists/playlistRoutes'
+import DriveRoutes from './pages/drive/driveRoutes'
 
 function App() {
   return (
@@ -21,7 +22,8 @@ function App() {
                   <Route path="/" element={<Home />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/favorites" element={<Favorites />} />
-                  {playlistRoutes}
+                  {PlaylistsRoutes}
+                  {DriveRoutes}
                 </Routes>
               }
             </div>
