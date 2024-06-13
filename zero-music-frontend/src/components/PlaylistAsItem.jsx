@@ -1,5 +1,5 @@
-import { useRouter } from 'next/router';
-import Link from 'next/link';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function PlaylistAsItem({
   playlist,
@@ -8,19 +8,19 @@ export default function PlaylistAsItem({
   showFavorite = false,
   onFavoriteClick
 }) {
-  const router = useRouter();
+  const navigate = useNavigate();
   
   const handleEdit = () => {
-    router.push(`/playlists/edit/${playlist._id}`);
+    navigate(`/playlists/edit/${playlist._id}`);
   };
 
   if (!playlist) return null;
 
   return (
     <div className="playlist-item flex items-center p-2 my-2 rounded-lg hover:bg-gray-50">
-      <Link href={`/playlists/${playlist._id}`} className='flex-[1]'>
+      <Link to={`/playlists/${playlist._id}`} className='flex-[1]'>
         <img
-          src={playlist.cover || '/assets/default-cover-1.png'}
+          src={import.meta.env.VITE_SERVER_URL + (playlist.cover || '/assets/default-cover-1.png')}
           alt="Playlist Cover"
           className="w-12 h-12 mr-6 rounded-md"
         />

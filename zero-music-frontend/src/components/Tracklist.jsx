@@ -11,7 +11,6 @@ export default function Tracklist({
   manageMode = false,
   handleRemoveFromPlaylist
 }) {
-
   const [tracks, setTracks] = useState(initialTracks);
   const dispatch = useDispatch();
   const [inElectron, setInElectron] = useState(false);

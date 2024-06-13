@@ -11,7 +11,6 @@ const TopBar = () => {
   const { isLoggedIn, userId, name } = useSelector((state) => state.userState);
   const [inElectron, setInElectron] = useState(false);
   const dispatch = useDispatch();
-  console.log(userId, name, isLoggedIn)
 
   const handleClose = () => {
     window.electron.close();

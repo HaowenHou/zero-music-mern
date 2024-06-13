@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useRouter } from "next/router";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function PlaylistForm({
@@ -11,7 +11,7 @@ export default function PlaylistForm({
   const [title, setTitle] = useState(initialTitle);
   const [cover, setCover] = useState(initialCover);
   const [coverFile, setCoverFile] = useState(null);
-  const router = useRouter();
+  const navigate = useNavigate();
 
   function handleCoverChange(ev) {
     const file = ev.target.files[0];
@@ -40,13 +40,13 @@ export default function PlaylistForm({
     try {
       let response;
       if (_id) {
-        response = await axios.put(`/api/playlist?id=${_id}`, data, {
+        response = await axios.put(import.meta.env.VITE_SERVER_URL + `/api/playlist?id=${_id}`, data, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
         });
       } else {
-        response = await axios.post('/api/playlist', data, {
+        response = await axios.post(import.meta.env.VITE_SERVER_URL + '/api/playlist', data, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -54,7 +54,7 @@ export default function PlaylistForm({
       }
       // If successful, redirect back
       if (response.status === 201 || response.status === 200) {
-        router.push('/playlists');
+        navigate('/playlists');
       } else {
         throw new Error('Failed to save playlist');
       }
@@ -86,7 +86,7 @@ export default function PlaylistForm({
         (
           <label className="mt-2 cursor-pointer relative w-36 h-36">
             <input type="file" className="hidden" onChange={handleCoverChange} />
-            <img src={cover} className="w-full h-full object-cover border rounded-lg" />
+            <img src={import.meta.env.VITE_SERVER_URL + cover} className="w-full h-full object-cover border rounded-lg" />
             <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300">
               <span className="text-black font-semibold">更换封面</span>
             </div>

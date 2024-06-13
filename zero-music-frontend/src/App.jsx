@@ -4,6 +4,8 @@ import TopBar from './components/TopBar'
 import PlayerControl from './components/PlayerControl'
 import Home from './pages/Home'
 import Login from './pages/login'
+import Favorites from './pages/favorites'
+import playlistRoutes from './pages/playlists/playlistRoutes'
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/login" element={<Login />} />
+                  <Route path="/favorites" element={<Favorites />} />
+                  {playlistRoutes}
                 </Routes>
               }
             </div>
