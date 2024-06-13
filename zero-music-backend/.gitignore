@@ -1,3 +1,11 @@
+public/driveTracks
+public/driveCovers
+public/tracks
+public/covers
+public/albums
+public/avatars
+public/playlistCovers
+
 # Logs
 logs
 *.log
