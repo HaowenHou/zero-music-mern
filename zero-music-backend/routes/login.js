@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import { verifyPassword } from '../utils/auth.js';
 import dbConnect from '../utils/dbConnect.js';
+import 'dotenv/config'
 
 const router = express.Router();
 
@@ -27,8 +28,8 @@ router.post('/', async (req, res) => {
 
     // Create a JWT
     const token = jwt.sign(
-      { id: user._id, username: user.username },
-      process.env.JWT_SIGNING_PRIVATE_KEY, 
+      { id: user._id, name: user.name },
+      process.env.JWT_SECRET_KEY, 
       { algorithm: 'HS256', expiresIn: '1h' }
     );
 

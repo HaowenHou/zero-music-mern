@@ -4,8 +4,8 @@ import dbConnect from '../utils/dbConnect.js';
 
 const router = express.Router();
 
-router.get('/:uid', async (req, res) => {
-    const userId = req.params.uid;
+router.get('/', async (req, res) => {
+    const userId = req.query.uid;
     await dbConnect();
 
     try {
