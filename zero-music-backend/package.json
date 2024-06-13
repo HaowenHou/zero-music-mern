@@ -1,0 +1,16 @@
+{
+  "name": "zero-music-backend",
+  "version": "1.0.0",
+  "description": "The backend for ZeroMusic",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Haowen Hou",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}
