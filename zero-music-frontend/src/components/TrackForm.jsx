@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useRouter } from "next/router";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function TrackForm({
   _id,
@@ -15,7 +15,7 @@ export default function TrackForm({
   const [coverFile, setCoverFile] = useState(null);
   const [musicFile, setMusicFile] = useState(null);
   const [trackChanged, setTrackChanged] = useState(false);
-  const router = useRouter();
+  const navigate = useNavigate();
 
   function handleCoverChange(ev) {
     const file = ev.target.files[0];
@@ -50,14 +50,14 @@ export default function TrackForm({
       data.append('id', _id);
     }
     try {
-      const response = await axios.post('/api/tracks', data, {
+      const response = await axios.post(import.meta.env.VITE_SERVER_URL + '/api/tracks', data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
       // If successful, redirect to the track page
       if (response.status === 201 || response.status === 200) {
-        router.push('/tracks/manage');
+        navigate('/tracks/manage');
       } else {
         throw new Error('Failed to save music');
       }
@@ -93,7 +93,7 @@ export default function TrackForm({
         (
           <label className="mt-2 cursor-pointer relative w-36 h-36">
             <input type="file" className="hidden" onChange={handleCoverChange} />
-            <img src={cover} className="w-full h-full object-cover border rounded-lg" />
+            <img src={import.meta.env.VITE_SERVER_URL + cover} className="w-full h-full object-cover border rounded-lg" />
             <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300">
               <span className="text-black font-semibold">更换封面</span>
             </div>

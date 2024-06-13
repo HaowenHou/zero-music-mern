@@ -4,9 +4,15 @@ import TopBar from './components/TopBar'
 import PlayerControl from './components/PlayerControl'
 import Home from './pages/Home'
 import Login from './pages/login'
+import Register from './pages/register'
 import Favorites from './pages/favorites'
-import PlaylistsRoutes from './pages/playlists/playlistRoutes'
+import PlaylistsRoutes from './pages/playlists/playlistsRoutes'
 import DriveRoutes from './pages/drive/driveRoutes'
+import PostsRoutes from './pages/posts/playlistsRoutes'
+import Chat from './pages/chat'
+import SearchResults from './pages/search/[q]'
+import Profile from './pages/profile/[userId]'
+import TracksRoutes from './pages/tracks/tracksRoutes'
 
 function App() {
   return (
@@ -21,9 +27,16 @@ function App() {
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
                   <Route path="/favorites" element={<Favorites />} />
                   {PlaylistsRoutes}
                   {DriveRoutes}
+                  {PostsRoutes}
+                  <Route path="/favorites" element={<Favorites />} />
+                  <Route path="/chat" element={<Chat />} />
+                  <Route path="/search/:q" element={<SearchResults />} />
+                  <Route path="/profile/:userId" element={<Profile />} />
+                  {TracksRoutes}
                 </Routes>
               }
             </div>

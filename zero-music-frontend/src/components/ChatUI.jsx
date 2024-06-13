@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
-import Link from 'next/link';
+import { Link } from "react-router-dom";
 
 let socket
 
@@ -29,7 +29,7 @@ export default function ChatUI({ userId, receiverId, senderAvatar, receiverAvata
     if (!userId || !receiverId) return;
     const fetchMessages = async () => {
       try {
-        const res = await axios.get(`/api/messages/${userId}?partnerId=${receiverId}`);
+        const res = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/messages/${userId}?partnerId=${receiverId}`);
         setMessages(res.data.data);
       } catch (err) {
         console.error('Failed to fetch messages', err);
@@ -64,14 +64,14 @@ export default function ChatUI({ userId, receiverId, senderAvatar, receiverAvata
                 <div className="bg-orange-400 text-white p-2 rounded-lg max-w-xs break-words px-3" style={{ wordWrap: 'break-word' }}>
                   {msg.message}
                 </div>
-                <Link href={`/profile/${userId}`}>
-                  <img src={senderAvatar} alt="Avatar" className="w-9 h-9 rounded-full mr-2" />
+                <Link to={`/profile/${userId}`}>
+                  <img src={import.meta.env.VITE_SERVER_URL + senderAvatar} alt="Avatar" className="w-9 h-9 rounded-full mr-2" />
                 </Link>
               </div>
             ) : (
               <div className='flex items-center gap-2'>
-                <Link href={`/profile/${receiverId}`}>
-                  <img src={receiverAvatar} alt="Avatar" className="w-9 h-9 rounded-full ml-2" />
+                <Link to={`/profile/${receiverId}`}>
+                  <img src={import.meta.env.VITE_SERVER_URL + receiverAvatar} alt="Avatar" className="w-9 h-9 rounded-full ml-2" />
                 </Link>
                 <div className="bg-gray-100 p-2 rounded-lg max-w-xs break-words px-3" style={{ wordWrap: 'break-word' }}>
                   {msg.message}
