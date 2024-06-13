@@ -11,14 +11,7 @@ function Home() {
   useEffect(() => {
     const fetchPlaylist = async () => {
       try {
-        const { data: playlistData } = await axios.get(import.meta.env.VITE_SERVER_URL + '/api/playlist');
-
-        const trackDataPromises = playlistData.tracks.map(async (item) => {
-          const { data: trackData } = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/tracks?id=${item}&userId=${userId}`);
-          return trackData;
-        });
-
-        const trackData = await Promise.all(trackDataPromises);
+        const { data: trackData } = await axios.get(import.meta.env.VITE_SERVER_URL + '/api/playlist');
         setTracks(trackData);
       } catch (error) {
         console.error('Error fetching data', error);

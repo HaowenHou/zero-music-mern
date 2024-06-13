@@ -44,6 +44,7 @@ export default function Tracklist({
 
   // When right clicked on a track item, show the context menu
   const handleContextMenu = async (event, trackId) => {
+    if (!inElectron) return;
     console.log(event);
     event.preventDefault();
 
