@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { parseFile } from "music-metadata";
 import Track from '../models/Track.js';
+import Comment from '../models/Comment.js';
 import { handleFormidable, storeFile } from '../utils/file.js';
 import { authenticateToken } from '../utils/auth.js';
 

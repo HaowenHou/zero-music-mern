@@ -1,11 +1,11 @@
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Playing() {
-  const { trackId } = router.query;
+  const navigate = useNavigate();
+  const { trackId } = useParams();
   const [track, setTrack] = useState(null);
   const [comments, setComments] = useState([]);
   const [showing, setShowing] = useState('lyrics');
@@ -111,11 +111,19 @@ export default function Playing() {
 
   return (
     <div className="flex h-full">
-      <div className="w-1/2 h-full flex items-center justify-center">
+      <div className="w-1/2 flex flex-col items-center justify-center">
         <img src={import.meta.env.VITE_SERVER_URL + track.cover} alt="cover" className="w-72 h-72 rounded-xl" />
       </div>
       <div className="w-1/2 pt-10 h-full">
-        <h1 className="text-2xl font-semibold">{track.title}</h1>
+        <div className="flex items-center">
+          <h1 className="text-2xl font-semibold">{track.title}</h1>
+          <button onClick={() => navigate(-1)} className="ml-auto mr-16">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
+              className="size-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+            </svg>
+          </button>
+        </div>
         <div className="flex items-center mt-4">
           <h2 className="text-lg">歌手：{track.artist}</h2>
           <button onClick={handleContentChange} className="ml-auto mr-16">

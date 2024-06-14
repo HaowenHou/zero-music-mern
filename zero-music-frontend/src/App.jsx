@@ -13,6 +13,7 @@ import Chat from './pages/chat'
 import SearchResults from './pages/search/[q]'
 import Profile from './pages/profile/[userId]'
 import TracksRoutes from './pages/tracks/tracksRoutes'
+import Playing from './pages/playing/[trackId]'
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
                   <Route path="/search/:q" element={<SearchResults />} />
                   <Route path="/profile/:userId" element={<Profile />} />
                   {TracksRoutes}
+                  <Route path="/playing/:trackId" element={<Playing />} />
                 </Routes>
               }
             </div>
