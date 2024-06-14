@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
       .sort({ timestamp: -1 }) // Sort by timestamp in descending order
       .populate('userId', 'name avatar')
       .populate('trackId')
-      .exec();
+      .lean();
     res.status(200).json({ success: true, data: posts });
   } catch (error) {
     console.error('Failed to retrieve posts:', error);

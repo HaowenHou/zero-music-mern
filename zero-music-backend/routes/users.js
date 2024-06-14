@@ -1,5 +1,6 @@
 import express from 'express';
 import User from '../models/User.js';
+import Post from '../models/Post.js';
 import bcrypt from 'bcryptjs';
 import { addFavoriteStatus } from '../utils/tracks.js';
 import { authenticateToken } from '../utils/auth.js';
@@ -8,7 +9,7 @@ const router = express.Router();
 
 // Get user info. populate query can be used to populate fields
 router.get('/:userId', authenticateToken, async (req, res) => {
-    let userId = req.params.userId;
+  let userId = req.params.userId;
   if (userId === 'current') {
     userId = req.user.id;
   }
@@ -26,7 +27,7 @@ router.get('/:userId', authenticateToken, async (req, res) => {
 
 // POST to register a new user
 router.post('/', async (req, res) => {
-    const { username, name, password } = req.body;
+  const { username, name, password } = req.body;
   if (!username || !password) {
     return res.status(400).json({ error: 'Username and password are required.' });
   }
@@ -57,7 +58,7 @@ router.post('/', async (req, res) => {
 
 // Get user's playlists
 router.get('/:userId/playlists', authenticateToken, async (req, res) => {
-    let userId = req.params.userId;
+  let userId = req.params.userId;
   if (userId === 'current') {
     userId = req.user.id;
   }
@@ -91,7 +92,7 @@ router.get('/:userId/playlists', authenticateToken, async (req, res) => {
 
 // Get user's favorite playlists
 router.get('/:userId/favoritePlaylists', authenticateToken, async (req, res) => {
-    let userId = req.params.userId;
+  let userId = req.params.userId;
   if (userId === 'current') {
     userId = req.user.id;
   }
@@ -125,7 +126,7 @@ router.get('/:userId/favoritePlaylists', authenticateToken, async (req, res) => 
 
 // Get user's favorite tracks
 router.get('/:userId/favorites', authenticateToken, async (req, res) => {
-    let userId = req.params.userId;
+  let userId = req.params.userId;
   if (userId === 'current') {
     userId = req.user.id;
   }
@@ -147,7 +148,7 @@ router.get('/:userId/favorites', authenticateToken, async (req, res) => {
 router.post('/:userId/follow', authenticateToken, async (req, res) => {
   const currentUserId = req.user.id;
   const userIdToFollow = req.params.userId;
-  
+
   try {
     await User.findByIdAndUpdate(currentUserId, { $addToSet: { following: userIdToFollow } });
     res.status(200).json({ message: 'Followed successfully', success: true });
@@ -161,7 +162,7 @@ router.post('/:userId/follow', authenticateToken, async (req, res) => {
 router.delete('/:userId/follow', authenticateToken, async (req, res) => {
   const currentUserId = req.user.id;
   const userIdToUnfollow = req.params.userId;
-  
+
   try {
     await User.findByIdAndUpdate(currentUserId, { $pull: { following: userIdToUnfollow } });
     res.status(200).json({ message: 'Unfollowed successfully', success: true });
@@ -173,13 +174,30 @@ router.delete('/:userId/follow', authenticateToken, async (req, res) => {
 
 // GET user's following list
 router.get('/:userId/following', async (req, res) => {
-    const userId = req.user.id;
+  const userId = req.user.id;
 
   try {
     const user = await User.findById(userId).populate('following').lean();
     res.status(200).json(user.following);
   } catch (error) {
     console.error('Failed to retrieve following list:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// GET user's posts
+router.get('/:userId/posts', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const posts = await Post.find({ userId: userId })
+      .sort({ timestamp: -1 }) // Sort by timestamp in descending order
+      .populate('userId', 'name avatar')
+      .populate('trackId')
+      .lean();
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error('Failed to retrieve posts:', error);
     res.status(500).json({ error: error.message });
   }
 });

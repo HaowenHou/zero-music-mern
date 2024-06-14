@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Tracklist from "../../components/Tracklist";
 import PlaylistAsItem from "../../components/PlaylistAsItem";
+import Post from "../../components/Post";
 import { useParams, useNavigate } from "react-router-dom";
 
 export default function Profile() {
@@ -10,6 +11,7 @@ export default function Profile() {
   const [user, setUser] = useState(null);
   const [tracks, setTracks] = useState([]);
   const [playlists, setPlaylists] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [isFollowing, setIsFollowing] = useState(false);
   const [activeTab, setActiveTab] = useState('favorites');
   const { userId } = useParams();
@@ -58,6 +60,20 @@ export default function Profile() {
     fetchFavorites();
   }, [userId, activeTab]);
 
+  // Fetch posts
+  useEffect(() => {
+    if (!userId || activeTab !== 'posts') return;
+    const fetchPosts = async () => {
+      try {
+        const { data: postData } = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/${userId}/posts`);
+        setPosts(postData);
+      } catch (error) {
+        console.error('Error fetching posts data', error);
+      }
+    }
+    fetchPosts();
+  }, [userId, activeTab]);
+
   // Get user playlists
   useEffect(() => {
     if (!userId || activeTab !== 'playlists') return;
@@ -79,18 +95,28 @@ export default function Profile() {
   const getTabContent = () => {
     switch (activeTab) {
       case 'favorites':
-        return <div className='mx-12 h-52'>
-          <Tracklist tracks={tracks} showFavoriteButton={true} userId={userId} />
+        return <div className='mx-12 h-52 flex justify-center'>
+          <div className="w-full max-w-4xl">
+            <Tracklist tracks={tracks} showFavoriteButton={true} userId={userId} />
+          </div>
         </div>
       case 'playlists':
-        return <div className='mt-6 mx-12 h-52'>
-          {!!playlists.length && playlists.map((playlist) => (
-            <PlaylistAsItem key={playlist._id} playlist={playlist} manageMode={false}
-              showFavorite={currentUserId !== userId} onFavoriteClick={handleFavorite} onDelete={() => { }} />
-          ))}
+        return <div className='mt-6 mx-24 h-52 flex justify-center'>
+          <div className="w-full max-w-3xl">
+            {!!playlists.length && playlists.map((playlist) => (
+              <PlaylistAsItem key={playlist._id} playlist={playlist} manageMode={false}
+                showFavorite={currentUserId !== userId} onFavoriteClick={handleFavorite} onDelete={() => { }} />
+            ))}
+          </div>
         </div>
       case 'posts':
-        return <div>动态内容</div>;
+        return <div className='flex mt-6 mx-12 justify-center'>
+          <div className="w-full max-w-2xl space-y-4">
+            {posts.map((post) => (
+              <Post key={post._id} post={post} manageMode={false} className='' />
+            ))}
+          </div>
+        </div>;
       default:
         return null; // TODO
     }
