@@ -25,11 +25,12 @@ app.use(express.static('public'))
 app.use(express.json());
 
 app.use('/api/users', authenticateToken, usersRouter);
+app.use('/api/favorites', authenticateToken, favoritesRouter);
+
 app.use('/api/user', authenticateToken, userRouter);
 app.use('/api/comments', commentsRouter);
 app.use('/api/messages', authenticateToken, messagesRouter);
 app.use('/api/profile', profileRouter);
-app.use('/api/favorites', favoritesRouter);
 app.use('/api/posts', postsRouter);
 
 // Partly protected routes

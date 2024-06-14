@@ -66,14 +66,30 @@ export default function Tracklist({
   const toggleFavorite = async (trackId) => {
     if (!showFavoriteButton) return;
 
-    try {
-      await axios.post(import.meta.env.VITE_SERVER_URL + `/api/favorites/tracks`, { trackId });
-      const updatedTracks = tracks.map((track) =>
-        (track._id === trackId) ? { ...track, favorite: !track.favorite } : track
-      );
-      setTracks(updatedTracks);
-    } catch (error) {
-      console.error('Error toggling favorite status', error);
+    // Check whether the track is already favorited
+    const track = tracks.find((track) => track._id === trackId);
+    if (track.isFavorited) {
+      // Remove from favorites
+      try {
+        await axios.delete(import.meta.env.VITE_SERVER_URL + `/api/favorites/${trackId}`);
+        const updatedTracks = tracks.map((track) =>
+          (track._id === trackId) ? { ...track, favorite: !track.isFavorited } : track
+        );
+        setTracks(updatedTracks);
+      } catch (error) {
+        console.error('Error removing from favorites', error);
+      }
+    } else {
+      // Add to favorites
+      try {
+        await axios.post(import.meta.env.VITE_SERVER_URL + `/api/favorites`, { trackId });
+        const updatedTracks = tracks.map((track) =>
+          (track._id === trackId) ? { ...track, favorite: !track.isFavorited } : track
+        );
+        setTracks(updatedTracks);
+      } catch (error) {
+        console.error('Error adding to favorites', error);
+      }
     }
   }
 

@@ -17,7 +17,7 @@ export default function Playlists() {
       try {
         const { data: playlists} = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/current/playlists`);
         setPlaylists(playlists);
-        const { data: favoritePlaylists } = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/current/playlists/favoritePlaylists`);
+        const { data: favoritePlaylists } = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/current/favoritePlaylists`);
         setFavoritePlaylists(favoritePlaylists);
       } catch (error) {
         console.error('Error fetching data', error);

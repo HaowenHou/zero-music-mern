@@ -13,14 +13,14 @@ export default function Favorites() {
     if (!userId) return;
     const fetchPlaylist = async () => {
       try {
-        const { data: favoriteList } = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/favorites?id=${userId}`);
+        const { data: trackData } = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/current/favorites`);
 
-        const trackDataPromises = favoriteList.map(async (item) => {
-          const { data: trackData } = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/tracks?id=${item}&userId=${userId}`);
-          return trackData;
-        });
+        // const trackDataPromises = favoriteList.map(async (item) => {
+        //   const { data: trackData } = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/tracks?id=${item}&userId=${userId}`);
+        //   return trackData;
+        // });
 
-        const trackData = await Promise.all(trackDataPromises);
+        // const trackData = await Promise.all(trackDataPromises);
         setTracks(trackData);
       } catch (error) {
         console.error('Error fetching data', error);

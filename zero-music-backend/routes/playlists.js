@@ -8,20 +8,23 @@ import User from '../models/User.js';
 import dbConnect from '../utils/dbConnect.js';
 import { authenticateToken } from '../utils/auth.js';
 import { storeFile, handleFormidable } from '../utils/file.js';
+import { addFavoriteStatus } from '../utils/tracks.js';
 
 const router = express.Router();
 
 // GET playlist by ID or global playlist
-router.get('/:playlistId', async (req, res) => {
+router.get('/:playlistId', authenticateToken, async (req, res) => {
   await dbConnect();
+  const userId = req.user.id;
   const { playlistId } = req.params;
   if (playlistId === 'global') {
     // Get the Global playlist from the Track model
     const globalPlaylist = await Track.find().lean();
-    res.status(200).json(globalPlaylist);
+    res.status(200).json(await addFavoriteStatus(userId, globalPlaylist));
   } else {
     try {
       const playlist = await Playlist.findById(playlistId).populate('tracks').populate('userId', 'name _id').lean();
+      playlist.tracks = await addFavoriteStatus(userId, playlist.tracks);
       res.status(200).json(playlist);
     } catch (error) {
       res.status(500).json({ message: 'Server error', error: error.message });
@@ -106,6 +109,7 @@ router.put('/:playlistId', [authenticateToken, handleFormidable], async (req, re
 // DELETE a playlist
 router.delete('/:playlistId', authenticateToken, async (req, res) => {
   await dbConnect();
+  const userId = req.user.id;
   const { playlistId } = req.params;
   try {
     // Delete cover image if it exists
@@ -139,7 +143,7 @@ router.delete('/:playlistId', authenticateToken, async (req, res) => {
 // Favorite playlist operations
 router.post('/:playlistId/favorite', authenticateToken, async (req, res) => {
   await dbConnect();
-  const { userId } = req.user;
+  const userId = req.user.id;
   const { playlistId } = req.body;
 
   try {
@@ -160,7 +164,7 @@ router.post('/:playlistId/favorite', authenticateToken, async (req, res) => {
 
 router.delete('/:playlistId/favorite', authenticateToken, async (req, res) => {
   await dbConnect();
-  const { userId } = req.user;
+  const userId = req.user.id;
   const { playlistId } = req.body;
 
   try {

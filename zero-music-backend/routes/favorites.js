@@ -4,46 +4,51 @@ import dbConnect from '../utils/dbConnect.js';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
-  const { id: userId } = req.query;
-
+// Add track to favorites
+router.post('/', async (req, res) => {
+  const userId = req.user.id;
+  const { trackId } = req.body;
   await dbConnect();
 
   try {
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
-    res.status(200).json(user.favorites);
+
+    await User.findByIdAndUpdate(
+      userId,
+      { $addToSet: { favoriteTracks: trackId } }
+    );
+
+    res.status(200).json({ success: true });
   } catch (error) {
-    console.error('Failed to retrieve favorites:', error);
-    res.status(500).json({ error: error.message });
+    console.error("Error favoriting track", error);
+    res.status(500).json({ error: "Database operation failed" });
   }
 });
 
-router.post('/:userId/:trackId', async (req, res) => {
-  const { userId, trackId } = req.params;
-
+// Remove track from favorites
+router.delete('/:trackId', async (req, res) => {
+  const userId = req.user.id;
+  const { trackId } = req.params;
   await dbConnect();
 
   try {
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
-    const index = user.favorites.indexOf(trackId);
-    if (index === -1) {
-      user.favorites.push(trackId);
-    } else {
-      user.favorites.splice(index, 1);
-    }
+    await User.findByIdAndUpdate(
+      userId,
+      { $pull: { favoriteTracks: trackId } }
+    );
 
-    await user.save();
-    res.status(200).json(user.favorites);
+    res.status(200).json({ success: true });
   } catch (error) {
-    console.error('Failed to toggle favorite:', error);
-    res.status(500).json({ error: error.message });
+    console.error("Error unfavoriting track", error);
+    res.status(500).json({ error: "Database operation failed" });
   }
 });
 
