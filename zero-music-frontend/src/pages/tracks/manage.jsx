@@ -15,15 +15,10 @@ export default function Manage() {
     // Confirm before proceeding
     if (window.confirm("Are you sure you want to delete this track?")) {
       try {
-        const response = await fetch(import.meta.env.VITE_SERVER_URL + `/api/tracks?id=${id}`, {
-          method: 'DELETE',
-        });
-
-        if (response.ok) {
+        const response = await axios.delete(import.meta.env.VITE_SERVER_URL + `/api/tracks/${id}`);
+        if (response.status === 200) {
           alert("Track deleted successfully!");
-          axios.get(import.meta.env.VITE_SERVER_URL + '/api/tracks').then((res) => {
-            setTracks(res.data);
-          })
+          setTracks(tracks.filter((track) => track._id !== id));
         } else {
           throw new Error('Failed to delete the track.');
         }

@@ -29,7 +29,7 @@ export default function ChatUI({ userId, receiverId, senderAvatar, receiverAvata
     if (!userId || !receiverId) return;
     const fetchMessages = async () => {
       try {
-        const res = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/messages/${userId}?partnerId=${receiverId}`);
+        const res = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/messages/${receiverId}`);
         setMessages(res.data.data);
       } catch (err) {
         console.error('Failed to fetch messages', err);

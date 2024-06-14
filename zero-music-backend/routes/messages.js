@@ -6,7 +6,7 @@ const router = express.Router();
 
 // GET all messages between two users
 router.get('/:userId', async (req, res) => {
-  const { userId } = req.params;
+  const userId = req.user.id;
   const { partnerId } = req.query;
 
   await dbConnect();

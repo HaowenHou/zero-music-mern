@@ -24,7 +24,7 @@ export default function Posts() {
     if (!userId) return;
     const fetchPosts = async () => {
       try {
-        const response = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/posts?userId=${userId}`);
+        const response = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/posts`);
         setPosts(response.data.data);
       } catch (error) {
         console.error(error);
@@ -35,8 +35,9 @@ export default function Posts() {
 
   const handleDelete = async (postId) => {
     try {
-      await axios.delete(import.meta.env.VITE_SERVER_URL + `/api/posts?userId=${userId}&postId=${postId}`);
+      await axios.delete(import.meta.env.VITE_SERVER_URL + `/api/posts/${postId}`);
       setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
+      setMyPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
     } catch (error) {
       console.error(error);
     }

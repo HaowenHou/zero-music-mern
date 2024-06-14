@@ -21,8 +21,8 @@ export default function Chat() {
     if (!userId) return;
     const fetchChatList = async () => {
       try {
-        const res = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/chat/${userId}`);
-        const chatList = res.data.data;
+        const res = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/messages`);
+        const chatList = res.data;
 
         // If there is an additional user id in the URL, and the user is not already in the chat list,
         // fetch the name and avatar, and set it as the active tab

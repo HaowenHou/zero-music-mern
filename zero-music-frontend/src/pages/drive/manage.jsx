@@ -12,7 +12,7 @@ export default function Manage() {
     if (!userId) return;
     const fetchPlaylist = async () => {
       try {
-        const { data: driveTracks } = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/drive?userId=${userId}`);
+        const { data: driveTracks } = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/drive`);
         setTracks(driveTracks);
       } catch (error) {
         console.error('Error fetching data', error);
@@ -25,7 +25,7 @@ export default function Manage() {
     // Confirm before proceeding
     if (window.confirm("Are you sure you want to delete this track?")) {
       try {
-        await axios.delete(import.meta.env.VITE_SERVER_URL + `/api/drive?trackId=${id}`);
+        await axios.delete(import.meta.env.VITE_SERVER_URL + `/api/drive/${id}`);
         setTracks((currentTracks) => currentTracks.filter((track) => track._id !== id));
       } catch (error) {
         console.error("Error deleting track:", error);

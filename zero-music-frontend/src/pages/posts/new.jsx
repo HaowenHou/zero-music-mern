@@ -29,7 +29,6 @@ export default function New() {
         trackId,
         userId
       });
-      console.log(response.data);
     } catch (error) {
       console.error(error);
     }

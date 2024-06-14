@@ -33,11 +33,8 @@ export default function Profile() {
   const fetchFollowingStatus = async () => {
     if (!currentUserId) return;
     try {
-      const response = await axios.post(import.meta.env.VITE_SERVER_URL + '/api/profile/isFollowing', {
-        userId: currentUserId,
-        profileId: userId
-      });
-      setIsFollowing(response.data.isFollowing);
+      const response = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/${userId}?populate=following`);
+      setIsFollowing(response.data.followers.includes(currentUserId));
     } catch (error) {
       console.error('Error fetching following status', error);
     }
@@ -53,7 +50,6 @@ export default function Profile() {
     const fetchFavorites = async () => {
       try {
         const { data: playlists } = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/${userId}/favorites`);
-        console.log(playlists);
         const trackDataPromises = playlists.favoritePlaylists.map(item =>
           axios.get(import.meta.env.VITE_SERVER_URL + `/api/tracks?id=${item._id}&userId=${userId}`).then(response => response.data)
         );
@@ -72,9 +68,8 @@ export default function Profile() {
     if (!userId || activeTab !== 'playlists') return;
     const fetchPlaylists = async () => {
       try {
-        const response = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/${currentUserId}/playlists`);
-        setPlaylists(response.data.playlists);
-        console.log(response.data.playlists);
+        const response = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/${userId}/playlists`);
+        setPlaylists(response.data);
       } catch (error) {
         console.error('Error fetching data', error);
       }
@@ -108,10 +103,12 @@ export default function Profile() {
 
   const handleFollow = async () => {
     try {
-      const response = await axios.post(import.meta.env.VITE_SERVER_URL + '/api/profile/follow', {
-        userId: currentUserId,
-        profileId: userId
-      });
+      let response;
+      if (isFollowing) {
+        response = await axios.delete(import.meta.env.VITE_SERVER_URL + `/api/users/${userId}/follow`);
+      } else {
+        response = await axios.post(import.meta.env.VITE_SERVER_URL + `/api/users/${userId}/follow`);
+      }
       if (response.data.success) {
         setIsFollowing(!isFollowing);
       }
@@ -126,10 +123,7 @@ export default function Profile() {
 
   const handleFavorite = async (playlistId) => {
     try {
-      const response = await axios.post(import.meta.env.VITE_SERVER_URL + `/api/playlists/favoritePlaylists`, {
-        userId: currentUserId,
-        playlistId
-      });
+      const response = await axios.post(import.meta.env.VITE_SERVER_URL + `/api/playlists/${playlistId}/favorite`);
       if (response.data.success) {
         const updatedPlaylists = playlists.map(playlist => {
           if (playlist._id === playlistId) {

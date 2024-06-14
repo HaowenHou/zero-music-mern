@@ -8,12 +8,12 @@ const router = express.Router();
 
 // GET posts from a user and their followees
 router.get('/', async (req, res) => {
-  const { userId } = req.params;
+  const userId = req.user.id;
   await dbConnect();
 
   try {
     const user = await User.findById(userId);
-    const followingIds = user.following.map(id => mongoose.Types.ObjectId(id));
+    const followingIds = user.following.map(id => new mongoose.Types.ObjectId(id));
     followingIds.push(user._id); // Include the user's own ID to fetch their posts too
 
     const posts = await Post.find({ userId: { $in: followingIds } })
@@ -30,7 +30,7 @@ router.get('/', async (req, res) => {
 
 // POST a new post
 router.post('/', async (req, res) => {
-  const { userId } = req.params;
+  const userId = req.user.id;
   await dbConnect();
 
   try {
@@ -39,7 +39,7 @@ router.post('/', async (req, res) => {
       userId,
       content,
       timestamp: new Date(), // Ensure the timestamp is set when creating a post
-      trackId: trackId ? mongoose.Types.ObjectId(trackId) : undefined
+      trackId: trackId ? new mongoose.Types.ObjectId(trackId) : undefined
     });
 
     await post.save();
@@ -57,7 +57,7 @@ router.post('/', async (req, res) => {
 // DELETE a post
 router.delete('/:postId', async (req, res) => {
   const { postId } = req.params;
-  const { userId } = req.query; // Pass userId as a query parameter
+  const userId = req.user.id;
 
   await dbConnect();
 

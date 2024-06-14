@@ -59,7 +59,7 @@ router.post('/', async (req, res) => {
 });
 
 // Get user's playlists
-router.get('/:userId/playlists', async (req, res) => {
+router.get('/:userId/playlists', authenticateToken, async (req, res) => {
   await dbConnect();
   let userId = req.params.userId;
   if (userId === 'current') {
@@ -94,7 +94,7 @@ router.get('/:userId/playlists', async (req, res) => {
 });
 
 // Get user's favorite playlists
-router.get('/:userId/favoritePlaylists', async (req, res) => {
+router.get('/:userId/favoritePlaylists', authenticateToken, async (req, res) => {
   await dbConnect();
   let userId = req.params.userId;
   if (userId === 'current') {
@@ -129,7 +129,7 @@ router.get('/:userId/favoritePlaylists', async (req, res) => {
 });
 
 // Get user's favorite tracks
-router.get('/:userId/favorites', async (req, res) => {
+router.get('/:userId/favorites', authenticateToken, async (req, res) => {
   await dbConnect();
   let userId = req.params.userId;
   if (userId === 'current') {

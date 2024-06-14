@@ -47,24 +47,38 @@ export default function TrackForm({
     }
 
     if (_id) {
-      data.append('id', _id);
-    }
-    try {
-      const response = await axios.post(import.meta.env.VITE_SERVER_URL + '/api/tracks', data, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+      try {
+        const response = await axios.put(import.meta.env.VITE_SERVER_URL + `/api/tracks/${_id}`, data, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        // If successful, redirect to the track page
+        if (response.status === 201 || response.status === 200) {
+          navigate('/tracks/manage');
+        } else {
+          throw new Error('Failed to save music');
         }
-      });
-      // If successful, redirect to the track page
-      if (response.status === 201 || response.status === 200) {
-        navigate('/tracks/manage');
-      } else {
-        throw new Error('Failed to save music');
+      } catch (error) {
+        console.error('Upload error', error);
       }
-    } catch (error) {
-      console.error('Upload error', error);
+    } else {
+      try {
+        const response = await axios.post(import.meta.env.VITE_SERVER_URL + '/api/tracks', data, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        // If successful, redirect to the track page
+        if (response.status === 201 || response.status === 200) {
+          navigate('/tracks/manage');
+        } else {
+          throw new Error('Failed to save music');
+        }
+      } catch (error) {
+        console.error('Upload error', error);
+      }
     }
-
   }
 
   return (

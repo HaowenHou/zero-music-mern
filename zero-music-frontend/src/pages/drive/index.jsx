@@ -13,7 +13,7 @@ export default function UserDrive() {
     if (!userId) return;
     const fetchPlaylist = async () => {
       try {
-        const { data: driveTracks } = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/drive?userId=${userId}`);
+        const { data: driveTracks } = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/drive`);
 
         setTracks(driveTracks);
       } catch (error) {

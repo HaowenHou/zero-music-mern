@@ -11,7 +11,7 @@ export default function EditTrack() {
     if (!trackId) {
       return;
     }
-    axios.get(import.meta.env.VITE_SERVER_URL + '/api/tracks?id=' + trackId).then(res =>{
+    axios.get(import.meta.env.VITE_SERVER_URL + `/api/tracks/${trackId}`).then(res =>{
       setTrackInfo(res.data);
     })
   }, [trackId]);

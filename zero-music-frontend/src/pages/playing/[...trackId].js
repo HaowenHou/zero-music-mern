@@ -5,22 +5,18 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 export default function Playing() {
-  const navigate = useNavigate();
   const { trackId } = router.query;
   const [track, setTrack] = useState(null);
   const [comments, setComments] = useState([]);
   const [showing, setShowing] = useState('lyrics');
   const [content, setContent] = useState('');
 
-  const { userId } = useSelector((state) => state.userState);
-
   useEffect(() => {
     if (!trackId) return;
 
     const fetchTrack = async () => {
       try {
-        const response = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/tracks?id=${trackId}`);
-        console.log(response.data);
+        const response = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/tracks/${trackId}`);
         setTrack(response.data);
       } catch (error) {
         console.error(error);
@@ -40,7 +36,7 @@ export default function Playing() {
 
   const fetchComments = async () => {
     try {
-      const response = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/comments/${trackId}`);
+      const response = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/tracks/${trackId}/comments`);
       setComments(response.data);
     } catch (error) {
       console.error(error);
@@ -49,7 +45,7 @@ export default function Playing() {
 
   const postComment = async () => {
     try {
-      await axios.post(import.meta.env.VITE_SERVER_URL + `/api/comments/${trackId}`, { userId, content, timestamp: new Date() });
+      await axios.post(import.meta.env.VITE_SERVER_URL + `/api/tracks/${trackId}/comments`, { content, timestamp: new Date() });
       setContent('');
       fetchComments();
     } catch (error) {
