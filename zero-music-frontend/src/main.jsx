@@ -7,6 +7,21 @@ import store, { persistor } from './redux/store'
 import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 
+// Redirect to login page on 401 responses
+import { createBrowserHistory } from 'history';
+import axios from 'axios';
+// const history = createBrowserHistory();
+axios.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response && error.response.status === 401) {
+      // history.push('/login');
+      window.location = 'login';
+    }
+    return Promise.reject(error);
+  }
+);
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
