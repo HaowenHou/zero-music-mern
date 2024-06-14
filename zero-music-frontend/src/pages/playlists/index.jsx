@@ -15,9 +15,10 @@ export default function Playlists() {
     if (!userId) return;
     const fetchPlaylists = async () => {
       try {
-        const response = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/playlist/${userId}`);
-        setPlaylists(response.data.playlists);
-        setFavoritePlaylists(response.data.favoritePlaylists);
+        const { data: playlists} = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/current/playlists`);
+        setPlaylists(playlists);
+        const { data: favoritePlaylists } = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/current/playlists/favoritePlaylists`);
+        setFavoritePlaylists(favoritePlaylists);
       } catch (error) {
         console.error('Error fetching data', error);
       }
@@ -32,9 +33,9 @@ export default function Playlists() {
   const handleDeleteMyPlaylist = async (playlistId) => {
     setPlaylists(currentPlaylists => currentPlaylists.filter(p => p._id !== playlistId));
     try {
-      const response = await axios.delete(import.meta.env.VITE_SERVER_URL + `/api/playlist?userId=${userId}&playlistId=${playlistId}`);
+      const response = await axios.delete(import.meta.env.VITE_SERVER_URL + `/api/playlists/${playlistId}`);
       if (response.status === 200) {
-        // onDelete(playlistId);  // Call the onDelete handler
+        // onDelete(playlistId);
       } else {
         console.error('Failed to delete playlist');
       }
@@ -46,9 +47,9 @@ export default function Playlists() {
   const handleDeleteFavoritePlaylist = async (playlistId) => {
     setFavoritePlaylists(currentPlaylists => currentPlaylists.filter(p => p._id !== playlistId));
     try {
-      const response = await axios.delete(import.meta.env.VITE_SERVER_URL + `/api/playlist/favoritePlaylists?userId=${userId}&playlistId=${playlistId}`);
+      const response = await axios.delete(import.meta.env.VITE_SERVER_URL + `/api/playlists/${playlistId}/favorite`);
       if (response.status === 200) {
-        // onDelete(playlistId);  // Call the onDelete handler
+        // onDelete(playlistId);
       } else {
         console.error('Failed to delete playlist');
       }

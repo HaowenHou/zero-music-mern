@@ -15,7 +15,7 @@ export default function Profile() {
   const { userId } = useParams();
 
   // Get current user id to check whether this is the user's own profile.
-  const { userId: currentUid } = useSelector((state) => state.userState);
+  const { userId: currentUserId } = useSelector((state) => state.userState);
 
   useEffect(() => {
     if (!userId) return;
@@ -31,10 +31,10 @@ export default function Profile() {
   }, [userId]);
 
   const fetchFollowingStatus = async () => {
-    if (!currentUid) return;
+    if (!currentUserId) return;
     try {
       const response = await axios.post(import.meta.env.VITE_SERVER_URL + '/api/profile/isFollowing', {
-        userId: currentUid,
+        userId: currentUserId,
         profileId: userId
       });
       setIsFollowing(response.data.isFollowing);
@@ -45,17 +45,17 @@ export default function Profile() {
 
   useEffect(() => {
     fetchFollowingStatus();
-  }, [currentUid, userId]);
+  }, [currentUserId, userId]);
 
   // Fetch favorites
   useEffect(() => {
     if (!userId || activeTab !== 'favorites') return;
     const fetchFavorites = async () => {
       try {
-        const { data: playlists } = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/playlist/${userId}`);
-        // console.log(favoriteList);
+        const { data: playlists } = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/favorites/${userId}`);
+        console.log(playlists);
         const trackDataPromises = playlists.favoritePlaylists.map(item =>
-          axios.get(import.meta.env.VITE_SERVER_URL + `/api/tracks?id=${item}&userId=${userId}`).then(response => response.data)
+          axios.get(import.meta.env.VITE_SERVER_URL + `/api/tracks?id=${item._id}&userId=${userId}`).then(response => response.data)
         );
         const trackData = await Promise.all(trackDataPromises);
         setTracks(trackData);
@@ -72,7 +72,7 @@ export default function Profile() {
     if (!userId || activeTab !== 'playlists') return;
     const fetchPlaylists = async () => {
       try {
-        const response = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/playlist/${userId}?currentUid=${currentUid}`);
+        const response = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/${currentUserId}/playlists`);
         setPlaylists(response.data.playlists);
         console.log(response.data.playlists);
       } catch (error) {
@@ -96,7 +96,7 @@ export default function Profile() {
         return <div className='mt-6 mx-12 h-52'>
           {!!playlists.length && playlists.map((playlist) => (
             <PlaylistAsItem key={playlist._id} playlist={playlist} manageMode={false}
-              showFavorite={currentUid !== userId} onFavoriteClick={handleFavorite} onDelete={() => { }} />
+              showFavorite={currentUserId !== userId} onFavoriteClick={handleFavorite} onDelete={() => { }} />
           ))}
         </div>
       case 'posts':
@@ -109,7 +109,7 @@ export default function Profile() {
   const handleFollow = async () => {
     try {
       const response = await axios.post(import.meta.env.VITE_SERVER_URL + '/api/profile/follow', {
-        userId: currentUid,
+        userId: currentUserId,
         profileId: userId
       });
       if (response.data.success) {
@@ -126,8 +126,8 @@ export default function Profile() {
 
   const handleFavorite = async (playlistId) => {
     try {
-      const response = await axios.post(import.meta.env.VITE_SERVER_URL + `/api/playlist/favoritePlaylists`, {
-        userId: currentUid,
+      const response = await axios.post(import.meta.env.VITE_SERVER_URL + `/api/playlists/favoritePlaylists`, {
+        userId: currentUserId,
         playlistId
       });
       if (response.data.success) {
@@ -157,7 +157,7 @@ export default function Profile() {
                 <span>粉丝：{user.followers?.length || 0}</span>
               </div>
               {/* {!user.location && <span className="text-lg">地区：{user.location}</span>} */}
-              {currentUid !== userId && (
+              {currentUserId !== userId && (
                 <div className="flex">
                   <button onClick={handleFollow} className="mx-4 py-1.5 bg-orange-300 rounded-3xl w-20">{isFollowing ? '已关注' : '关注'}</button>
                   <button onClick={handleMessaging} className="py-1.5 bg-orange-300 rounded-3xl w-20">私信</button>

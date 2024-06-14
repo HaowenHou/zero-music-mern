@@ -11,7 +11,7 @@ function Home() {
   useEffect(() => {
     const fetchPlaylist = async () => {
       try {
-        const { data: trackData } = await axios.get(import.meta.env.VITE_SERVER_URL + '/api/playlist');
+        const { data: trackData } = await axios.get(import.meta.env.VITE_SERVER_URL + '/api/playlists/global');
         setTracks(trackData);
       } catch (error) {
         console.error('Error fetching data', error);

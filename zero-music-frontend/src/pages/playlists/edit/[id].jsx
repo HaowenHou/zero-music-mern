@@ -10,7 +10,7 @@ const EditPlaylist = () => {
 
   useEffect(() => {
     const fetchPlaylistData = async () => {
-      const response = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/playlist?id=${playlistId}`);
+      const response = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/playlists/${playlistId}`);
       if (response.status === 200) {
         setPlaylistData(response.data);
       }

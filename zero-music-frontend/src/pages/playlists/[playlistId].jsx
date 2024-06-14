@@ -16,7 +16,7 @@ export default function Playlist() {
     if (!playlistId) return;
     const getPlaylist = async () => {
       try {
-        const response = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/playlist?id=${playlistId}`);
+        const response = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/playlists/${playlistId}`);
         setPlaylist(response.data);
         setTracks(response.data.tracks);
       } catch (error) {
@@ -32,7 +32,7 @@ export default function Playlist() {
 
   const handleRemoveFromPlaylist = async (trackId) => {
     try {
-      const response = await axios.patch(import.meta.env.VITE_SERVER_URL + `/api/playlist?playlistId=${playlistId}&trackId=${trackId}&action=remove`);
+      const response = await axios.delete(import.meta.env.VITE_SERVER_URL + `/api/playlists/${playlistId}/tracks/${trackId}`);
       if (response.status === 200) {
         setTracks(tracks.filter(track => track._id !== trackId));
       } else {

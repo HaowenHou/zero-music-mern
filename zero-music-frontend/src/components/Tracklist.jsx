@@ -28,7 +28,7 @@ export default function Tracklist({
       try {
         console.log('Menu action response:', menuResopnse);
         const { playlistId, trackId } = menuResopnse;
-        const apiResponse = await axios.patch(import.meta.env.VITE_SERVER_URL + `/api/playlist?playlistId=${playlistId}&trackId=${trackId}`);
+        const apiResponse = await axios.post(import.meta.env.VITE_SERVER_URL + `/api/playlists/${playlistId}/tracks`, { trackId });
         console.log('Track added:', apiResponse.data);  // Handle success
       } catch (error) {
         console.error('Error adding track to playlist:', error);  // Handle errors
@@ -48,7 +48,7 @@ export default function Tracklist({
     console.log(event);
     event.preventDefault();
 
-    const response = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/playlist/${userId}`);
+    const response = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/${userId}/playlists`);
     const playlists = response.data.playlists;
     const menuItems = playlists.map((playlist) => ({
       label: playlist.title,
@@ -67,7 +67,7 @@ export default function Tracklist({
     if (!showFavoriteButton) return;
 
     try {
-      await axios.post(import.meta.env.VITE_SERVER_URL + `/api/favorites?id=${trackId}&userId=${userId}`);
+      await axios.post(import.meta.env.VITE_SERVER_URL + `/api/favorites/tracks`, { trackId });
       const updatedTracks = tracks.map((track) =>
         (track._id === trackId) ? { ...track, favorite: !track.favorite } : track
       );

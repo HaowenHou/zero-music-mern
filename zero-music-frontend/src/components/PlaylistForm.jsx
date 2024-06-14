@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { formatUrl } from "../utils/url";
 
 export default function PlaylistForm({
   _id,
@@ -14,6 +15,7 @@ export default function PlaylistForm({
   const navigate = useNavigate();
 
   function handleCoverChange(ev) {
+    console.log(ev.target.files)
     const file = ev.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -21,6 +23,7 @@ export default function PlaylistForm({
         setCover(reader.result); // Set the cover state to the read data URL
       };
       reader.readAsDataURL(file);
+      console.log(file)
       setCoverFile(file);
     }
   }
@@ -29,7 +32,6 @@ export default function PlaylistForm({
     ev.preventDefault();
     const data = new FormData();
     data.append('title', title);
-    data.append('userId', userId);
     if (coverFile) {
       data.append('cover', coverFile);
     } else if (_id && !coverFile) {
@@ -40,13 +42,13 @@ export default function PlaylistForm({
     try {
       let response;
       if (_id) {
-        response = await axios.put(import.meta.env.VITE_SERVER_URL + `/api/playlist?id=${_id}`, data, {
+        response = await axios.put(import.meta.env.VITE_SERVER_URL + `/api/playlists/${_id}`, data, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
         });
       } else {
-        response = await axios.post(import.meta.env.VITE_SERVER_URL + '/api/playlist', data, {
+        response = await axios.post(import.meta.env.VITE_SERVER_URL + '/api/playlists', data, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -86,7 +88,7 @@ export default function PlaylistForm({
         (
           <label className="mt-2 cursor-pointer relative w-36 h-36">
             <input type="file" className="hidden" onChange={handleCoverChange} />
-            <img src={import.meta.env.VITE_SERVER_URL + cover} className="w-full h-full object-cover border rounded-lg" />
+            <img src={formatUrl(cover)} className="w-full h-full object-cover border rounded-lg" />
             <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300">
               <span className="text-black font-semibold">更换封面</span>
             </div>
