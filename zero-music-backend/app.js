@@ -25,17 +25,17 @@ app.use(express.json());
 app.use('/api/favorites', authenticateToken, favoritesRouter);
 app.use('/api/playlists', authenticateToken, playlistRouter);
 app.use('/api/drive', authenticateToken, driveRouter);
+app.use('/api/posts', authenticateToken, postsRouter);
+app.use('/api/chat', authenticateToken, chatRouter);
 
 app.use('/api/comments', commentsRouter);
 app.use('/api/messages', authenticateToken, messagesRouter);
 app.use('/api/profile', profileRouter);
-app.use('/api/posts', postsRouter);
 
 // Partly protected routes
 app.use('/api/users', usersRouter);
 app.use('/api/tracks', tracksRouter);
 
-app.use('/api/chat', chatRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/search', searchRouter);
 

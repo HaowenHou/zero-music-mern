@@ -7,9 +7,8 @@ import dbConnect from '../utils/dbConnect.js';
 const router = express.Router();
 
 // GET posts from a user and their followees
-router.get('/:userId', async (req, res) => {
+router.get('/', async (req, res) => {
   const { userId } = req.params;
-
   await dbConnect();
 
   try {
@@ -31,10 +30,11 @@ router.get('/:userId', async (req, res) => {
 
 // POST a new post
 router.post('/', async (req, res) => {
+  const { userId } = req.params;
   await dbConnect();
 
   try {
-    const { userId, content, trackId } = req.body;
+    const { content, trackId } = req.body;
     const post = new Post({
       userId,
       content,
@@ -45,7 +45,7 @@ router.post('/', async (req, res) => {
     await post.save();
     
     // Add the post ID to the user's posts array
-    await User.findByIdAndUpdate(userId, { $push: { posts: post._id } });
+    await User.findByIdAndUpdate(userId, { $addToSet: { posts: post._id } });
 
     res.status(201).json({ success: true, data: post });
   } catch (error) {
