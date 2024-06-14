@@ -5,7 +5,6 @@ import { authenticateToken } from './utils/auth.js';
 import playlistRouter from './routes/playlists.js';
 import tracksRouter from './routes/tracks.js';
 import chatRouter from './routes/chat.js';
-import commentsRouter from './routes/comments.js';
 import messagesRouter from './routes/messages.js';
 import profileRouter from './routes/profile.js';
 import driveRouter from './routes/drive.js';
@@ -28,7 +27,6 @@ app.use('/api/drive', authenticateToken, driveRouter);
 app.use('/api/posts', authenticateToken, postsRouter);
 app.use('/api/chat', authenticateToken, chatRouter);
 
-app.use('/api/comments', commentsRouter);
 app.use('/api/messages', authenticateToken, messagesRouter);
 app.use('/api/profile', profileRouter);
 
