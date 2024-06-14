@@ -10,7 +10,7 @@ export default function ChatUI({ userId, receiverId, senderAvatar, receiverAvata
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    socket = io({
+    socket = io(import.meta.env.VITE_SERVER_URL, {
       query: { userId }
     });
 

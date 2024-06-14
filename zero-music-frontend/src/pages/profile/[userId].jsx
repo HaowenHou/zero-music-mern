@@ -49,13 +49,8 @@ export default function Profile() {
     if (!userId || activeTab !== 'favorites') return;
     const fetchFavorites = async () => {
       try {
-        const { data: playlists } = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/${userId}/favorites`);
-        const trackDataPromises = playlists.favoritePlaylists.map(item =>
-          axios.get(import.meta.env.VITE_SERVER_URL + `/api/tracks?id=${item._id}&userId=${userId}`).then(response => response.data)
-        );
-        const trackData = await Promise.all(trackDataPromises);
+        const { data: trackData } = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/${userId}/favorites`);
         setTracks(trackData);
-        // console.log(trackData);
       } catch (error) {
         console.error('Error fetching favorites data', error);
       }
