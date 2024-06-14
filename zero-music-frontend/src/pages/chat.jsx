@@ -57,18 +57,23 @@ export default function Chat() {
 
   return (
     <div className="p-4 flex w-full h-full">
-      <div className='flex flex-col gap-2 w-60'>
-        {chatList && chatList.map(chat => (
-          <button
-            onClick={() => handleChatClick(chat.partnerId)}
-            key={chat.partnerId}
-            className={(activeTab === chat.partnerId ?
-              `h-16 flex items-center space-x-2 bg-gray-100 p-2 rounded-lg` :
-              `hover:bg-gray-50 h-16 flex items-center space-x-2 bg-white p-2 rounded-lg`)}>
-            <img src={import.meta.env.VITE_SERVER_URL + chat.partnerAvatar} alt={chat.partnerName} className='w-10 h-10 rounded-full' />
-            <span className='pl-2'>{chat.partnerName}</span>
-          </button>
-        ))}
+      <div className='h-full'>
+        <h1 className='text-xl font-bold ml-4 mt-4'>私信列表</h1>
+        <div className='mt-6 flex items-center'>
+          <div className='flex flex-col gap-2 w-60'>
+            {chatList && chatList.map(chat => (
+              <button
+                onClick={() => handleChatClick(chat.partnerId)}
+                key={chat.partnerId}
+                className={(activeTab === chat.partnerId ?
+                  `h-16 flex items-center space-x-2 bg-gray-100 p-2 rounded-lg` :
+                  `hover:bg-gray-50 h-16 flex items-center space-x-2 bg-white p-2 rounded-lg`)}>
+                <img src={import.meta.env.VITE_SERVER_URL + chat.partnerAvatar} alt={chat.partnerName} className='w-10 h-10 rounded-full' />
+                <span className='pl-2'>{chat.partnerName}</span>
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
       <div className='w-full h-full'>
