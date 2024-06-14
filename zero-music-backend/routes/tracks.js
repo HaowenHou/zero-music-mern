@@ -1,44 +1,21 @@
 import express from 'express';
-import formidable from 'formidable';
 import fs from 'fs';
 import path from 'path';
 import { parseFile } from "music-metadata";
 import Track from '../models/Track.js';
-import Playlist from '../models/Playlist.js';
 import dbConnect from '../utils/dbConnect.js';
-import { isTrackFavoritedByUser } from '../utils/userUtils.js';
+import { handleFormidable, storeFile } from '../utils/file.js';
+import { authenticateToken } from '../utils/auth.js';
 
 const router = express.Router();
 
-// Middleware to handle formidable parsing
-router.use((req, res, next) => {
-  if (['POST', 'PUT'].includes(req.method)) {
-    const form = formidable({});
-    form.parse(req, (err, fields, files) => {
-      if (err) {
-        res.status(400).json({ error: err.message });
-        return;
-      }
-      req.fields = fields;
-      req.files = files;
-      next();
-    });
-  } else {
-    next();
-  }
-});
-
 // GET a track by ID or all tracks
-router.get('/', async (req, res) => {
+router.get('/:trackId?', async (req, res) => {
   await dbConnect();
-  const { id } = req.query;
+  const { trackId } = req.params;
   try {
-    if (id) {
-      const track = await Track.findById(id).lean();
-      if (req.query.userId) {
-        const favorite = await isTrackFavoritedByUser(req.query.userId, id);
-        track.favorite = favorite;
-      }
+    if (trackId) {
+      const track = await Track.findById(trackId).lean();
       res.status(200).json(track);
     } else {
       const tracks = await Track.find({}).lean();
@@ -49,40 +26,22 @@ router.get('/', async (req, res) => {
   }
 });
 
-// POST create a new track or update an existing one
-router.post('/', async (req, res) => {
+// POST create a new track
+router.post('/', [authenticateToken, handleFormidable], async (req, res) => {
   await dbConnect();
   const { fields, files } = req;
-  const newName = `${fields.title[0]} - ${fields.artist[0]}`;
+  const title = fields.title[0];
+  const artist = fields.artist[0];
+  const newFilename = `${title} - ${artist}`;
 
   let trackDuration = 0;
   let trackPath = '';
   let coverPath = '';
 
-  // Handle file storage
-  const storeFile = async (file, type) => {
-    const uploadsDir = path.resolve(`./public/${type}`);
-    const oldPath = file.filepath;
-    const newPath = path.join(uploadsDir, newName + path.extname(file.originalFilename));
-    const webPath = `/${type}/` + newName + path.extname(file.originalFilename);
-
-    if (!fs.existsSync(uploadsDir)) {
-      fs.mkdirSync(uploadsDir, { recursive: true });
-    }
-
-    fs.copyFileSync(oldPath, newPath);
-    fs.unlinkSync(oldPath);
-
-    return {
-      newPath,
-      webPath
-    };
-  };
-
   // Process track file
   if (files.track) {
     const file = Array.isArray(files.track) ? files.track[0] : files.track;
-    const result = await storeFile(file, 'tracks');
+    const result = await storeFile(file, 'tracks', newFilename);
     trackPath = result.webPath;
 
     // Read music metadata
@@ -99,13 +58,68 @@ router.post('/', async (req, res) => {
   // Process cover file
   if (files.cover) {
     const file = Array.isArray(files.cover) ? files.cover[0] : files.cover;
-    const result = await storeFile(file, 'covers');
+    const result = await storeFile(file, 'covers', newFilename);
     coverPath = result.webPath;
   }
 
   const updateData = {
-    title: fields.title[0],
-    artist: fields.artist[0],
+    title: title,
+    artist: artist,
+    duration: trackDuration,
+    cover: coverPath || undefined,
+    track: trackPath || undefined,
+  };
+
+  try {
+    const track = new Track(updateData);
+    await track.save();
+    res.status(201).json({ message: 'Track created', data: track });
+  } catch (error) {
+    console.error('Database operation failed', error);
+    res.status(500).json({ error: 'Database operation failed' });
+  }
+});
+
+// PUT update a track
+router.put('/:trackId', [authenticateToken, handleFormidable], async (req, res) => {
+  await dbConnect();
+  const { trackId } = req.params;
+  const { fields, files } = req;
+  const title = fields.title[0];
+  const artist = fields.artist[0];
+  const newFilename = `${title} - ${artist}`;
+
+  let trackDuration = 0;
+  let trackPath = '';
+  let coverPath = '';
+
+  // Process track file
+  if (files.track) {
+    const file = Array.isArray(files.track) ? files.track[0] : files.track;
+    const result = await storeFile(file, 'tracks', newFilename);
+    trackPath = result.webPath;
+
+    // Read music metadata
+    try {
+      const metadata = await parseFile(result.newPath);
+      trackDuration = Math.round(metadata.format.duration);
+    } catch (error) {
+      console.error('Error reading metadata', error);
+      res.status(500).json({ error: 'Failed to read file metadata' });
+      return;
+    }
+  }
+
+  // Process cover file
+  if (files.cover) {
+    const file = Array.isArray(files.cover) ? files.cover[0] : files.cover;
+    const result = await storeFile(file, 'covers', newFilename);
+    coverPath = result.webPath;
+  }
+
+  const updateData = {
+    title: title,
+    artist: artist,
     duration: trackDuration,
     cover: coverPath || undefined,
     track: trackPath || undefined,
@@ -113,21 +127,12 @@ router.post('/', async (req, res) => {
 
   try {
     // Update or create new track
-    if (fields.id) {
-      const trackId = fields.id;
-      const track = await Track.findByIdAndUpdate(trackId, updateData, { new: true });
-      if (!track) {
-        res.status(404).json({ error: 'Track not found' });
-        return;
-      }
-      res.status(200).json({ message: 'Track updated', data: track });
-    } else {
-      const track = new Track(updateData);
-      await track.save();
-      // Optionally add the track to the global playlist
-      await Playlist.updateOne({ title: 'Global' }, { $push: { tracks: track._id } });
-      res.status(201).json({ message: 'Track created', data: track });
+    const track = await Track.findByIdAndUpdate(trackId, updateData, { new: true });
+    if (!track) {
+      res.status(404).json({ error: 'Track not found' });
+      return;
     }
+    res.status(200).json({ message: 'Track updated', data: track });
   } catch (error) {
     console.error('Database operation failed', error);
     res.status(500).json({ error: 'Database operation failed' });
@@ -135,19 +140,19 @@ router.post('/', async (req, res) => {
 });
 
 // DELETE a track
-router.delete('/', async (req, res) => {
+router.delete('/:trackId', authenticateToken, async (req, res) => {
   await dbConnect();
-  const { id } = req.query;
+  const { trackId } = req.params;
   try {
-    const track = await Track.findById(id);
+    const track = await Track.findById(trackId);
     // Delete associated files
     if (track.track) {
-      fs.unlinkSync(path.resolve(`./public${track.track}`));
+      fs.unlinkSync(path.join(process.cwd(), 'public', track.track));
     }
     if (track.cover) {
-      fs.unlinkSync(path.resolve(`./public${track.cover}`));
+      fs.unlinkSync(path.join(process.cwd(), 'public', track.cover));
     }
-    await Track.deleteOne({ _id: id });
+    await Track.deleteOne({ _id: trackId });
     res.status(200).json({ success: true, message: 'Track deleted' });
   } catch (error) {
     res.status(500).json({ error: error.message });
