@@ -1,14 +1,12 @@
 import express from 'express';
 import Track from '../models/Track.js';
 import User from '../models/User.js';
-import dbConnect from '../utils/dbConnect.js';
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
   const { q } = req.query;
-  await dbConnect();
-
+  
   try {
     const trackResults = await Track.find({
       title: { $regex: q, $options: 'i' }

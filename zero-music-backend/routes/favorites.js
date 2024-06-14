@@ -1,6 +1,5 @@
 import express from 'express';
 import User from '../models/User.js';
-import dbConnect from '../utils/dbConnect.js';
 
 const router = express.Router();
 
@@ -8,8 +7,7 @@ const router = express.Router();
 router.post('/', async (req, res) => {
   const userId = req.user.id;
   const { trackId } = req.body;
-  await dbConnect();
-
+  
   try {
     const user = await User.findById(userId);
     if (!user) {
@@ -32,8 +30,7 @@ router.post('/', async (req, res) => {
 router.delete('/:trackId', async (req, res) => {
   const userId = req.user.id;
   const { trackId } = req.params;
-  await dbConnect();
-
+  
   try {
     const user = await User.findById(userId);
     if (!user) {

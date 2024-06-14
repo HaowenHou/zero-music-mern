@@ -5,7 +5,6 @@ import mongoose from 'mongoose';
 import Track from '../models/Track.js';
 import Playlist from '../models/Playlist.js';
 import User from '../models/User.js';
-import dbConnect from '../utils/dbConnect.js';
 import { storeFile, handleFormidable } from '../utils/file.js';
 import { addFavoriteStatus } from '../utils/tracks.js';
 
@@ -13,8 +12,7 @@ const router = express.Router();
 
 // GET playlist by ID or global playlist
 router.get('/:playlistId', async (req, res) => {
-  await dbConnect();
-  const userId = req.user.id;
+    const userId = req.user.id;
   const { playlistId } = req.params;
   if (playlistId === 'global') {
     // Get the Global playlist from the Track model
@@ -33,8 +31,7 @@ router.get('/:playlistId', async (req, res) => {
 
 // POST new playlist
 router.post('', handleFormidable, async (req, res) => {
-  await dbConnect();
-  const userId = req.user.id;
+    const userId = req.user.id;
   const title = req.fields.title[0];
   const newFilename = `${title}-${userId}`;
   let coverPath = '';
@@ -69,8 +66,7 @@ router.post('', handleFormidable, async (req, res) => {
 // PUT update existing playlist
 router.put('/:playlistId', handleFormidable, async (req, res) => {
   const { playlistId } = req.params;
-  await dbConnect();
-  const userId = req.user.id;
+    const userId = req.user.id;
   const title = req.fields.title[0];
   const newFilename = `${title}-${userId}`;
   let coverPath = '';
@@ -107,8 +103,7 @@ router.put('/:playlistId', handleFormidable, async (req, res) => {
 
 // DELETE a playlist
 router.delete('/:playlistId', async (req, res) => {
-  await dbConnect();
-  const userId = req.user.id;
+    const userId = req.user.id;
   const { playlistId } = req.params;
   try {
     // Delete cover image if it exists
@@ -141,8 +136,7 @@ router.delete('/:playlistId', async (req, res) => {
 
 // Favorite playlist operations
 router.post('/:playlistId/favorite', async (req, res) => {
-  await dbConnect();
-  const userId = req.user.id;
+    const userId = req.user.id;
   const { playlistId } = req.body;
 
   try {
@@ -162,8 +156,7 @@ router.post('/:playlistId/favorite', async (req, res) => {
 });
 
 router.delete('/:playlistId/favorite', async (req, res) => {
-  await dbConnect();
-  const userId = req.user.id;
+    const userId = req.user.id;
   const { playlistId } = req.body;
 
   try {
@@ -184,8 +177,7 @@ router.delete('/:playlistId/favorite', async (req, res) => {
 
 // Add a track to a playlist
 router.post('/:playlistId/tracks', async (req, res) => {
-  await dbConnect();
-  const { playlistId } = req.params;
+    const { playlistId } = req.params;
   const { trackId } = req.body;
 
   try {
@@ -211,8 +203,7 @@ router.post('/:playlistId/tracks', async (req, res) => {
 
 // Remove a track from a playlist
 router.delete('/:playlistId/tracks/:trackId', async (req, res) => {
-  await dbConnect();
-  const { playlistId, trackId } = req.params;
+    const { playlistId, trackId } = req.params;
 
   try {
     const playlist = await Playlist.findById(playlistId);

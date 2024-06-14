@@ -1,6 +1,5 @@
 import express from 'express';
 import User from '../models/User.js';
-import dbConnect from '../utils/dbConnect.js';
 import bcrypt from 'bcryptjs';
 import { addFavoriteStatus } from '../utils/tracks.js';
 import { authenticateToken } from '../utils/auth.js';
@@ -9,8 +8,7 @@ const router = express.Router();
 
 // Get user info. populate query can be used to populate fields
 router.get('/:userId', authenticateToken, async (req, res) => {
-  await dbConnect();
-  let userId = req.params.userId;
+    let userId = req.params.userId;
   if (userId === 'current') {
     userId = req.user.id;
   }
@@ -28,8 +26,7 @@ router.get('/:userId', authenticateToken, async (req, res) => {
 
 // POST to register a new user
 router.post('/', async (req, res) => {
-  await dbConnect();
-  const { username, name, password } = req.body;
+    const { username, name, password } = req.body;
   if (!username || !password) {
     return res.status(400).json({ error: 'Username and password are required.' });
   }
@@ -60,8 +57,7 @@ router.post('/', async (req, res) => {
 
 // Get user's playlists
 router.get('/:userId/playlists', authenticateToken, async (req, res) => {
-  await dbConnect();
-  let userId = req.params.userId;
+    let userId = req.params.userId;
   if (userId === 'current') {
     userId = req.user.id;
   }
@@ -95,8 +91,7 @@ router.get('/:userId/playlists', authenticateToken, async (req, res) => {
 
 // Get user's favorite playlists
 router.get('/:userId/favoritePlaylists', authenticateToken, async (req, res) => {
-  await dbConnect();
-  let userId = req.params.userId;
+    let userId = req.params.userId;
   if (userId === 'current') {
     userId = req.user.id;
   }
@@ -130,8 +125,7 @@ router.get('/:userId/favoritePlaylists', authenticateToken, async (req, res) => 
 
 // Get user's favorite tracks
 router.get('/:userId/favorites', authenticateToken, async (req, res) => {
-  await dbConnect();
-  let userId = req.params.userId;
+    let userId = req.params.userId;
   if (userId === 'current') {
     userId = req.user.id;
   }
@@ -153,8 +147,7 @@ router.get('/:userId/favorites', authenticateToken, async (req, res) => {
 router.post('/:userId/follow', authenticateToken, async (req, res) => {
   const currentUserId = req.user.id;
   const userIdToFollow = req.params.userId;
-  await dbConnect();
-
+  
   try {
     await User.findByIdAndUpdate(currentUserId, { $addToSet: { following: userIdToFollow } });
     res.status(200).json({ message: 'Followed successfully', success: true });
@@ -168,8 +161,7 @@ router.post('/:userId/follow', authenticateToken, async (req, res) => {
 router.delete('/:userId/follow', authenticateToken, async (req, res) => {
   const currentUserId = req.user.id;
   const userIdToUnfollow = req.params.userId;
-  await dbConnect();
-
+  
   try {
     await User.findByIdAndUpdate(currentUserId, { $pull: { following: userIdToUnfollow } });
     res.status(200).json({ message: 'Unfollowed successfully', success: true });
@@ -181,8 +173,7 @@ router.delete('/:userId/follow', authenticateToken, async (req, res) => {
 
 // GET user's following list
 router.get('/:userId/following', async (req, res) => {
-  await dbConnect();
-  const userId = req.user.id;
+    const userId = req.user.id;
 
   try {
     const user = await User.findById(userId).populate('following').lean();

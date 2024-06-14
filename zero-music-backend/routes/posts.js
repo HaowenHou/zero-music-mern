@@ -2,15 +2,13 @@ import express from 'express';
 import mongoose from 'mongoose';
 import Post from '../models/Post.js';
 import User from '../models/User.js';
-import dbConnect from '../utils/dbConnect.js';
 
 const router = express.Router();
 
 // GET posts from a user and their followees
 router.get('/', async (req, res) => {
   const userId = req.user.id;
-  await dbConnect();
-
+  
   try {
     const user = await User.findById(userId);
     const followingIds = user.following.map(id => new mongoose.Types.ObjectId(id));
@@ -31,8 +29,7 @@ router.get('/', async (req, res) => {
 // POST a new post
 router.post('/', async (req, res) => {
   const userId = req.user.id;
-  await dbConnect();
-
+  
   try {
     const { content, trackId } = req.body;
     const post = new Post({
@@ -59,8 +56,7 @@ router.delete('/:postId', async (req, res) => {
   const { postId } = req.params;
   const userId = req.user.id;
 
-  await dbConnect();
-
+  
   try {
     await User.findByIdAndUpdate(userId, { $pull: { posts: postId } });
     await Post.findByIdAndDelete(postId);

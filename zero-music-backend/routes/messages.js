@@ -1,5 +1,4 @@
 import express from 'express';
-import dbConnect from '../utils/dbConnect.js';
 import Message from '../models/Message.js';
 import User from '../models/User.js';
 
@@ -8,8 +7,7 @@ const router = express.Router();
 // GET all chat partners for a user
 router.get('/', async (req, res) => {
   const userId = req.user.id;
-  await dbConnect();
-
+  
   try {
     const user = await User.findById(userId).lean();
     const userAvatar = user.avatar;
@@ -52,8 +50,7 @@ router.get('/:userId', async (req, res) => {
   const userId = req.user.id;
   const { userId: partnerId } = req.params;
 
-  await dbConnect();
-
+  
   try {
     const messages = await Message.find({
       $or: [

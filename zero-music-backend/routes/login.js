@@ -2,14 +2,12 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import { verifyPassword } from '../utils/auth.js';
-import dbConnect from '../utils/dbConnect.js';
 import 'dotenv/config'
 
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-  await dbConnect();
-
+  
   const { username, password } = req.body;
   if (!username || !password) {
     return res.status(400).json({ error: 'Username and password are required' });

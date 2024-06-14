@@ -2,15 +2,13 @@ import express from 'express';
 import { parseFile } from 'music-metadata';
 import User from '../models/User.js';
 import UserTrack from '../models/UserTrack.js';
-import dbConnect from '../utils/dbConnect.js';
 import { handleFormidable, storeFile } from '../utils/file.js';
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
   const userId = req.user.id;
-  await dbConnect();
-
+  
   try {
     const user = await User.findById(userId).populate("drive");
     const driveTracks = user.drive || [];
@@ -24,8 +22,7 @@ router.get('/', async (req, res) => {
 router.delete('/:trackId', async (req, res) => {
   const { trackId } = req.params;
   const userId = req.user.id;
-  await dbConnect();
-
+  
   try {
     await UserTrack.findByIdAndDelete(trackId);
     await User.findByIdAndUpdate(userId, { $pull: { drive: trackId } });
@@ -38,8 +35,7 @@ router.delete('/:trackId', async (req, res) => {
 
 router.post('/', handleFormidable, async (req, res) => {
   const userId = req.user.id;
-  await dbConnect();
-  const { fields, files } = req;
+    const { fields, files } = req;
   const title = fields.title[0];
   const artist = fields.artist[0];
   const newFilename = `${userId} - ${title} - ${artist}`;
