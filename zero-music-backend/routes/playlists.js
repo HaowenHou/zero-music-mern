@@ -6,14 +6,13 @@ import Track from '../models/Track.js';
 import Playlist from '../models/Playlist.js';
 import User from '../models/User.js';
 import dbConnect from '../utils/dbConnect.js';
-import { authenticateToken } from '../utils/auth.js';
 import { storeFile, handleFormidable } from '../utils/file.js';
 import { addFavoriteStatus } from '../utils/tracks.js';
 
 const router = express.Router();
 
 // GET playlist by ID or global playlist
-router.get('/:playlistId', authenticateToken, async (req, res) => {
+router.get('/:playlistId', async (req, res) => {
   await dbConnect();
   const userId = req.user.id;
   const { playlistId } = req.params;
@@ -33,7 +32,7 @@ router.get('/:playlistId', authenticateToken, async (req, res) => {
 });
 
 // POST new playlist
-router.post('', [authenticateToken, handleFormidable], async (req, res) => {
+router.post('', handleFormidable, async (req, res) => {
   await dbConnect();
   const userId = req.user.id;
   const title = req.fields.title[0];
@@ -68,7 +67,7 @@ router.post('', [authenticateToken, handleFormidable], async (req, res) => {
 });
 
 // PUT update existing playlist
-router.put('/:playlistId', [authenticateToken, handleFormidable], async (req, res) => {
+router.put('/:playlistId', handleFormidable, async (req, res) => {
   const { playlistId } = req.params;
   await dbConnect();
   const userId = req.user.id;
@@ -107,7 +106,7 @@ router.put('/:playlistId', [authenticateToken, handleFormidable], async (req, re
 });
 
 // DELETE a playlist
-router.delete('/:playlistId', authenticateToken, async (req, res) => {
+router.delete('/:playlistId', async (req, res) => {
   await dbConnect();
   const userId = req.user.id;
   const { playlistId } = req.params;
@@ -141,7 +140,7 @@ router.delete('/:playlistId', authenticateToken, async (req, res) => {
 });
 
 // Favorite playlist operations
-router.post('/:playlistId/favorite', authenticateToken, async (req, res) => {
+router.post('/:playlistId/favorite', async (req, res) => {
   await dbConnect();
   const userId = req.user.id;
   const { playlistId } = req.body;
@@ -162,7 +161,7 @@ router.post('/:playlistId/favorite', authenticateToken, async (req, res) => {
   }
 });
 
-router.delete('/:playlistId/favorite', authenticateToken, async (req, res) => {
+router.delete('/:playlistId/favorite', async (req, res) => {
   await dbConnect();
   const userId = req.user.id;
   const { playlistId } = req.body;
@@ -184,7 +183,7 @@ router.delete('/:playlistId/favorite', authenticateToken, async (req, res) => {
 });
 
 // Add a track to a playlist
-router.post('/:playlistId/tracks', authenticateToken, async (req, res) => {
+router.post('/:playlistId/tracks', async (req, res) => {
   await dbConnect();
   const { playlistId } = req.params;
   const { trackId } = req.body;
@@ -211,7 +210,7 @@ router.post('/:playlistId/tracks', authenticateToken, async (req, res) => {
 });
 
 // Remove a track from a playlist
-router.delete('/:playlistId/tracks/:trackId', authenticateToken, async (req, res) => {
+router.delete('/:playlistId/tracks/:trackId', async (req, res) => {
   await dbConnect();
   const { playlistId, trackId } = req.params;
 

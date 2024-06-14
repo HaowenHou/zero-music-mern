@@ -28,7 +28,7 @@ export default function Chat() {
         // fetch the name and avatar, and set it as the active tab
         if (additionalUserId) {
           if (!chatList.find(chat => chat.partnerId === additionalUserId)) {
-            const additionalUser = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/user?uid=${additionalUserId}`);
+            const additionalUser = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/${additionalUserId}`);
             // Add this user info to the response chat list
             chatList.push({
               partnerId: additionalUserId,

@@ -21,7 +21,7 @@ export default function Profile() {
     if (!userId) return;
     const fetchUser = async () => {
       try {
-        const { data: userData } = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/user?uid=${userId}`);
+        const { data: userData } = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/${userId}`);
         setUser(userData);
       } catch (error) {
         console.error('Error fetching data', error);
