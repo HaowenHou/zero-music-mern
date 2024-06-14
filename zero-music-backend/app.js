@@ -6,7 +6,6 @@ import playlistRouter from './routes/playlists.js';
 import tracksRouter from './routes/tracks.js';
 import chatRouter from './routes/chat.js';
 import messagesRouter from './routes/messages.js';
-import profileRouter from './routes/profile.js';
 import driveRouter from './routes/drive.js';
 import favoritesRouter from './routes/favorites.js';
 import loginRouter from './routes/login.js';
@@ -28,7 +27,6 @@ app.use('/api/posts', authenticateToken, postsRouter);
 app.use('/api/chat', authenticateToken, chatRouter);
 
 app.use('/api/messages', authenticateToken, messagesRouter);
-app.use('/api/profile', profileRouter);
 
 // Partly protected routes
 app.use('/api/users', usersRouter);

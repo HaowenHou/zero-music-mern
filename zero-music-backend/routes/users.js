@@ -149,4 +149,48 @@ router.get('/:userId/favorites', async (req, res) => {
   }
 });
 
+// POST to follow a user
+router.post('/:userId/follow', authenticateToken, async (req, res) => {
+  const currentUserId = req.user.id;
+  const userIdToFollow = req.params.userId;
+  await dbConnect();
+
+  try {
+    await User.findByIdAndUpdate(currentUserId, { $addToSet: { following: userIdToFollow } });
+    res.status(200).json({ message: 'Followed successfully', success: true });
+  } catch (error) {
+    console.error('Error updating follow status:', error);
+    res.status(500).json({ success: false, error: 'Failed to update follow status' });
+  }
+});
+
+// DELETE to unfollow a user
+router.delete('/:userId/follow', authenticateToken, async (req, res) => {
+  const currentUserId = req.user.id;
+  const userIdToUnfollow = req.params.userId;
+  await dbConnect();
+
+  try {
+    await User.findByIdAndUpdate(currentUserId, { $pull: { following: userIdToUnfollow } });
+    res.status(200).json({ message: 'Unfollowed successfully', success: true });
+  } catch (error) {
+    console.error('Error updating follow status:', error);
+    res.status(500).json({ success: false, error: 'Failed to update follow status' });
+  }
+});
+
+// GET user's following list
+router.get('/:userId/following', async (req, res) => {
+  await dbConnect();
+  const userId = req.user.id;
+
+  try {
+    const user = await User.findById(userId).populate('following').lean();
+    res.status(200).json(user.following);
+  } catch (error) {
+    console.error('Failed to retrieve following list:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 export default router;
