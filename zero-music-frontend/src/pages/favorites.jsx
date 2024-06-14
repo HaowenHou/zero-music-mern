@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 export default function Favorites() {
   const { userId } = useSelector((state) => state.userState);
   const [tracks, setTracks] = useState([]);
-  // Get user id
 
   // Get user favorites
   useEffect(() => {
@@ -14,13 +13,6 @@ export default function Favorites() {
     const fetchPlaylist = async () => {
       try {
         const { data: trackData } = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/current/favorites`);
-
-        // const trackDataPromises = favoriteList.map(async (item) => {
-        //   const { data: trackData } = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/tracks?id=${item}&userId=${userId}`);
-        //   return trackData;
-        // });
-
-        // const trackData = await Promise.all(trackDataPromises);
         setTracks(trackData);
       } catch (error) {
         console.error('Error fetching data', error);

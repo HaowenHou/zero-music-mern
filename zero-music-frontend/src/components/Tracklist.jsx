@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import TrackItem from "./TrackItem";
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { setPlaylist, setTrackIndex, setPlay } from "../redux/actionCreators";
+import { setPlaylist, setTrackIndex, setPlay, setCurrentTrackId } from "../redux/actionCreators";
 
 export default function Tracklist({
   tracks: initialTracks,
@@ -94,9 +94,11 @@ export default function Tracklist({
   }
 
   const onPlayClick = (tracks, index) => {
+    dispatch(setPlay(false));
     dispatch(setPlaylist(tracks));
     dispatch(setTrackIndex(index));
     dispatch(setPlay(true));
+    dispatch(setCurrentTrackId(tracks[index]._id));
   };
 
   return (

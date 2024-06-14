@@ -3,6 +3,7 @@ const initialState = {
   volume: 1, // Default volume (0.0 - 1.0)
   currentTrackIndex: 0,
   currentTime: 0, // Current playback time in seconds
+  currentTrackId: '',
 };
 
 const playerStateReducer = (state = initialState, action) => {
@@ -31,6 +32,11 @@ const playerStateReducer = (state = initialState, action) => {
       return {
         ...state,
         currentTime: action.payload
+      };
+    case 'SET_CURRENT_TRACK_ID':
+      return {
+        ...state,
+        currentTrackId: action.payload
       };
     default:
       return state;

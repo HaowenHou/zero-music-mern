@@ -22,6 +22,11 @@ export const setCurrentTime = (time) => ({
   payload: time
 });
 
+export const setCurrentTrackId = (trackId) => ({
+  type: 'SET_CURRENT_TRACK_ID',
+  payload: trackId
+});
+
 export const setPlaylist = (playlist) => ({
   type: 'SET_PLAYLIST',
   payload: playlist

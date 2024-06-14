@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { togglePlay, setPlay, setVolume, setTrackIndex, setCurrentTime } from '../redux/actionCreators';
+import { togglePlay, setPlay, setVolume, setTrackIndex, setCurrentTime, setCurrentTrackId } from '../redux/actionCreators';
 import { formatTime } from '../utils/timeUtils';
 import { useNavigate } from 'react-router-dom';
 
 const PlayerControl = () => {
-  const { isPlaying, volume, currentTrackIndex, currentTime } = useSelector(state => state.playerState);
+  const { isPlaying, volume, currentTrackIndex, currentTime, currentTrackId } = useSelector(state => state.playerState);
   const { playlist } = useSelector(state => state.playlistState);
   const dispatch = useDispatch();
 
@@ -45,7 +45,7 @@ const PlayerControl = () => {
       newAudio.removeEventListener('loadedmetadata', onMetadataLoaded);
       newAudio.pause();
     };
-  }, [currentTrackIndex]);
+  }, [currentTrackId]);
 
   // Update progress as audio plays
   useEffect(() => {
@@ -70,13 +70,17 @@ const PlayerControl = () => {
 
   const nextTrack = () => {
     audioRef.current.pause();
+    dispatch(setPlay(false));
     dispatch(setTrackIndex((currentTrackIndex + 1) % playlist.length));
+    dispatch(setCurrentTrackId(playlist[currentTrackIndex]._id));
     dispatch(setPlay(true));
   };
 
   const prevTrack = () => {
     audioRef.current.pause();
+    dispatch(setPlay(false));
     dispatch(setTrackIndex((currentTrackIndex === 0) ? playlist.length - 1 : currentTrackIndex - 1));
+    dispatch(setCurrentTrackId(playlist[currentTrackIndex]._id));
     dispatch(setPlay(true));
   };
 
