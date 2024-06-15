@@ -26,10 +26,8 @@ export default function Tracklist({
     if (!inElectron) return;
     const handleMenuActionResponse = async (menuResopnse) => {
       try {
-        console.log('Menu action response:', menuResopnse);
         const { playlistId, trackId } = menuResopnse;
         const apiResponse = await axios.post(import.meta.env.VITE_SERVER_URL + `/api/playlists/${playlistId}/tracks`, { trackId });
-        console.log('Track added:', apiResponse.data);  // Handle success
       } catch (error) {
         console.error('Error adding track to playlist:', error);  // Handle errors
       }
@@ -40,7 +38,7 @@ export default function Tracklist({
     return () => {
       window.electron.offMenuActionResponse(handleMenuActionResponse);
     };
-  }, []);
+  }, [inElectron]);
 
   // When right clicked on a track item, show the context menu
   const handleContextMenu = async (event, trackId) => {
@@ -48,8 +46,7 @@ export default function Tracklist({
     console.log(event);
     event.preventDefault();
 
-    const response = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/${userId}/playlists`);
-    const playlists = response.data.playlists;
+    const { data: playlists } = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/${userId}/playlists`);
     const menuItems = playlists.map((playlist) => ({
       label: playlist.title,
       playlistId: playlist._id,
