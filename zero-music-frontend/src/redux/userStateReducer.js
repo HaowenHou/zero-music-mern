@@ -2,7 +2,8 @@ const initialState = {
   userId: '',
   name: '',
   token: '',
-  isLoggedIn: false
+  isLoggedIn: false,
+  avatar: ''
 };
 
 const userStateReducer = (state = initialState, action) => {
@@ -21,6 +22,11 @@ const userStateReducer = (state = initialState, action) => {
       return {
         ...state,
         token: action.payload
+      };
+    case 'SET_AVATAR':
+      return {
+        ...state,
+        avatar: action.payload
       };
     case 'LOGIN':
       return {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { formatUrl } from "../utils/url";
+import { formatImageUrl } from "../utils/url";
 
 export default function PlaylistForm({
   _id,
@@ -88,7 +88,7 @@ export default function PlaylistForm({
         (
           <label className="mt-2 cursor-pointer relative w-36 h-36">
             <input type="file" className="hidden" onChange={handleCoverChange} />
-            <img src={formatUrl(cover)} className="w-full h-full object-cover border rounded-lg" />
+            <img src={formatImageUrl(cover)} className="w-full h-full object-cover border rounded-lg" />
             <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300">
               <span className="text-black font-semibold">更换封面</span>
             </div>

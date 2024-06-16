@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { setToken, setUserId, setName, login, logout } from '../redux/actionCreators';
+import { setToken, setUserId, setName, setAvatar, login, logout } from '../redux/actionCreators';
 import { logoutUser } from '../utils/loginStatus';
 
 const Login = () => {
@@ -23,10 +23,11 @@ const Login = () => {
     try {
       const response = await axios.post(import.meta.env.VITE_SERVER_URL + '/api/login', loginPayload);
       if (response.status === 200) {
-        const { token, userId, name } = response.data;
+        const { token, userId, name, avatar } = response.data;
         dispatch(setToken(token));
         dispatch(setUserId(userId));
         dispatch(setName(name));
+        dispatch(setAvatar(avatar));
         dispatch(login());
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         navigate('/');

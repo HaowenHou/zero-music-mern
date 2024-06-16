@@ -4,6 +4,7 @@ import Post from '../models/Post.js';
 import bcrypt from 'bcryptjs';
 import { addFavoriteStatus } from '../utils/tracks.js';
 import { authenticateToken } from '../utils/auth.js';
+import { handleFormidable, storeFile } from '../utils/file.js';
 
 const router = express.Router();
 
@@ -26,8 +27,12 @@ router.get('/:userId', authenticateToken, async (req, res) => {
 });
 
 // POST to register a new user
-router.post('/', async (req, res) => {
-  const { username, name, password } = req.body;
+router.post('/', handleFormidable, async (req, res) => {
+  const { fields, files } = req;
+  const username = fields.username[0];
+  const password = fields.password[0];
+  const name = fields.name[0];
+
   if (!username || !password) {
     return res.status(400).json({ error: 'Username and password are required.' });
   }
@@ -39,13 +44,19 @@ router.post('/', async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
-    // const avatarPath = req.file ? `/avatars/${req.file.filename}` : undefined;
+
+    let avatarPath = '';
+    if (files.avatar) {
+      const file = Array.isArray(files.avatar) ? files.avatar[0] : files.avatar;
+      const result = await storeFile(file, 'avatars', username);
+      avatarPath = result.webPath;
+    }
 
     const user = new User({
       username,
       name,
       password: hashedPassword,
-      avatar: undefined || 'avatars/avatar_1.png',
+      avatar: avatarPath || 'assets/default-avatar-s.png',
     });
 
     await user.save();

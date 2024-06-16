@@ -11,7 +11,7 @@ const router = express.Router();
 
 // GET a track by ID or all tracks
 router.get('/:trackId?', async (req, res) => {
-    const { trackId } = req.params;
+  const { trackId } = req.params;
   try {
     if (trackId) {
       const track = await Track.findById(trackId).lean();
@@ -27,7 +27,7 @@ router.get('/:trackId?', async (req, res) => {
 
 // POST create a new track
 router.post('/', [authenticateToken, handleFormidable], async (req, res) => {
-    const { fields, files } = req;
+  const { fields, files } = req;
   const title = fields.title[0];
   const artist = fields.artist[0];
   const newFilename = `${title} - ${artist}`;
@@ -80,7 +80,7 @@ router.post('/', [authenticateToken, handleFormidable], async (req, res) => {
 
 // PUT update a track
 router.put('/:trackId', [authenticateToken, handleFormidable], async (req, res) => {
-    const { trackId } = req.params;
+  const { trackId } = req.params;
   const { fields, files } = req;
   const title = fields.title[0];
   const artist = fields.artist[0];
@@ -138,7 +138,7 @@ router.put('/:trackId', [authenticateToken, handleFormidable], async (req, res) 
 
 // DELETE a track
 router.delete('/:trackId', authenticateToken, async (req, res) => {
-    const { trackId } = req.params;
+  const { trackId } = req.params;
   try {
     const track = await Track.findById(trackId);
     // Delete associated files
@@ -158,7 +158,7 @@ router.delete('/:trackId', authenticateToken, async (req, res) => {
 // GET all comments for a track
 router.get('/:trackId/comments', async (req, res) => {
   const { trackId } = req.params;
-  
+
   try {
     const track = await Track
       .findById(trackId)
@@ -182,7 +182,7 @@ router.post('/:trackId/comments', authenticateToken, async (req, res) => {
   const { trackId } = req.params;
   const userId = req.user.id;
   const { content, timestamp } = req.body;
-  
+
   try {
     const comment = new Comment({
       userId,

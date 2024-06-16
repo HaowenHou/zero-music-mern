@@ -47,6 +47,11 @@ export const setName = (name) => ({
   payload: name
 });
 
+export const setAvatar = (avatar) => ({
+  type: 'SET_AVATAR',
+  payload: avatar
+});
+
 export const login = () => ({
   type: 'LOGIN'
 });

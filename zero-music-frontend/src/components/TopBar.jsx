@@ -8,7 +8,7 @@ import { logoutUser } from '../utils/loginStatus';
 import { useDispatch } from 'react-redux';
 
 const TopBar = () => {
-  const { isLoggedIn, userId, name } = useSelector((state) => state.userState);
+  const { isLoggedIn, userId, name, avatar } = useSelector((state) => state.userState);
   const [inElectron, setInElectron] = useState(false);
   const dispatch = useDispatch();
 
@@ -59,7 +59,7 @@ const TopBar = () => {
           </Link>
         ) : (
           <div className='flex items-center rounded-3xl border pr-2 mr-4 ml-auto' style={{ WebkitAppRegion: 'no-drag' }}>
-            <img src={import.meta.env.VITE_SERVER_URL + "/avatars/avatar_1.png"} alt="" className='size-9 rounded-full' />
+            <img src={import.meta.env.VITE_SERVER_URL + avatar} alt="" className='size-9 rounded-full' />
             <div className="px-3">
               {name}
             </div>

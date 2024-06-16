@@ -34,7 +34,8 @@ router.post('/', async (req, res) => {
     res.status(200).json({ 
       token,
       userId: user._id.toString(),
-      name: user.name
+      name: user.name,
+      avatar: user.avatar,
     });
   } catch (error) {
     console.error('Login error:', error);
