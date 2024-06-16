@@ -15,7 +15,27 @@ import Profile from './pages/profile/[userId]'
 import TracksRoutes from './pages/tracks/tracksRoutes'
 import Playing from './pages/playing/[trackId]'
 
+import { useSelector, useDispatch } from 'react-redux';
+import { setPlay, setTrackIndex, setCurrentTrackId, setPlaylist } from './redux/actionCreators';
+import { useEffect } from 'react'
+
 function App() {
+  // Set initial playlist
+  useEffect(() => {
+    const fetchPlaylist = async () => {
+      try {
+        const { data: trackData } = await axios.get(import.meta.env.VITE_SERVER_URL + '/api/playlists/global');
+        if (!trackData.length) return;
+        dispatch(setPlaylist(trackData));
+        dispatch(setTrackIndex(0));
+        dispatch(setCurrentTrackId(trackData[0]._id));
+      } catch (error) {
+        console.error('Error fetching data', error);
+      }
+    };
+    fetchPlaylist();
+  }, []);
+
   return (
     <>
       <div className='flex flex-col h-screen'>
