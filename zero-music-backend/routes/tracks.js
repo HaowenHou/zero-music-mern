@@ -138,7 +138,7 @@ router.put('/:trackId', [authenticateToken, isAdmin, handleFormidable], async (r
   const updateData = {
     title: title,
     artist: artist,
-    duration: trackDuration,
+    duration: trackDuration > 0 ? trackDuration : undefined,
     cover: coverPath || undefined,
     track: trackPath || undefined,
   };
