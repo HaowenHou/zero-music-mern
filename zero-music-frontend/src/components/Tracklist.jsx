@@ -70,7 +70,7 @@ export default function Tracklist({
       try {
         await axios.delete(import.meta.env.VITE_SERVER_URL + `/api/favorites/${trackId}`);
         const updatedTracks = tracks.map((track) =>
-          (track._id === trackId) ? { ...track, favorite: !track.isFavorited } : track
+          (track._id === trackId) ? { ...track, isFavorited: !track.isFavorited } : track
         );
         setTracks(updatedTracks);
       } catch (error) {
@@ -81,7 +81,7 @@ export default function Tracklist({
       try {
         await axios.post(import.meta.env.VITE_SERVER_URL + `/api/favorites`, { trackId });
         const updatedTracks = tracks.map((track) =>
-          (track._id === trackId) ? { ...track, favorite: !track.isFavorited } : track
+          (track._id === trackId) ? { ...track, isFavorited: !track.isFavorited } : track
         );
         setTracks(updatedTracks);
       } catch (error) {

@@ -16,7 +16,7 @@ router.post('/', async (req, res) => {
 
     await User.findByIdAndUpdate(
       userId,
-      { $addToSet: { favoriteTracks: trackId } }
+      { $addToSet: { favorites: trackId } }
     );
 
     res.status(200).json({ success: true });
@@ -39,7 +39,7 @@ router.delete('/:trackId', async (req, res) => {
 
     await User.findByIdAndUpdate(
       userId,
-      { $pull: { favoriteTracks: trackId } }
+      { $pull: { favorites: trackId } }
     );
 
     res.status(200).json({ success: true });
