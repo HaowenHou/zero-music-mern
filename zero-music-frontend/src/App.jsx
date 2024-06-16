@@ -21,15 +21,14 @@ import { useEffect } from 'react'
 import axios from 'axios'
 
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({  }) => {
   const { userId } = useSelector((state) => state.userState);
-  console.log(userId);
   if (!userId) {
     return <Navigate to="/login" replace />;
   }
-  return children;
+  return <Outlet />;
 };
 
 function App() {
