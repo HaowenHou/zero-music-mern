@@ -108,6 +108,7 @@ const Register = () => {
             id="password"
             name="password"
             required
+            autoComplete="on"
             className="w-full p-2 border border-gray-300 rounded"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

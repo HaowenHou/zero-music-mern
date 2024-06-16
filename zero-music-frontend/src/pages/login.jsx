@@ -75,6 +75,7 @@ const Login = () => {
             name="password"
             required
             className="w-full p-2 border border-gray-300 rounded"
+            autoComplete="on"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />

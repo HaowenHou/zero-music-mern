@@ -20,6 +20,18 @@ import { setTrackIndex, setCurrentTrackId, setPlaylist } from './redux/actionCre
 import { useEffect } from 'react'
 import axios from 'axios'
 
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+const ProtectedRoute = ({ children }) => {
+  const { userId } = useSelector((state) => state.userState);
+  console.log(userId);
+  if (!userId) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+};
+
 function App() {
   // Set initial playlist
   const dispatch = useDispatch();
@@ -51,18 +63,20 @@ function App() {
                   <Route path="/" element={<Home />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
-                  <Route path="/favorites" element={<Favorites />} />
-                  {PlaylistsRoutes}
-                  {DriveRoutes}
-                  {PostsRoutes}
-                  <Route path="/favorites" element={<Favorites />} />
-                  <Route path="/chat" element={<Chat />} />
                   <Route path="/search/:q" element={<SearchResults />} />
-                  <Route path="/profile/:userId" element={<Profile />} />
-                  {TracksRoutes}
                   <Route path="/playing/:trackId" element={<Playing />} />
                   <Route path="/forbidden" element={<div>Forbidden</div>} />
                   <Route path="*" element={<Home />} />
+
+                  <Route element={<ProtectedRoute />}>
+                    {PlaylistsRoutes}
+                    {DriveRoutes}
+                    {PostsRoutes}
+                    <Route path="/favorites" element={<Favorites />} />
+                    <Route path="/chat" element={<Chat />} />
+                    <Route path="/profile/:userId" element={<Profile />} />
+                    {TracksRoutes}
+                  </Route>
                 </Routes>
               }
             </div>
