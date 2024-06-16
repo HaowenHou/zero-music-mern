@@ -1,17 +1,34 @@
 import { configureStore } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 import { combineReducers } from 'redux';
-import { persistReducer, persistStore } from 'redux-persist';
+import { persistReducer, persistStore, createTransform } from 'redux-persist';
 import axios from 'axios';
 
 import playerStateReducer from './playerStateReducer';
 import playlistStateReducer from './playlistStateReducer';
 import userStateReducer from './userStateReducer';
 
+// Custom transform to ensure `isPlaying` is always false on rehydrate
+const playerTransform = createTransform(
+  (inboundState, key) => inboundState, // No change when persisting
+  
+  // Transform state being rehydrated
+  (outboundState, key) => {
+    if (key === 'playerState') {
+      return { ...outboundState, isPlaying: false };
+    }
+    return outboundState;
+  },
+
+  // Define which part of the state this transform affects.
+  { whitelist: ['playerState'] }
+);
+
 // Setup the root reducer with persist capabilities
 const persistConfig = {
   key: 'root',
   storage,
+  transforms: [playerTransform],
 };
 
 const rootReducer = combineReducers({
