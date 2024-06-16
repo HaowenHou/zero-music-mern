@@ -3,7 +3,8 @@ const initialState = {
   name: '',
   token: '',
   isLoggedIn: false,
-  avatar: ''
+  avatar: '',
+  role: '',
 };
 
 const userStateReducer = (state = initialState, action) => {
@@ -27,6 +28,11 @@ const userStateReducer = (state = initialState, action) => {
       return {
         ...state,
         avatar: action.payload
+      };
+    case 'SET_ROLE':
+      return {
+        ...state,
+        role: action.payload
       };
     case 'LOGIN':
       return {

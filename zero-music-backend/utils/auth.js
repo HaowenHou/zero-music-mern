@@ -24,16 +24,25 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
+// Verify if the user is admin
+const isAdmin = (req, res, next) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ error: 'Unauthorized' });
+  } else {
+    next();
+  }
+};
+
 const generateToken = (payload) => {
   return jwt.sign(payload, secretKey, { expiresIn: '2h' });
 };
 
 const verifyToken = (token) => {
   try {
-      return jwt.verify(token, secretKey);
+    return jwt.verify(token, secretKey);
   } catch (e) {
-      return null;
+    return null;
   }
 };
 
-export { authenticateToken, generateToken, verifyToken };
+export { authenticateToken, generateToken, verifyToken, isAdmin };

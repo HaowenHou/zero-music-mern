@@ -5,7 +5,7 @@ import { parseFile } from "music-metadata";
 import Track from '../models/Track.js';
 import Comment from '../models/Comment.js';
 import { handleFormidable, storeFile } from '../utils/file.js';
-import { authenticateToken } from '../utils/auth.js';
+import { authenticateToken, isAdmin } from '../utils/auth.js';
 
 const router = express.Router();
 
@@ -26,7 +26,7 @@ router.get('/:trackId?', async (req, res) => {
 });
 
 // POST create a new track
-router.post('/', [authenticateToken, handleFormidable], async (req, res) => {
+router.post('/', [authenticateToken, isAdmin, handleFormidable], async (req, res) => {
   const { fields, files } = req;
   const title = fields.title[0];
   const artist = fields.artist[0];
@@ -79,7 +79,7 @@ router.post('/', [authenticateToken, handleFormidable], async (req, res) => {
 });
 
 // PUT update a track
-router.put('/:trackId', [authenticateToken, handleFormidable], async (req, res) => {
+router.put('/:trackId', [authenticateToken, isAdmin, handleFormidable], async (req, res) => {
   const { trackId } = req.params;
   const { fields, files } = req;
   const title = fields.title[0];
@@ -137,7 +137,7 @@ router.put('/:trackId', [authenticateToken, handleFormidable], async (req, res) 
 });
 
 // DELETE a track
-router.delete('/:trackId', authenticateToken, async (req, res) => {
+router.delete('/:trackId', [authenticateToken, isAdmin], async (req, res) => {
   const { trackId } = req.params;
   try {
     const track = await Track.findById(trackId);

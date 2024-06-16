@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
 
     // Create a JWT
     const token = jwt.sign(
-      { id: user._id, name: user.name },
+      { id: user._id, name: user.name, role: user.role},
       process.env.JWT_SECRET_KEY, 
       { algorithm: 'HS256', expiresIn: '1h' }
     );
@@ -36,6 +36,7 @@ router.post('/', async (req, res) => {
       userId: user._id.toString(),
       name: user.name,
       avatar: user.avatar,
+      role: user.role,
     });
   } catch (error) {
     console.error('Login error:', error);

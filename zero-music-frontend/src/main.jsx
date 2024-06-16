@@ -8,7 +8,7 @@ import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 
 // Redirect to login page on 401 responses
-import { createBrowserHistory } from 'history';
+// import { createBrowserHistory } from 'history';
 import axios from 'axios';
 // const history = createBrowserHistory();
 axios.interceptors.response.use(
@@ -16,7 +16,11 @@ axios.interceptors.response.use(
   error => {
     if (error.response && error.response.status === 401) {
       // history.push('/login');
-      window.location = 'login';
+      window.location = '/login';
+    }
+    if (error.response && error.response.status === 403) {
+      // history.push('/forbidden');
+      window.location = '/forbidden';
     }
     return Promise.reject(error);
   }

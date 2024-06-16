@@ -11,14 +11,14 @@ export default function EditTrack() {
     if (!trackId) {
       return;
     }
-    axios.get(import.meta.env.VITE_SERVER_URL + `/api/tracks/${trackId}`).then(res =>{
+    axios.get(import.meta.env.VITE_SERVER_URL + `/api/drive/${trackId}`).then(res =>{
       setTrackInfo(res.data);
     })
   }, [trackId]);
 
   return (
     <>
-      {trackInfo && <TrackForm {...trackInfo} inDrive={false}></TrackForm>}
+      {trackInfo && <TrackForm {...trackInfo} inDrive={true}></TrackForm>}
     </>
   );
 };

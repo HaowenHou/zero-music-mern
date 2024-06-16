@@ -39,6 +39,8 @@ function App() {
                   <Route path="/profile/:userId" element={<Profile />} />
                   {TracksRoutes}
                   <Route path="/playing/:trackId" element={<Playing />} />
+                  <Route path="/forbidden" element={<div>Forbidden</div>} />
+                  <Route path="*" element={<Home />} />
                 </Routes>
               }
             </div>
