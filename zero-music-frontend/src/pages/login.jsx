@@ -37,6 +37,13 @@ const Login = () => {
         console.error('Failed to login');
       }
     } catch (error) {
+      if (error.response.status === 404) {
+        alert('用户名错误');
+      } else if (error.response.status === 401) {
+        alert('密码错误');
+      } else {
+        alert('登录失败');
+      }
       console.error('Failed to login', error);
     }
   };

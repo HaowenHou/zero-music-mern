@@ -42,15 +42,19 @@ const Register = () => {
           'Content-Type': 'multipart/form-data'
         }
       });
+      console.log(response)
       if (response.status === 201) {
         alert('注册成功，请登录');
         navigate('/login');
-      } else if (response.status === 409) {
-        alert('用户名已被注册');
       } else {
         console.error('Registration failed', response.data);
       }
     } catch (error) {
+      if (error.response.status === 409) {
+        alert('用户名已被注册');
+      } else {
+        alert(`注册失败: ${error.response.data.message}`);
+      }
       console.error('Registration failed', error.response.data);
     }
   };
