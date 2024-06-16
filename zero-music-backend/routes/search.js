@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
   try {
     const trackResults = await Track.find({
       title: { $regex: q, $options: 'i' }
-    }).select('_id title cover duration').exec();
+    }).select('_id title cover artist duration').exec();
 
     const userResults = await User.find({
       name: { $regex: q, $options: 'i' }
