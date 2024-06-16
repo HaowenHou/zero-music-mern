@@ -1,13 +1,15 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { formatImageUrl } from '../utils/url';
 
 export default function TrackForm({
   _id,
   title: initialTitle = '',
   artist: initialArtist = '',
   cover: initialCover = '',
-  track: initialTrack = '' // URI to the track
+  track: initialTrack = '', // URI to the track
+  inDrive = false
 }) {
   const [title, setTitle] = useState(initialTitle);
   const [artist, setArtist] = useState(initialArtist);
@@ -48,14 +50,16 @@ export default function TrackForm({
 
     if (_id) {
       try {
-        const response = await axios.put(import.meta.env.VITE_SERVER_URL + `/api/tracks/${_id}`, data, {
+        console.log(inDrive)
+        const url = inDrive ? `/api/drive/${_id}` : `/api/tracks/${_id}`;
+        const response = await axios.put(import.meta.env.VITE_SERVER_URL + url, data, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
         });
         // If successful, redirect to the track page
         if (response.status === 201 || response.status === 200) {
-          navigate('/tracks/manage');
+          navigate(-1);
         } else {
           throw new Error('Failed to save music');
         }
@@ -71,7 +75,7 @@ export default function TrackForm({
         });
         // If successful, redirect to the track page
         if (response.status === 201 || response.status === 200) {
-          navigate('/tracks/manage');
+          navigate(-1);
         } else {
           throw new Error('Failed to save music');
         }
@@ -107,7 +111,7 @@ export default function TrackForm({
         (
           <label className="mt-2 cursor-pointer relative w-36 h-36">
             <input type="file" className="hidden" onChange={handleCoverChange} />
-            <img src={import.meta.env.VITE_SERVER_URL + cover} className="w-full h-full object-cover border rounded-lg" />
+            <img src={formatImageUrl(cover)} className="w-full h-full object-cover border rounded-lg" />
             <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300">
               <span className="text-black font-semibold">更换封面</span>
             </div>
