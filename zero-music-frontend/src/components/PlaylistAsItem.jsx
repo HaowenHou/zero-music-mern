@@ -9,7 +9,7 @@ export default function PlaylistAsItem({
   onFavoriteClick
 }) {
   const navigate = useNavigate();
-  
+
   const handleEdit = () => {
     navigate(`/playlists/edit/${playlist._id}`);
   };
@@ -18,25 +18,26 @@ export default function PlaylistAsItem({
 
   return (
     <div className="playlist-item flex items-center p-2 my-2 rounded-lg hover:bg-gray-50">
-      <Link to={`/playlists/${playlist._id}`} className='flex-[1]'>
+      <Link to={`/playlists/${playlist._id}`} className='flex-[3.5]'>
         <img
           src={import.meta.env.VITE_SERVER_URL + (playlist.cover || '/assets/default-cover-1.png')}
           alt="Playlist Cover"
           className="w-12 h-12 mr-6 rounded-md"
         />
       </Link>
-      <div className='flex flex-[4] justify-center'>
+      <div className='flex flex-[6] justify-center'>
         <div className='w-64'>
           <h2 className="font-semibold ml-6">{playlist.title}</h2>
         </div>
       </div>
-      <div className='flex flex-[2] justify-center'>
+      <div className='flex flex-[4.5] justify-center'>
         <div className='w-64'>
           <h2 className="font-semibold ml-6">{playlist.userId.name}</h2>
         </div>
       </div>
-      <div className='flex-[1]'>
+      <div className='flex-[2]'>
         <div className='flex items-center'>
+          <div className='ml-auto'></div>
           {manageMode ? (
             <>
               <button onClick={handleEdit}>

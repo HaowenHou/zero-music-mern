@@ -102,7 +102,7 @@ export default function Profile() {
         </div>
       case 'playlists':
         return <div className='mt-6 mx-24 h-52 flex justify-center'>
-          <div className="w-full max-w-3xl">
+          <div className="w-full max-w-4xl">
             {!!playlists.length && playlists.map((playlist) => (
               <PlaylistAsItem key={playlist._id} playlist={playlist} manageMode={false}
                 showFavorite={currentUserId !== userId} onFavoriteClick={handleFavorite} onDelete={() => { }} />

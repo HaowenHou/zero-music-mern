@@ -12,19 +12,19 @@ export default function TrackItem({
   if (!track) return null;
   return (
     <div className="flex items-center p-2 my-2 rounded-lg hover:bg-gray-50" onContextMenu={event => handleContextMenu(event, track._id)}>
-      <div className="flex-[1]">
+      <div className="flex-[3.5]">
         <img
           src={import.meta.env.VITE_SERVER_URL + (track.cover || '/assets/default-cover-1.png')}
           alt="Album Cover"
           className="w-12 h-12 mr-6 rounded-md"
         />
       </div>
-      <div className='w-64 flex-[3]'>
+      <div className='w-64 flex-[6]'>
         <h2 className="font-semibold ml-6">{track.title}</h2>
       </div>
-      <p className='flex-[3]'>{track.artist}</p>
-      <div className="flex-[1] flex items-center">
-        <span className="mr-3">{formatTime(track.duration)}</span>
+      <p className='flex-[4.5]'>{track.artist}</p>
+      <div className="flex-[2] flex items-center">
+        <span className="mr-3 ml-auto">{formatTime(track.duration)}</span>
         {manageMode ? (
           <button onClick={handleRemoveFromPlaylist}>
             <svg className="size-7 p-1 stroke-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">

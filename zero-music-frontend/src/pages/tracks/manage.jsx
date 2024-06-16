@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Manage() {
+  const navigate = useNavigate();
   const [tracks, setTracks] = useState([]);
 
   useEffect(() => {
@@ -51,14 +52,11 @@ export default function Manage() {
                 <p>{track.artist}</p>
               </td>
               <td>
-                <Link className="bg-white text-gray-800 px-2 mx-2 py-1 rounded-sm border border-gray-200 shadow-sm"
-                  to={`/tracks/edit/${track._id}`}>
+                <button className="bg-white text-gray-800 px-2 mx-2 py-1 rounded-sm border border-gray-200 shadow-sm"
+                  onClick={() => navigate(`/tracks/edit/${track._id}`)}>
                   编辑
-                </Link>
-                {/* <Link className="bg-red-200 text-red-600 px-2 py-1 rounded-sm shadow-sm" to={'/tracks/delete/' + track._id}>
-                  删除
-                </Link> */}
-                <button className="bg-red-200 text-red-600 px-2 py-1 rounded-sm shadow-sm"
+                </button>
+                <button className="bg-red-200 text-red-600 px-2 py-1 rounded-sm border border-gray-200 shadow-sm"
                   onClick={() => handleDelete(track._id)}>
                   删除
                 </button>

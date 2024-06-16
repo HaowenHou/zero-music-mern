@@ -38,7 +38,7 @@ const SearchBar = ({ onSearch }) => {
           value={query}
           onChange={handleSearch}
           onBlur={handleBlur}
-          placeholder="搜索"
+          placeholder="发现音乐或用户"
           className="h-9 w-64 px-4 py-1 border border-gray-300 rounded-2xl focus:outline-none focus:border-orange-400"
         />
         {showResults && !!results.tracks.length && (

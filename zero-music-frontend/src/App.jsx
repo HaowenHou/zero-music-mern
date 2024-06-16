@@ -15,8 +15,8 @@ import Profile from './pages/profile/[userId]'
 import TracksRoutes from './pages/tracks/tracksRoutes'
 import Playing from './pages/playing/[trackId]'
 
-import { useSelector, useDispatch } from 'react-redux';
-import { setPlay, setTrackIndex, setCurrentTrackId, setPlaylist } from './redux/actionCreators';
+import { useDispatch } from 'react-redux';
+import { setTrackIndex, setCurrentTrackId, setPlaylist } from './redux/actionCreators';
 import { useEffect } from 'react'
 import axios from 'axios'
 
@@ -62,7 +62,7 @@ function App() {
                   {TracksRoutes}
                   <Route path="/playing/:trackId" element={<Playing />} />
                   <Route path="/forbidden" element={<div>Forbidden</div>} />
-                  {/* <Route path="*" element={<Home />} /> */}
+                  <Route path="*" element={<Home />} />
                 </Routes>
               }
             </div>
