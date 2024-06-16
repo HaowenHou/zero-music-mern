@@ -49,6 +49,12 @@ const PlayerControl = () => {
 
   // Update progress as audio plays
   useEffect(() => {
+    if (isPlaying) {
+      audioRef.current.play();
+    } else {
+      audioRef.current.pause();
+      return;
+    }
     const interval = setInterval(() => {
       if (audioRef.current && audioRef.current.readyState) {
         setTrackProgress(audioRef.current.currentTime / audioRef.current.duration);
@@ -61,26 +67,21 @@ const PlayerControl = () => {
 
   const playPause = () => {
     dispatch(togglePlay());
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
-    }
   };
 
   const nextTrack = () => {
-    audioRef.current.pause();
     dispatch(setPlay(false));
-    dispatch(setTrackIndex((currentTrackIndex + 1) % playlist.length));
-    dispatch(setCurrentTrackId(playlist[currentTrackIndex]._id));
+    const newIndex = (currentTrackIndex + 1) % playlist.length;
+    dispatch(setTrackIndex(newIndex));
+    dispatch(setCurrentTrackId(playlist[newIndex]._id));
     dispatch(setPlay(true));
   };
 
   const prevTrack = () => {
-    audioRef.current.pause();
     dispatch(setPlay(false));
-    dispatch(setTrackIndex((currentTrackIndex === 0) ? playlist.length - 1 : currentTrackIndex - 1));
-    dispatch(setCurrentTrackId(playlist[currentTrackIndex]._id));
+    const newIndex = (currentTrackIndex === 0) ? playlist.length - 1 : currentTrackIndex - 1;
+    dispatch(setTrackIndex(newIndex));
+    dispatch(setCurrentTrackId(playlist[newIndex]._id));
     dispatch(setPlay(true));
   };
 

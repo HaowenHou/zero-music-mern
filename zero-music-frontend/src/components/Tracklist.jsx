@@ -94,8 +94,8 @@ export default function Tracklist({
     dispatch(setPlay(false));
     dispatch(setPlaylist(tracks));
     dispatch(setTrackIndex(index));
-    dispatch(setPlay(true));
     dispatch(setCurrentTrackId(tracks[index]._id));
+    dispatch(setPlay(true));
   };
 
   return (

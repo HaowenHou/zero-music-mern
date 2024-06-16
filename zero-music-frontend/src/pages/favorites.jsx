@@ -1,11 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Tracklist from "../components/Tracklist";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { handlePlayPlaylist } from "../utils/play";
 
 export default function Favorites() {
   const { userId } = useSelector((state) => state.userState);
   const [tracks, setTracks] = useState([]);
+  const dispatch = useDispatch();
 
   // Get user favorites
   useEffect(() => {
@@ -37,7 +39,7 @@ export default function Favorites() {
 
           <div className='pl-8'>
             <h1 className="text-2xl font-bold">我的收藏</h1>
-            <button className='flex mt-4 items-center'>
+            <button onClick={() => handlePlayPlaylist(dispatch, tracks)} className='flex mt-4 items-center'>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-8 bg-orange-400 rounded-full fill-white p-1.5 pl-2">
                 <path fillRule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clipRule="evenodd" />
               </svg>
