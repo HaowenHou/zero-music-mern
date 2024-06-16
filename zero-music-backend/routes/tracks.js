@@ -6,8 +6,29 @@ import Track from '../models/Track.js';
 import Comment from '../models/Comment.js';
 import { handleFormidable, storeFile } from '../utils/file.js';
 import { authenticateToken, isAdmin } from '../utils/auth.js';
+import jwt from 'jsonwebtoken';
+import 'dotenv/config'
+import { addFavoriteStatus } from '../utils/tracks.js';
 
 const router = express.Router();
+
+// GET all tracks
+router.get('/', async (req, res) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (token) {
+    const secretKey = process.env.JWT_SECRET_KEY;
+    jwt.verify(token, secretKey, (err, user) => {
+      req.user = user;
+    });
+  }
+  const userId = req.user?.id;
+  let globalPlaylist = await Track.find().lean();
+  if (userId) {
+    globalPlaylist = await addFavoriteStatus(userId, globalPlaylist);
+  }
+  res.status(200).json(globalPlaylist);
+});
 
 // GET a track by ID or all tracks
 router.get('/:trackId?', async (req, res) => {

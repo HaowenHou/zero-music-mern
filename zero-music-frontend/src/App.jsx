@@ -22,10 +22,11 @@ import axios from 'axios'
 
 function App() {
   // Set initial playlist
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchPlaylist = async () => {
       try {
-        const { data: trackData } = await axios.get(import.meta.env.VITE_SERVER_URL + '/api/playlists/global');
+        const { data: trackData } = await axios.get(import.meta.env.VITE_SERVER_URL + '/api/tracks');
         if (!trackData.length) return;
         dispatch(setPlaylist(trackData));
         dispatch(setTrackIndex(0));

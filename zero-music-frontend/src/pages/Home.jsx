@@ -12,7 +12,7 @@ function Home() {
   useEffect(() => {
     const fetchPlaylist = async () => {
       try {
-        const { data: trackData } = await axios.get(import.meta.env.VITE_SERVER_URL + '/api/playlists/global');
+        const { data: trackData } = await axios.get(import.meta.env.VITE_SERVER_URL + '/api/tracks');
         setTracks(trackData);
       } catch (error) {
         console.error('Error fetching data', error);
@@ -50,7 +50,7 @@ function Home() {
         </div>
 
         <div className="mt-8 mx-4">
-          {userId && !!tracks.length && <Tracklist tracks={tracks} showFavoriteButton={true} userId={userId} />}
+          {!!tracks.length && <Tracklist tracks={tracks} showFavoriteButton={true} userId={userId} />}
         </div>
 
       </div>
