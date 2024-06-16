@@ -3,14 +3,15 @@ import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../utils/loginStatus';
-import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const TopBar = () => {
   const { isLoggedIn, userId, name, avatar } = useSelector((state) => state.userState);
   const [inElectron, setInElectron] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleClose = () => {
     window.electron.close();
@@ -42,7 +43,13 @@ const TopBar = () => {
 
   return (
     <div className="bg-gray-50 h-16 py-4 flex items-center" style={{ WebkitAppRegion: 'drag', WebkitUserSelect: 'none' }}>
-      <div className="p-4" style={{ WebkitAppRegion: 'no-drag' }}>
+      <div className="p-4 flex" style={{ WebkitAppRegion: 'no-drag' }}>
+        <button onClick={() => navigate(-1)}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
+            className="size-8 mr-4 border p-1 rounded-xl">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+          </svg>
+        </button>
         <SearchBar onSearch={fetchSearchResults} />
       </div>
 
