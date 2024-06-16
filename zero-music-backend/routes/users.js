@@ -56,7 +56,7 @@ router.post('/', handleFormidable, async (req, res) => {
       username,
       name,
       password: hashedPassword,
-      avatar: avatarPath || 'assets/default-avatar-s.png',
+      avatar: avatarPath || '/assets/default-avatar-s.png',
     });
 
     await user.save();
