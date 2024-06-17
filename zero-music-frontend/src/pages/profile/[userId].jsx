@@ -35,8 +35,8 @@ export default function Profile() {
   const fetchFollowingStatus = async () => {
     if (!currentUserId) return;
     try {
-      const response = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/${userId}?populate=following`);
-      setIsFollowing(response.data.followers.includes(currentUserId));
+      const response = await axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/${currentUserId}`);
+      setIsFollowing(response.data.following.includes(userId));
     } catch (error) {
       console.error('Error fetching following status', error);
     }

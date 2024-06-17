@@ -162,6 +162,7 @@ router.post('/:userId/follow', authenticateToken, async (req, res) => {
 
   try {
     await User.findByIdAndUpdate(currentUserId, { $addToSet: { following: userIdToFollow } });
+    await User.findByIdAndUpdate(userIdToFollow, { $addToSet: { followers: currentUserId } });
     res.status(200).json({ message: 'Followed successfully', success: true });
   } catch (error) {
     console.error('Error updating follow status:', error);
@@ -176,6 +177,7 @@ router.delete('/:userId/follow', authenticateToken, async (req, res) => {
 
   try {
     await User.findByIdAndUpdate(currentUserId, { $pull: { following: userIdToUnfollow } });
+    await User.findByIdAndUpdate(userIdToUnfollow, { $pull: { followers: currentUserId } });
     res.status(200).json({ message: 'Unfollowed successfully', success: true });
   } catch (error) {
     console.error('Error updating follow status:', error);
