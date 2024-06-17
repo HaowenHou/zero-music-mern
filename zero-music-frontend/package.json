@@ -5,9 +5,6 @@
   "type": "module",
   "main": "main.js",
   "scripts": {
-    "e:start": "electron-vite preview",
-    "e:dev": "electron-vite dev",
-    "e:prebuild": "electron-vite build",
     "electron:start": "electron .",
     "dev": "vite",
     "build": "vite build",
@@ -32,7 +29,6 @@
     "@vitejs/plugin-react-swc": "^3.5.0",
     "autoprefixer": "^10.4.19",
     "electron": "^31.0.1",
-    "electron-vite": "^2.2.0",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
