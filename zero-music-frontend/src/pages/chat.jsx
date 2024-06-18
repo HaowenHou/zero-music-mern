@@ -3,8 +3,10 @@ import { useSelector } from "react-redux";
 import axios from 'axios';
 import ChatUI from '../components/ChatUI';
 import { useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function Chat() {
+  const { t } = useTranslation();
   // creates a new conversation with the user with the given id
   const [searchParams] = useSearchParams();
   const additionalUserId = searchParams.get('uid');
@@ -58,7 +60,7 @@ export default function Chat() {
   return (
     <div className="p-4 flex w-full h-full">
       <div className='h-full'>
-        <h1 className='text-xl font-bold ml-4 mt-4'>私信列表</h1>
+        <h1 className='text-xl font-bold ml-4 mt-4'>{t("messageList")}</h1>
         <div className='mt-6 flex items-center'>
           <div className='flex flex-col gap-2 w-60'>
             {chatList && chatList.map(chat => (

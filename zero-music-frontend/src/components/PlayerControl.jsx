@@ -3,8 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { togglePlay, setPlay, setVolume, setTrackIndex, setCurrentTime, setCurrentTrackId } from '../redux/actionCreators';
 import { formatTime } from '../utils/timeUtils';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const PlayerControl = () => {
+  const { t } = useTranslation();
   const { isPlaying, volume, currentTrackIndex, currentTime, currentTrackId } = useSelector(state => state.playerState);
   const { playlist } = useSelector(state => state.playlistState);
   const dispatch = useDispatch();
@@ -173,7 +175,7 @@ const PlayerControl = () => {
         </>
       ) : (
         <div className='flex items-center justify-center w-full'>
-          <span>播放列表为空</span>
+          <span>{t("nullPlaylist")}</span>
         </div>
       )}
     </div>

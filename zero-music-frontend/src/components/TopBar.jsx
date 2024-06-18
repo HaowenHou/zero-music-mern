@@ -6,8 +6,10 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../utils/loginStatus';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const TopBar = () => {
+  const { t } = useTranslation();
   const { isLoggedIn, userId, name, avatar } = useSelector((state) => state.userState);
   const [inElectron, setInElectron] = useState(false);
   const dispatch = useDispatch();
@@ -61,7 +63,7 @@ const TopBar = () => {
             </svg>
 
             <div className="ml-2 mr-4 rounded">
-              登录
+              {t("login")}
             </div>
           </Link>
         ) : (
@@ -76,9 +78,9 @@ const TopBar = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
               </svg>
               <div className="absolute hidden group-hover:block bg-white shadow-lg rounded-md w-24 -left-20">
-                <Link to={`/profile/${userId}`} className="block px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100">个人主页</Link>
-                <button onClick={() => navigate('/users/update')} className="px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100">更新信息</button>
-                <button onClick={() => logoutUser(dispatch)} className="px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100">退出登录</button>
+                <Link to={`/profile/${userId}`} className="block px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100">{t("personalProfile")}</Link>
+                <button onClick={() => navigate('/users/update')} className="px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100">{t("updateInfo")}</button>
+                <button onClick={() => logoutUser(dispatch)} className="px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100">{t("logout")}</button>
               </div>
             </div>
           </div>

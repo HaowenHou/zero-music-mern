@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import UserForm from '../../components/UserForm';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 const Register = () => {
+  const { t } = useTranslation();
   const { userId } = useSelector((state) => state.userState);
   const [userInfo, setUserInfo] = useState(null);
 
@@ -12,7 +14,7 @@ const Register = () => {
     if (!userId) {
       return;
     }
-    axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/current`).then(res =>{
+    axios.get(import.meta.env.VITE_SERVER_URL + `/api/users/current`).then(res => {
       setUserInfo(res.data);
     })
   }, [userId]);
@@ -26,12 +28,12 @@ const Register = () => {
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 mt-0.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
             </svg>
-            首页
+            {t("homepage")}
           </Link>
-          <Link to="/users/login" className='pr-2'>登录</Link>
+          <Link to="/users/login" className='pr-2'>{t("login")}</Link>
         </div>
 
-        <h2 className="text-lg font-bold mb-8">新用户注册</h2>
+        <h2 className="text-lg font-bold mb-8">{t("updateInfo")}</h2>
 
         {userInfo && <UserForm {...userInfo} />}
       </div>

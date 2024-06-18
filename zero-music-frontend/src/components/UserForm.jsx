@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { formatImageUrl } from '../utils/url';
 import { useDispatch } from 'react-redux';
 import { setName as setGlobalName, setAvatar as setGlobalAvatar } from '../redux/actionCreators';
+import { useTranslation } from 'react-i18next';
 
 const UserForm = ({
   _id: userId,
@@ -11,6 +12,7 @@ const UserForm = ({
   name: initialName = '',
   avatar: initialAvatar = import.meta.env.VITE_SERVER_URL + '/assets/default-avatar-s.png',
 }) => {
+  const { t } = useTranslation();
   const [username, setUsername] = useState(initialUsername);
   const [name, setName] = useState(initialName);
   const [password, setPassword] = useState('');
@@ -83,16 +85,14 @@ const UserForm = ({
           }
         });
         if (response.status === 201) {
-          alert('注册成功，请登录');
+          alert(t("registerSuccess"));
           navigate('/users/login');
         } else {
           console.error('Registration failed', response.data);
         }
       } catch (error) {
         if (error.response.status === 409) {
-          alert('用户名已被注册');
-        } else {
-          alert(`注册失败: ${error.response.data.message}`);
+          alert(t("usernameExists"));
         }
         console.error('Registration failed', error.response.data);
       }
@@ -102,16 +102,16 @@ const UserForm = ({
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="username" className="block mb-2">头像</label>
+        <label htmlFor="username" className="block mb-2">{t("avatar")}</label>
         <label className="my-2 mx-auto cursor-pointer relative flex w-36 h-36">
           <input type="file" className="hidden" onChange={handleAvatarChange} />
           <img src={formatImageUrl(avatar)} className="w-full h-full object-cover border rounded-lg" />
           <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300">
-            <span className="text-black font-semibold">更换头像</span>
+            <span className="text-black font-semibold">{t("changeAvatar")}</span>
           </div>
         </label>
         <div className="mb-4">
-          <label htmlFor="username" className="block mb-2">用户名</label>
+          <label htmlFor="username" className="block mb-2">{t("username")}</label>
           <input
             type="text"
             id="username"
@@ -123,7 +123,7 @@ const UserForm = ({
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="name" className="block mb-2">昵称</label>
+          <label htmlFor="name" className="block mb-2">{t("name")}</label>
           <input
             type="text"
             id="name"
@@ -135,7 +135,7 @@ const UserForm = ({
           />
         </div>
         <div className="mb-6">
-          <label htmlFor="password" className="block mb-2">密码</label>
+          <label htmlFor="password" className="block mb-2">{t("password")}</label>
           <input
             type="password"
             id="password"
@@ -148,7 +148,7 @@ const UserForm = ({
           />
         </div>
         <button type="submit" className="w-full p-3 bg-orange-400 text-white rounded hover:bg-orange-500">
-          {userId ? "更新" : "注册"}
+          {userId ? t("update") : t("register")}
         </button>
       </form>
     </>

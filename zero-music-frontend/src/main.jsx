@@ -6,6 +6,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import store, { persistor } from './redux/store'
 import './index.css'
 import { BrowserRouter } from 'react-router-dom'
+import "./i18n";
 
 // Redirect to login page on 401 responses
 // import { createBrowserHistory } from 'history';

@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 export default function Manage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [tracks, setTracks] = useState([]);
 
@@ -33,10 +35,10 @@ export default function Manage() {
   return (
     <div className="m-4">
       <h1 className="text-2xl font-semibold">
-        音乐管理
+        {t("musicManagement")}
       </h1>
       <div className="m-4">
-        <Link to="/tracks/new" className="m-2 ml-6 bg-orange-300 px-1.5 py-1.5 rounded-lg hover:bg-orange-400">上传</Link>
+        <Link to="/tracks/new" className="m-2 ml-6 bg-orange-300 px-1.5 py-1.5 rounded-lg hover:bg-orange-400">{t("upload")}</Link>
       </div>
       <table className="w-full mx-4">
         <tbody>
@@ -54,11 +56,11 @@ export default function Manage() {
               <td>
                 <button className="bg-white text-gray-800 px-2 mx-2 py-1 rounded-sm border border-gray-200 shadow-sm"
                   onClick={() => navigate(`/tracks/edit/${track._id}`)}>
-                  编辑
+                  {t("edit")}
                 </button>
                 <button className="bg-red-200 text-red-600 px-2 py-1 rounded-sm border border-gray-200 shadow-sm"
                   onClick={() => handleDelete(track._id)}>
-                  删除
+                  {t("delete")}
                 </button>
               </td>
             </tr>

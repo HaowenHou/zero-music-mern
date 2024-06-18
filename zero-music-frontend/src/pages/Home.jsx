@@ -3,8 +3,10 @@ import axios from 'axios';
 import Tracklist from '../components/Tracklist';
 import { useSelector, useDispatch } from 'react-redux';
 import { handlePlayPlaylist } from "../utils/play";
+import { useTranslation } from 'react-i18next';
 
 function Home() {
+  const { t } = useTranslation();
   const [tracks, setTracks] = useState([]);
   const { userId } = useSelector((state) => state.userState);
   const dispatch = useDispatch();
@@ -39,12 +41,12 @@ function Home() {
           </div>
 
           <div className='pl-8'>
-            <h1 className="text-2xl font-bold">音乐推荐</h1>
+            <h1 className="text-2xl font-bold">{t("musicRecommendation")}</h1>
             <button onClick={() => handlePlayPlaylist(dispatch, tracks)} className='flex mt-4 items-center'>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-8 bg-orange-400 rounded-full fill-white p-1.5 pl-2">
                 <path fillRule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clipRule="evenodd" />
               </svg>
-              <h2 className='pl-2 text-xl font-bold pb-0.5'>播放歌单</h2>
+              <h2 className='pl-2 text-xl font-bold pb-0.5'>{t("playPlaylist")}</h2>
             </button>
           </div>
         </div>

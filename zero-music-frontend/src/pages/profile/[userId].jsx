@@ -5,8 +5,10 @@ import Tracklist from "../../components/Tracklist";
 import PlaylistAsItem from "../../components/PlaylistAsItem";
 import Post from "../../components/Post";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 export default function Profile() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [tracks, setTracks] = useState([]);
@@ -168,10 +170,9 @@ export default function Profile() {
             <div className="flex flex-col ml-20 mt-4 gap-4">
               <h1 className="text-2xl font-bold">{user.name}</h1>
               <div className="flex gap-4 text-lg">
-                <span>关注：{user.following?.length || 0}</span>
-                <span>粉丝：{user.followers?.length || 0}</span>
+                <span>{t("following") + ": " + user.following?.length || 0}</span>
+                <span>{t("followers") + ": " + user.followers?.length || 0}</span>
               </div>
-              {/* {!user.location && <span className="text-lg">地区：{user.location}</span>} */}
               {currentUserId !== userId && (
                 <div className="flex">
                   <button onClick={handleFollow} className="mx-4 py-1.5 bg-orange-300 rounded-3xl w-20">{isFollowing ? '已关注' : '关注'}</button>
@@ -186,15 +187,15 @@ export default function Profile() {
               <button
                 className={`px-3 py-1 rounded-2xl ${activeTab === 'favorites' ? 'bg-orange-300' : ''}`}
                 onClick={() => handleTabClick('favorites')}
-              >收藏</button>
+              >{t("favorites")}</button>
               <button
                 className={`px-3 py-1 rounded-2xl ${activeTab === 'playlists' ? 'bg-orange-300' : ''}`}
                 onClick={() => handleTabClick('playlists')}
-              >歌单</button>
+              >{t("playlists")}</button>
               <button
                 className={`px-3 py-1 rounded-2xl ${activeTab === 'posts' ? 'bg-orange-300' : ''}`}
                 onClick={() => handleTabClick('posts')}
-              >动态</button>
+              >{t("posts")}</button>
             </div>
             {getTabContent()}
           </div>

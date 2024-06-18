@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 const Sidebar = () => {
+  const { t } = useTranslation();
   // Check if the path is active
   const isActive = (path) => {
     // return router.pathname.startsWith(path);
@@ -22,29 +24,29 @@ const Sidebar = () => {
       </Link>
       <nav className='text-left pt-8 ml-4 mr-2 flex flex-col gap-2'>
         <div className='text-2xl font-bold text-left pl-6 mb-4'>
-          我的
+          {t("my")}
         </div>
         <Link to='/favorites' className={`text-lg pl-12 mx-4 py-2  hover:rounded-lg ${isActive('/favorites') ? 'bg-orange-300 rounded-lg' : 'hover:bg-orange-200'}`}>
-          我的收藏
+          {t("myFavorites")}
         </Link>
         <Link to='/playlists' className={`text-lg pl-12 mx-4 py-2  hover:rounded-lg ${isActive('/playlists') ? 'bg-orange-300 rounded-lg' : 'hover:bg-orange-200'}`}>
-          我的歌单
+          {t("myPlaylists")}
         </Link>
         <Link to='/drive' className={`text-lg pl-12 mx-4 py-2  hover:rounded-lg ${isActive('/drive') ? 'bg-orange-300 rounded-lg' : 'hover:bg-orange-200'}`}>
-          我的云盘
+          {t("myDrive")}
         </Link>
         <div className='text-2xl font-bold text-left pl-6 mb-4 mt-4'>
-          社区
+          {t("community")}
         </div>
         <Link to='/posts' className={`text-lg pl-12 mx-4 py-2  hover:rounded-lg ${isActive('/posts') ? 'bg-orange-300 rounded-lg' : 'hover:bg-orange-200'}`}>
-          动态
+          {t("posts")}
         </Link>
         <Link to='/chat' className={`text-lg pl-12 mx-4 py-2  hover:rounded-lg ${isActive('/chat') ? 'bg-orange-300 rounded-lg' : 'hover:bg-orange-200'}`}>
-          私信
+          {t("messages")}
         </Link>
         {role === 'admin' && (
           <Link to='/tracks/manage' className={`text-lg pl-12 mx-4 py-2  hover:rounded-lg ${isActive('/tracks') ? 'bg-orange-300 rounded-lg' : 'hover:bg-orange-200'}`}>
-            管理曲库
+            {t("manageTracks")}
           </Link>
         )}
       </nav>

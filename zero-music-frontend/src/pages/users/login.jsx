@@ -5,8 +5,10 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setToken, setUserId, setName, setAvatar, setRole, login } from '../../redux/actionCreators';
 import { logoutUser } from '../../utils/loginStatus';
+import { useTranslation } from 'react-i18next';
 
 const Login = () => {
+  const { t } = useTranslation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -40,11 +42,11 @@ const Login = () => {
       }
     } catch (error) {
       if (error.response.status === 404) {
-        alert('用户名错误');
+        alert(t("incorrectUsername"));
       } else if (error.response.status === 401) {
-        alert('密码错误');
+        alert(t("incorrectPassword"));
       } else {
-        alert('登录失败');
+        alert(t("loginFailed"));
       }
       console.error('Failed to login', error);
     }
@@ -58,14 +60,14 @@ const Login = () => {
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 mt-0.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
             </svg>
-            首页
+            {t("homepage")}
           </Link>
-          <Link to="/users/register" className='pr-2'>注册</Link>
+          <Link to="/users/register" className='pr-2'>{t("register")}</Link>
         </div>
 
-        <h2 className="text-lg font-bold mb-8">用户登录</h2>
+        <h2 className="text-lg font-bold mb-8">{t("userLogin")}</h2>
         <div className="mb-4">
-          <label htmlFor="username" className="block mb-2">用户名</label>
+          <label htmlFor="username" className="block mb-2">{t("username")}</label>
           <input
             type="text"
             id="username"
@@ -77,7 +79,7 @@ const Login = () => {
           />
         </div>
         <div className="mb-6">
-          <label htmlFor="password" className="block mb-2">密码</label>
+          <label htmlFor="password" className="block mb-2">{t("password")}</label>
           <input
             type="password"
             id="password"
@@ -90,7 +92,7 @@ const Login = () => {
           />
         </div>
         <button type="submit" className="w-full p-3 bg-orange-400 text-white rounded hover:bg-orange-500">
-          登录
+          {t("login")}
         </button>
       </form>
     </div>

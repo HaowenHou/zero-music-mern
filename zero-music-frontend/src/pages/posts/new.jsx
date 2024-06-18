@@ -2,8 +2,10 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from "react-redux";
+import { useTranslation } from 'react-i18next';
 
 export default function New() {
+  const { t } = useTranslation();
   const [content, setContent] = useState('');
   const [selectedTrack, setSelectedTrack] = useState(null);
   const [trackId, setTrackId] = useState(null);
@@ -52,18 +54,18 @@ export default function New() {
   return (
     <div className="flex justify-center m-12 mx-24 space-x-2">
       <div className="w-1/2">
-        <h1 className="text-2xl font-bold">发表动态</h1>
+        <h1 className="text-2xl font-bold">{t("newPost")}</h1>
         <form>
           <textarea
             className="w-full h-32 p-2 rounded-lg mt-12"
-            placeholder="想说点什么？"
+            placeholder={t("postContentPrompt")}
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
         </form>
         <input
           type="text"
-          placeholder="带上音乐"
+          placeholder={t("postSelectMusic")}
           value={searchTerm}
           onChange={handleSearch}
           className="w-full p-2 border rounded mt-12"
@@ -74,7 +76,7 @@ export default function New() {
             <img src={import.meta.env.VITE_SERVER_URL + selectedTrack.cover} alt=""
               className='ml-auto rounded-lg h-8 w-8' />
             <button onClick={handleCancel} className="border border-red-400 rounded-lg py-1 px-2 ml-1.5 hover:bg-red-400">
-              取消
+              {t("cancel")}
             </button>
           </div>
         )}
@@ -95,7 +97,7 @@ export default function New() {
         </ul>
 
         <button onClick={handleSubmit} className="bg-orange-400 text-white rounded-lg px-4 py-2 mt-2">
-          发布
+          {t("post")}
         </button>
       </div>
     </div>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { formatImageUrl } from "../utils/url";
+import { useTranslation } from 'react-i18next';
 
 export default function PlaylistForm({
   _id,
@@ -9,6 +10,7 @@ export default function PlaylistForm({
   cover: initialCover = '',
   userId
 }) {
+  const { t } = useTranslation();
   const [title, setTitle] = useState(initialTitle);
   const [cover, setCover] = useState(initialCover);
   const [coverFile, setCoverFile] = useState(null);
@@ -68,13 +70,13 @@ export default function PlaylistForm({
 
   return (
     <form onSubmit={savePlaylist} className="flex flex-col m-8">
-      <h1 className="font-bold text-2xl mb-2">{_id ? '编辑歌单' : '新建歌单'}</h1>
+      <h1 className="font-bold text-2xl mb-2">{_id ? t("editPlaylist") : t("newPlaylist")}</h1>
 
-      <label className="text-lg my-2">歌单名</label>
+      <label className="text-lg my-2">{t("playlistName")}</label>
       <input type="text" className="border w-64 p-1 rounded-md focus:border-orange-200"
-        placeholder="歌曲名" value={title} onChange={ev => setTitle(ev.target.value)} required />
+        placeholder={t("playlistName")} value={title} onChange={ev => setTitle(ev.target.value)} required />
 
-      <label className="text-lg mt-2">封面</label>
+      <label className="text-lg mt-2">{t("cover")}</label>
       {!cover ? (
         <label className="mt-2 border aspect-square size-36 rounded-lg flex flex-col items-center justify-center cursor-pointer text-sm">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -82,7 +84,7 @@ export default function PlaylistForm({
           </svg>
 
           <input type="file" className="hidden" onChange={handleCoverChange} />
-          上传
+          {t("upload")}
         </label>
       ) :
         (
@@ -90,13 +92,13 @@ export default function PlaylistForm({
             <input type="file" className="hidden" onChange={handleCoverChange} />
             <img src={formatImageUrl(cover)} className="w-full h-full object-cover border rounded-lg" />
             <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300">
-              <span className="text-black font-semibold">更换封面</span>
+              <span className="text-black font-semibold">{t("changeCover")}</span>
             </div>
           </label>
         )}
 
       <button type="submit" className="mr-auto mt-4 bg-orange-200 rounded-md py-1 px-2 hover:bg-orange-400">
-        {_id ? '更新' : '上传'}
+        {_id ? t("update") : t("upload")}
       </button>
 
     </form>

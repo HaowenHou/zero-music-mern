@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const SearchBar = ({ onSearch }) => {
+  const { t } = useTranslation();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [showResults, setShowResults] = useState(false);
@@ -38,7 +40,7 @@ const SearchBar = ({ onSearch }) => {
           value={query}
           onChange={handleSearch}
           onBlur={handleBlur}
-          placeholder="发现音乐或用户"
+          placeholder={t("searchPrompt")}
           className="h-9 w-64 px-4 py-1 border border-gray-300 rounded-2xl focus:outline-none focus:border-orange-400"
         />
         {showResults && !!results.tracks.length && (

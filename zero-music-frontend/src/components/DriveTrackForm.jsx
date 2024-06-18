@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useTranslation } from 'react-i18next';
 
 export default function DriveTrackForm({
   _id,
@@ -10,6 +11,7 @@ export default function DriveTrackForm({
   cover: initialCover = '',
   track: initialTrack = '' // URI to the track
 }) {
+  const { t } = useTranslation();
   const [title, setTitle] = useState(initialTitle);
   const [artist, setArtist] = useState(initialArtist);
   const [cover, setCover] = useState(initialCover);
@@ -85,17 +87,17 @@ export default function DriveTrackForm({
 
   return (
     <form onSubmit={saveMusic} className="flex flex-col m-8">
-      <h1 className="font-bold text-2xl mb-2">上传音乐</h1>
+      <h1 className="font-bold text-2xl mb-2">{t("uploadMusic")}</h1>
 
-      <label className="text-lg my-2">歌曲名</label>
+      <label className="text-lg my-2">{t("musicTitle")}</label>
       <input type="text" className="border w-64 p-1 rounded-md focus:border-orange-200"
-        placeholder="歌曲名" value={title} onChange={ev => setTitle(ev.target.value)} required />
+        placeholder={t("musicTitle")} value={title} onChange={ev => setTitle(ev.target.value)} required />
 
-      <label className="text-lg my-2">歌手</label>
+      <label className="text-lg my-2">{t("artist")}</label>
       <input type="text" className="border w-64 p-1 rounded-md focus:border-orange-200"
-        placeholder="歌手" value={artist} onChange={ev => setArtist(ev.target.value)} required />
+        placeholder={t("artist")} value={artist} onChange={ev => setArtist(ev.target.value)} required />
 
-      <label className="text-lg mt-2">封面</label>
+      <label className="text-lg mt-2">{t("cover")}</label>
       {!cover ? (
         <label className="mt-2 border aspect-square size-36 rounded-lg flex flex-col items-center justify-center cursor-pointer text-sm">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -103,7 +105,7 @@ export default function DriveTrackForm({
           </svg>
 
           <input type="file" className="hidden" onChange={handleCoverChange} />
-          上传
+          {t("upload")}
         </label>
       ) :
         (
@@ -111,12 +113,12 @@ export default function DriveTrackForm({
             <input type="file" className="hidden" onChange={handleCoverChange} />
             <img src={import.meta.env.VITE_SERVER_URL + cover} className="w-full h-full object-cover border rounded-lg" />
             <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300">
-              <span className="text-black font-semibold">更换封面</span>
+              <span className="text-black font-semibold">{t("changeCover")}</span>
             </div>
           </label>
         )}
 
-      <label className="text-lg my-2">音乐文件</label>
+      <label className="text-lg my-2">{t("musicFile")}</label>
       <input className="mb-2" type="file" onChange={handleMusicFileChange} />
 
       {initialTrack && !trackChanged && (
@@ -128,7 +130,7 @@ export default function DriveTrackForm({
       )}
 
       <button type="submit" className="mr-auto mt-4 bg-orange-200 rounded-md py-1 px-2 hover:bg-orange-400">
-        上传
+        {t("upload")}
       </button>
 
     </form>

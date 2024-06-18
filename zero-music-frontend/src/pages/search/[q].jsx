@@ -3,10 +3,12 @@ import axios from 'axios';
 import Tracklist from '../../components/Tracklist';
 import { Link } from "react-router-dom";
 import { useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const fetcher = url => axios.get(url).then(res => res.data);
 
 const SearchResults = () => {
+  const { t } = useTranslation();
   const { q } = useParams();
   const { data: results, error } = useSWR(q ? import.meta.env.VITE_SERVER_URL + `/api/search?q=${q}` : null, fetcher);
 
@@ -15,17 +17,17 @@ const SearchResults = () => {
 
   return (
     <div className="p-12">
-      <h1 className="text-2xl font-bold">搜索结果</h1>
+      <h1 className="text-2xl font-bold">{t("searchResults")}</h1>
       <div className='px-8 mt-10'>
         {!!results.tracks.length && (
           <>
-            <h2 className="text-lg font-semibold mt-4">音乐</h2>
+            <h2 className="text-lg font-semibold mt-4">{t("music")}</h2>
             <Tracklist tracks={results.tracks} showFavoriteButton={false} />
           </>
         )}
         {!!results.users.length && (
           <>
-            <h2 className="text-lg font-semibold mt-8 mb-8">用户</h2>
+            <h2 className="text-lg font-semibold mt-8 mb-8">{t("users")}</h2>
             {results.users.map(item =>
               <Link to={`/profile/${item._id}`} key={item._id} className="p-2 flex items-center">
                 <img

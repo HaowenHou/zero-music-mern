@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import UserForm from '../../components/UserForm';
+import { useTranslation } from 'react-i18next';
 
 const Register = () => {
+  const { t } = useTranslation();
 
   return (
     <div className="flex flex-col items-center justify-center py-2 ">
@@ -12,12 +14,12 @@ const Register = () => {
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 mt-0.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
             </svg>
-            首页
+            {t("homepage")}
           </Link>
-          <Link to="/users/login" className='pr-2'>登录</Link>
+          <Link to="/users/login" className='pr-2'>{t("login")}</Link>
         </div>
 
-        <h2 className="text-lg font-bold mb-8">新用户注册</h2>
+        <h2 className="text-lg font-bold mb-8">{t("newUserRegister")}</h2>
 
         <UserForm />
       </div>

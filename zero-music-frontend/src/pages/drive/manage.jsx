@@ -2,8 +2,10 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 export default function Manage() {
+  const { t } = useTranslation();
   const [tracks, setTracks] = useState([]);
   const { userId } = useSelector((state) => state.userState);
 
@@ -37,7 +39,7 @@ export default function Manage() {
   return (
     <div className="m-4">
       <h1 className="text-2xl font-semibold">
-        云盘管理
+        {t("driveManagement")}
       </h1>
       <div className="m-4">
         <Link to="/drive/new" className="m-2 ml-6 bg-orange-300 px-1.5 py-1.5 rounded-lg hover:bg-orange-400">上传</Link>
@@ -59,14 +61,11 @@ export default function Manage() {
               <td>
                 <Link className="bg-white text-gray-800 px-2 mx-2 py-1 rounded-sm border border-gray-200 shadow-sm"
                   to={`/tracks/edit/${track._id}`}>
-                  编辑
+                  {t("edit")}
                 </Link>
-                {/* <Link className="bg-red-200 text-red-600 px-2 py-1 rounded-sm shadow-sm" to={'/tracks/delete/' + track._id}>
-                  删除
-                </Link> */}
                 <button className="bg-red-200 text-red-600 px-2 py-1 rounded-sm shadow-sm"
                   onClick={() => handleDelete(track._id)}>
-                  删除
+                  {t("delete")}
                 </button>
               </td>
             </tr>

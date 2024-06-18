@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 export default function Playing() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { trackId } = useParams();
   const [track, setTrack] = useState(null);
@@ -57,14 +59,14 @@ export default function Playing() {
     if (showing === 'lyrics') {
       return (
         <>
-          <h2 className="text-lg mt-4">歌词：</h2>
+          <h2 className="text-lg mt-4">{t("lyrics") + ":"}</h2>
           <div className="mt-4 h-96 flex flex-col items-center justify-center">
             {track.lyrics ? (
               track.lyrics.map((line, index) => (
                 <p key={index} className="text-lg">{line}</p>
               ))
             ) : (
-              <p className="text-lg my-auto">暂无歌词</p>
+              <p className="text-lg my-auto">{t("noLyrics")}</p>
             )}
           </div>
         </>
@@ -72,7 +74,7 @@ export default function Playing() {
     } else {
       return (
         <>
-          <h2 className="text-lg mt-4">评论：</h2>
+          <h2 className="text-lg mt-4">{t("comments") + ":"}</h2>
           <div className="mt-4 h-80 flex flex-col overflow-auto mr-6">
             {comments.length ? (
               comments.map((comment) => (
@@ -94,13 +96,13 @@ export default function Playing() {
                 </div>
               ))
             ) : (
-              <p className="text-lg my-auto">暂无评论</p>
+              <p className="text-lg my-auto">{t("noComments")}</p>
             )}
           </div>
           <div className="flex mt-4 w-full">
             <textarea value={content} onChange={e => setContent(e.target.value)}
-              className="p-2 rounded-xl w-full" placeholder="输入评论..." />
-            <button onClick={postComment} className="ml-4 mr-6 px-4 py-2 bg-orange-400 text-white rounded-xl">发表</button>
+              className="p-2 rounded-xl w-full" placeholder={t("typeComment")} />
+            <button onClick={postComment} className="ml-4 mr-6 px-4 py-2 bg-orange-400 text-white rounded-xl">{t("post")}</button>
           </div>
         </>
       );
@@ -125,7 +127,7 @@ export default function Playing() {
           </button>
         </div>
         <div className="flex items-center mt-4">
-          <h2 className="text-lg">歌手：{track.artist}</h2>
+          <h2 className="text-lg">{t("artist") + ": " + track.artist}</h2>
           <button onClick={handleContentChange} className="ml-auto mr-16">
             {showing === 'lyrics' ? (
               <svg className="size-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
