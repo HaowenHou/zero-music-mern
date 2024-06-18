@@ -8,6 +8,7 @@ function createWindow() {
     minWidth: 1000,
     minHeight: 650,
     frame: false,
+    icon: path.join(process.cwd(), 'public/zero-music-favicon-lg.png'),
     webPreferences: {
       // nodeIntegration: false,
       contextIsolation: true,
