@@ -19,21 +19,25 @@ A full-stack online music app, developed using MERN stack (React, Express.js, Mo
 
 **Tools needed:** Node v20.13.1, npm 10.5.2, MongoDB (local or cloud like Atlas)
 
-[comment]: <> (TODO: MongoDB db setup)
-
 **Dependency Installation:** `npm install` for both the frontend and backend.
 
 **Backend:**
 
 Inside the backend directory, create a `.env` file specifying environment variables as below:
 
-```
+```env
 PORT=""            # The port for backend
 MONGO_URI=""       # MongoDB URI, local or cloud. E.g., "mongodb://localhost:27017/zero-music"
 JWT_SECRET_KEY=""  # Secret key for JWT, which can be generated using `openssl rand -base64 64`
 ```
 
 Run: `node app.js`
+
+Note that only admin can manage tracks. A user can be set as admin using mongosh:
+
+```shell
+db.users.findOneAndUpdate({_id: ObjectId('xxx')}, {$set: {role: "admin"})
+```
 
 **Frontend:**
 
@@ -44,6 +48,8 @@ Start React frontend: `npm run dev`
 
 Start Electron client: `npm run electron:start`
 
+## Other Details
+
 <details>
 
 <summary><b>RESTful API Design</b></summary>
@@ -53,6 +59,8 @@ Start Electron client: `npm run electron:start`
 **GET /api/users/userId [?populate=]** - Get user info. `userId` can be `current`
 
 **POST /api/users** - Register a new user
+
+**PUT /api/users** - Update user info
 
 **GET /api/users/:userId/following** - Get the user's following list. `userId` can be `current`
 
