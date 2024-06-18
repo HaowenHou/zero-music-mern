@@ -1,13 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 const Sidebar = () => {
   const { t } = useTranslation();
+  const location = useLocation();
   // Check if the path is active
   const isActive = (path) => {
-    // return router.pathname.startsWith(path);
+    return location.pathname.startsWith(path);
     return false; // TODO
   };
 

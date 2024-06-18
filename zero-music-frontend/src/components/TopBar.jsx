@@ -77,10 +77,10 @@ const TopBar = () => {
                 className="size-5 mr-1">
                 <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
               </svg>
-              <div className="absolute hidden group-hover:block bg-white shadow-lg rounded-md w-24 -left-20">
-                <Link to={`/profile/${userId}`} className="block px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100">{t("personalProfile")}</Link>
-                <button onClick={() => navigate('/users/update')} className="px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100">{t("updateInfo")}</button>
-                <button onClick={() => logoutUser(dispatch)} className="px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100">{t("logout")}</button>
+              <div className="absolute hidden group-hover:block bg-white shadow-lg rounded-md w-36 -left-28">
+                <button onClick={() => navigate(`/profile/${userId}`)} className="block px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100 w-full">{t("personalProfile")}</button>
+                <button onClick={() => navigate('/users/update')} className="px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100 w-full">{t("updateInfo")}</button>
+                <button onClick={() => logoutUser(dispatch)} className="px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100 w-full">{t("logout")}</button>
               </div>
             </div>
           </div>

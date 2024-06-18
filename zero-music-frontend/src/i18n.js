@@ -114,9 +114,9 @@ i18n
         translation: {
           "searchPrompt": "Discover music or users",
           "personalProfile": "Personal Profile",
-          "updateInfo": "Update Info",
-          "logout": "Logout",
-          "login": "Login",
+          "updateInfo": "Update Profile",
+          "logout": "Sign Out",
+          "login": "Sign In",
           "register": "Register",
           "homepage": "Home",
           "userLogin": "User Login",

@@ -87,7 +87,7 @@ export default function Playing() {
                   <div className="flex flex-col items-start">
                     <div>
                       <span>{comment.userId.name}</span>
-                      <span className="text-sm ml-2">{convertTimestamp(comment.timestamp)}</span>
+                      <span className="text-xs text-gray-500 ml-2">{convertTimestamp(comment.timestamp)}</span>
                     </div>
                     <div className="bg-gray-100 p-2 rounded-lg max-w-xs break-words px-3 mt-1 mb-3" style={{ wordWrap: 'break-word' }}>
                       {comment.content}

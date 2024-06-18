@@ -49,7 +49,7 @@ function createWindow() {
       }));
     });
     menu.append(new MenuItem({
-      label: '添加到歌单',
+      label: 'Add to Playlist',
       submenu: submenu
     }));
     menu.popup({ window: BrowserWindow.fromWebContents(event.sender) });

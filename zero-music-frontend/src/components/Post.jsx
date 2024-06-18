@@ -23,7 +23,7 @@ export default function Post({ post, manageMode = false, handleDelete }) {
         <img className="h-12 w-12 rounded-lg" src={import.meta.env.VITE_SERVER_URL + post.userId.avatar} alt="avatar" />
         <div className="flex flex-col ml-4">
           <h2 className="font-semibold text-lg">{post.userId.name}</h2>
-          <span>
+          <span className="text-sm text-gray-500">
             {convertTimestamp(post.timestamp)}
           </span>
         </div>
