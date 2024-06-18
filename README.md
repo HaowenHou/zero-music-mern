@@ -2,9 +2,11 @@
 
 A full-stack online music app, developed using MERN stack (React, Express.js, MongoDB) and Electron. Libraries including Tailwind CSS, Redux, Socket.IO are adopted.
 
-<img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/home.png?raw=true">
+<p align="center">
+    <img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/home.png?raw=true" width="90%">
+</p>
 
-**Features:**
+## Features
 
 - :star: Favoriting music & Adding music to playlists (from context menu)
 
@@ -14,22 +16,27 @@ A full-stack online music app, developed using MERN stack (React, Express.js, Mo
 
 - :speech_balloon: Sharing and viewing others' comments of a track
 
+<p align="center">
+    <img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/comments.png?raw=true" height="auto" width="80%">
+</p>
 
 - :clipboard: Creating and managing playlists & Favoriting others' playlists
 
 
 - :cloud: Personal music cloud drive
+
 - :speaker: Posting thoughts with music & Viewing friends' posts
 
 <p align="center">
     <img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/posting.png?raw=true" width="35%">
-    <img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/posts.png?raw=true" width="55%">
+    <img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/posts.png?raw=true" width="60%">
 </p>
 
 - :blush: Personal profile page, showing one's favorites, playlists and posts
 
 <p align="center">
     <img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/profile-bar.png?raw=true" width="20%">
+    <img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/profile.png?raw=true" height="auto" width="80%">
 </p>
 
 - :envelope: Personal messaging (Socket.IO)
