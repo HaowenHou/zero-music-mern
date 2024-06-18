@@ -2,17 +2,34 @@
 
 A full-stack online music app, developed using MERN stack (React, Express.js, MongoDB) and Electron. Libraries including Tailwind CSS, Redux, Socket.IO are adopted.
 
-[comment]: <> (TODO: Demo images)
+<img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/home.png?raw=true" height="auto" width="800">
 
 **Features:**
 
 - :star: Favoriting music & Adding music to playlists (from context menu)
+
+<img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/add-to-playlist.png?raw=true" height="auto" width="400">
+
 - :speech_balloon: Sharing and viewing others' comments of a track
+
+
 - :clipboard: Creating and managing playlists & Favoriting others' playlists
+
+
 - :cloud: Personal music cloud drive
 - :speaker: Posting thoughts with music & Viewing friends' posts
+
+<img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/posting.png?raw=true" height="600" width="auto">
+<img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/posts.png?raw=true" height="600" width="auto">
+
 - :blush: Personal profile page, showing one's favorites, playlists and posts
+
+<img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/profile-bar.png?raw=true" height="auto" width="200">
+
 - :envelope: Personal messaging (Socket.IO)
+
+<img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/personal-message.png?raw=true" height="auto" width="800">
+
 - :lock: User authentication with JWT
 
 ## How to Run
@@ -42,15 +59,21 @@ Start React frontend: `npm run dev`
 
 Start Electron client: `npm run electron:start`
 
+Change language: Set `fallbackLng` in `src/i18n.js`. Supports `en` and `zh-CN`.
+
 ## Other Details
 
 - Note that only admin can manage tracks. A user can be set as admin using mongosh:
 
     ```shell
-    db.users.findOneAndUpdate({_id: ObjectId('xxx')}, {$set: {role: "admin"})
+    db.users.findOneAndUpdate({_id: ObjectId('xxx')}, {$set: {role: "admin"}})
     ```
 
-- Since that the first part of this project was written in Next.js, the frontend follows a file-system based router. `[xxx]` represents dynamic routes.
+- Since that the first part of this project was written in Next.js and later separated into React and Express, the frontend still follows a file-system based router, with `[xxx]` representing dynamic routes.
+
+- Due to unstable network connection during development, clould storage service like AWS S3 were not utilized. Instead, all the files are stored on the local file system.
+
+- Code clarity and optimization are important. But, as this project was written to learn web development, they were not the primary focus.
 
 <details>
 
