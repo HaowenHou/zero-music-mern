@@ -35,7 +35,7 @@ const UserForm = ({
     e.preventDefault();
 
     let useDefaultAvatar = false;
-    if (initialAvatar.includes('/assets/default-avatar-s.png')) {
+    if (avatar.includes('/assets/default-avatar-s.png')) {
       useDefaultAvatar = true;
     }
 
