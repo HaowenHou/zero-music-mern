@@ -2,13 +2,15 @@
 
 A full-stack online music app, developed using MERN stack (React, Express.js, MongoDB) and Electron. Libraries including Tailwind CSS, Redux, Socket.IO are adopted.
 
-<img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/home.png?raw=true" height="auto" width="800">
+<img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/home.png?raw=true">
 
 **Features:**
 
 - :star: Favoriting music & Adding music to playlists (from context menu)
 
-<img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/add-to-playlist.png?raw=true" height="auto" width="400">
+<p align="center">
+    <img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/add-to-playlist.png?raw=true" width="40%">
+</p>
 
 - :speech_balloon: Sharing and viewing others' comments of a track
 
@@ -19,16 +21,22 @@ A full-stack online music app, developed using MERN stack (React, Express.js, Mo
 - :cloud: Personal music cloud drive
 - :speaker: Posting thoughts with music & Viewing friends' posts
 
-<img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/posting.png?raw=true" height="600" width="auto">
-<img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/posts.png?raw=true" height="600" width="auto">
+<p align="center">
+    <img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/posting.png?raw=true" width="35%">
+    <img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/posts.png?raw=true" width="55%">
+</p>
 
 - :blush: Personal profile page, showing one's favorites, playlists and posts
 
-<img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/profile-bar.png?raw=true" height="auto" width="200">
+<p align="center">
+    <img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/profile-bar.png?raw=true" width="20%">
+</p>
 
 - :envelope: Personal messaging (Socket.IO)
 
-<img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/personal-message.png?raw=true" height="auto" width="800">
+<p align="center">
+    <img src="https://github.com/HaowenHou/zero-music-next/blob/main/.github/assets/personal-message.png?raw=true" height="auto" width="80%">
+</p>
 
 - :lock: User authentication with JWT
 
