@@ -33,12 +33,6 @@ JWT_SECRET_KEY=""  # Secret key for JWT, which can be generated using `openssl r
 
 Run: `node app.js`
 
-Note that only admin can manage tracks. A user can be set as admin using mongosh:
-
-```shell
-db.users.findOneAndUpdate({_id: ObjectId('xxx')}, {$set: {role: "admin"})
-```
-
 **Frontend:**
 
 Inside the `.env.local` file, specify `VITE_SERVER_URL=` as the backend URL, *without a slash at the end*.
@@ -49,6 +43,12 @@ Start React frontend: `npm run dev`
 Start Electron client: `npm run electron:start`
 
 ## Other Details
+
+Note that only admin can manage tracks. A user can be set as admin using mongosh:
+
+```shell
+db.users.findOneAndUpdate({_id: ObjectId('xxx')}, {$set: {role: "admin"})
+```
 
 <details>
 
