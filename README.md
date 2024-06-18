@@ -44,11 +44,13 @@ Start Electron client: `npm run electron:start`
 
 ## Other Details
 
-Note that only admin can manage tracks. A user can be set as admin using mongosh:
+- Note that only admin can manage tracks. A user can be set as admin using mongosh:
 
-```shell
-db.users.findOneAndUpdate({_id: ObjectId('xxx')}, {$set: {role: "admin"})
-```
+    ```shell
+    db.users.findOneAndUpdate({_id: ObjectId('xxx')}, {$set: {role: "admin"})
+    ```
+
+- Since that the first part of this project was written in Next.js, the frontend follows a file-system based router. `[xxx]` represents dynamic routes.
 
 <details>
 
