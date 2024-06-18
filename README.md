@@ -1,9 +1,11 @@
 # Zero Music
 
+English | [简体中文](README.zh-CN.md)
+
 A full-stack online music app, developed using MERN stack (React, Express.js, MongoDB) and Electron. Libraries including Tailwind CSS, Redux, Socket.IO are adopted.
 
 <p align="center">
-    <img src="https://github.com/HaowenHou/zero-music-mern/blob/main/.github/assets/home.png?raw=true" width="90%">
+    <img src="https://github.com/HaowenHou/zero-music-mern/blob/main/.github/assets/en/home.png?raw=true" width="90%">
 </p>
 
 ## Features
@@ -11,37 +13,36 @@ A full-stack online music app, developed using MERN stack (React, Express.js, Mo
 - :star: Favoriting music & Adding music to playlists (from context menu)
 
 <p align="center">
-    <img src="https://github.com/HaowenHou/zero-music-mern/blob/main/.github/assets/add-to-playlist.png?raw=true" width="40%">
+    <img src="https://github.com/HaowenHou/zero-music-mern/blob/main/.github/assets/en/add-to-playlist.png?raw=true" width="40%">
 </p>
 
-- :speech_balloon: Sharing and viewing others' comments of a track
+- :speech_balloon: Sharing comments & Viewing others' comments of a track
 
 <p align="center">
-    <img src="https://github.com/HaowenHou/zero-music-mern/blob/main/.github/assets/comments.png?raw=true" height="auto" width="80%">
+    <img src="https://github.com/HaowenHou/zero-music-mern/blob/main/.github/assets/en/comments.png?raw=true" height="auto" width="80%">
 </p>
 
 - :clipboard: Creating and managing playlists & Favoriting others' playlists
-
 
 - :cloud: Personal music cloud drive
 
 - :speaker: Posting thoughts with music & Viewing friends' posts
 
 <p align="center">
-    <img src="https://github.com/HaowenHou/zero-music-mern/blob/main/.github/assets/posting.png?raw=true" width="35%">
-    <img src="https://github.com/HaowenHou/zero-music-mern/blob/main/.github/assets/posts.png?raw=true" width="60%">
+    <img src="https://github.com/HaowenHou/zero-music-mern/blob/main/.github/assets/en/posting.png?raw=true" width="35%">
+    <img src="https://github.com/HaowenHou/zero-music-mern/blob/main/.github/assets/en/posts.png?raw=true" width="60%">
 </p>
 
 - :blush: Personal profile page, showing one's favorites, playlists and posts
 
 <p align="center">
-    <img src="https://github.com/HaowenHou/zero-music-mern/blob/main/.github/assets/profile.png?raw=true" height="auto" width="80%">
+    <img src="https://github.com/HaowenHou/zero-music-mern/blob/main/.github/assets/en/profile.png?raw=true" height="auto" width="80%">
 </p>
 
 - :envelope: Personal messaging (Socket.IO)
 
 <p align="center">
-    <img src="https://github.com/HaowenHou/zero-music-mern/blob/main/.github/assets/personal-message.png?raw=true" height="auto" width="80%">
+    <img src="https://github.com/HaowenHou/zero-music-mern/blob/main/.github/assets/en/personal-message.png?raw=true" height="auto" width="80%">
 </p>
 
 - :lock: User authentication with JWT
