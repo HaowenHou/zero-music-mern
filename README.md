@@ -6,12 +6,13 @@ A full-stack online music app, developed using MERN stack (React, Express.js, Mo
 
 **Features:**
 
-- Favoriting music & Adding music to playlists from context menu
-- Creating and managing playlists
-- Personal music cloud drive
-- Posting thoughts with music & Viewing friends' posts
-- Personal messaging (Socket.IO)
-- User authentication with JWT
+- :star: Favoriting music & Adding music to playlists (from context menu)
+- :clipboard: Creating and managing playlists & Favoriting others' playlists
+- :cloud: Personal music cloud drive
+- :speaker: Posting thoughts with music & Viewing friends' posts
+- :blush: Personal profile page, showing one's favorites, playlists and posts
+- :envelope: Personal messaging (Socket.IO)
+- :lock: User authentication with JWT
 
 ## How to run
 
