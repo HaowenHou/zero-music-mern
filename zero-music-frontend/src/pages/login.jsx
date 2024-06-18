@@ -12,6 +12,8 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  logoutUser(dispatch);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
