@@ -15,8 +15,8 @@ axios.interceptors.response.use(
   response => response,
   error => {
     if (error.response && error.response.status === 401) {
-      // history.push('/login');
-      window.location = '/login';
+      // history.push('/users/login');
+      window.location = '/users/login';
     }
     if (error.response && error.response.status === 403) {
       // history.push('/forbidden');

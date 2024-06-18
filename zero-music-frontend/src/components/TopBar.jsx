@@ -55,7 +55,7 @@ const TopBar = () => {
 
       <div className='h-16 ml-auto flex items-center justify-center' style={{ WebkitAppRegion: 'no-drag' }}>
         {!isLoggedIn ? (
-          <Link to='/login' className='flex items-center p-0.5 rounded-2xl border mr-8'>
+          <Link to='/users/login' className='flex items-center p-0.5 rounded-2xl border mr-8'>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-8">
               <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
             </svg>
@@ -77,6 +77,7 @@ const TopBar = () => {
               </svg>
               <div className="absolute hidden group-hover:block bg-white shadow-lg rounded-md w-24 -left-20">
                 <Link to={`/profile/${userId}`} className="block px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100">个人主页</Link>
+                <button onClick={() => navigate('/users/update')} className="px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100">更新信息</button>
                 <button onClick={() => logoutUser(dispatch)} className="px-4 py-2 rounded-md text-gray-700 hover:bg-gray-100">退出登录</button>
               </div>
             </div>

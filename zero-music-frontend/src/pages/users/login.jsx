@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { setToken, setUserId, setName, setAvatar, setRole, login } from '../redux/actionCreators';
-import { logoutUser } from '../utils/loginStatus';
+import { setToken, setUserId, setName, setAvatar, setRole, login } from '../../redux/actionCreators';
+import { logoutUser } from '../../utils/loginStatus';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -60,7 +60,7 @@ const Login = () => {
             </svg>
             首页
           </Link>
-          <Link to="/register" className='pr-2'>注册</Link>
+          <Link to="/users/register" className='pr-2'>注册</Link>
         </div>
 
         <h2 className="text-lg font-bold mb-8">用户登录</h2>

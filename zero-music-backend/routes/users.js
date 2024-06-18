@@ -32,6 +32,7 @@ router.post('/', handleFormidable, async (req, res) => {
   const username = fields.username[0];
   const password = fields.password[0];
   const name = fields.name[0];
+  const useDefaultAvatar = fields.useDefaultAvatar[0] === 'true';
 
   if (!username || !password) {
     return res.status(400).json({ error: 'Username and password are required.' });
@@ -45,22 +46,79 @@ router.post('/', handleFormidable, async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    let avatarPath = '';
+    let avatarPath = undefined;
     if (files.avatar) {
       const file = Array.isArray(files.avatar) ? files.avatar[0] : files.avatar;
       const result = await storeFile(file, 'avatars', username);
       avatarPath = result.webPath;
     }
 
+    if (useDefaultAvatar) {
+      avatarPath = '/assets/default-avatar-s.png';
+    }
     const user = new User({
       username,
       name,
       password: hashedPassword,
-      avatar: avatarPath || '/assets/default-avatar-s.png',
+      avatar: avatarPath,
     });
 
     await user.save();
     res.status(201).json({ message: 'User registered successfully!' });
+  } catch (error) {
+    console.error('Registration failed:', error);
+    res.status(500).json({ error: 'Registration failed.' });
+  }
+});
+
+// PUT to update user info
+router.put('/', [authenticateToken, handleFormidable], async (req, res) => {
+  const userId = req.user.id;
+  const { fields, files } = req;
+  const username = fields.username[0];
+  const password = fields.password[0];
+  const name = fields.name[0];
+  const useDefaultAvatar = fields.useDefaultAvatar[0] === 'true';
+
+  if (!username || !password) {
+    return res.status(400).json({ error: 'Username and password are required.' });
+  }
+
+  try {
+    const existingUser = await User.findById(userId);
+    if (!existingUser) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    let avatarPath = undefined;
+    if (files.avatar) {
+      const file = Array.isArray(files.avatar) ? files.avatar[0] : files.avatar;
+      const result = await storeFile(file, 'avatars', username);
+      avatarPath = result.webPath;
+    }
+
+    if (useDefaultAvatar) {
+      avatarPath = '/assets/default-avatar-s.png';
+    }
+    
+    await User.findByIdAndUpdate(userId, {
+      username,
+      name,
+      password: hashedPassword,
+      avatar: avatarPath,
+    })
+
+    // Also return updated user info
+    res.status(200).json({ 
+      message: 'User updated successfully!',
+      user: {
+        username,
+        name,
+        avatar: avatarPath,
+      }
+    });
   } catch (error) {
     console.error('Registration failed:', error);
     res.status(500).json({ error: 'Registration failed.' });

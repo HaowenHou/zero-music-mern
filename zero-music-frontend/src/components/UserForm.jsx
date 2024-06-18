@@ -1,16 +1,23 @@
 import axios from 'axios';
-import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { formatImageUrl } from '../utils/url';
+import { useDispatch } from 'react-redux';
+import { setName as setGlobalName, setAvatar as setGlobalAvatar } from '../redux/actionCreators';
 
-const Register = () => {
-  const [username, setUsername] = useState('');
-  const [name, setName] = useState('');
+const UserForm = ({
+  _id: userId,
+  username: initialUsername = '',
+  name: initialName = '',
+  avatar: initialAvatar = import.meta.env.VITE_SERVER_URL + '/assets/default-avatar-s.png',
+}) => {
+  const [username, setUsername] = useState(initialUsername);
+  const [name, setName] = useState(initialName);
   const [password, setPassword] = useState('');
-  const [avatar, setAvatar] = useState(import.meta.env.VITE_SERVER_URL + '/assets/default-avatar-s.png');
+  const [avatar, setAvatar] = useState(initialAvatar);
   const [avatarFile, setAvatarFile] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   function handleAvatarChange(ev) {
     const file = ev.target.files[0];
@@ -27,52 +34,74 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    let useDefaultAvatar = false;
+    if (initialAvatar.includes('/assets/default-avatar-s.png')) {
+      useDefaultAvatar = true;
+    }
+
     // const formData = { username, name, password };
     const formData = new FormData();
     formData.append('username', username);
     formData.append('name', name);
     formData.append('password', password);
+    formData.append('useDefaultAvatar', useDefaultAvatar);
     if (avatarFile) {
       formData.append('avatar', avatarFile);
     }
 
-    try {
-      const response = await axios.post(import.meta.env.VITE_SERVER_URL + '/api/users', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+    if (userId) {
+      try {
+        const response = await axios.put(import.meta.env.VITE_SERVER_URL + `/api/users`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        if (response.status === 200) {
+          // alert('用户信息已更新');
+          dispatch(setGlobalName(name));
+          const newAvatar = response.data.user.avatar;
+          if (newAvatar) {
+            dispatch(setGlobalAvatar(newAvatar));
+          }
+          navigate(-1);
+        } else {
+          console.error('Update failed', response.data);
         }
-      });
-      console.log(response)
-      if (response.status === 201) {
-        alert('注册成功，请登录');
-        navigate('/login');
-      } else {
-        console.error('Registration failed', response.data);
+      } catch (error) {
+        if (error.response.status === 409) {
+          alert('用户名已被注册');
+        } else {
+          alert(`更新失败: ${error.response.data.message}`);
+        }
+        console.error('Update failed', error.response.data);
       }
-    } catch (error) {
-      if (error.response.status === 409) {
-        alert('用户名已被注册');
-      } else {
-        alert(`注册失败: ${error.response.data.message}`);
+    } else {
+      try {
+        const response = await axios.post(import.meta.env.VITE_SERVER_URL + '/api/users', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        if (response.status === 201) {
+          alert('注册成功，请登录');
+          navigate('/users/login');
+        } else {
+          console.error('Registration failed', response.data);
+        }
+      } catch (error) {
+        if (error.response.status === 409) {
+          alert('用户名已被注册');
+        } else {
+          alert(`注册失败: ${error.response.data.message}`);
+        }
+        console.error('Registration failed', error.response.data);
       }
-      console.error('Registration failed', error.response.data);
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center py-2">
-      <form className="px-12 py-8 bg-white rounded shadow-md" onSubmit={handleSubmit}>
-        <div className='flex justify-between pb-8'>
-          <Link to="/" className='flex items-center'>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 mt-0.5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-            </svg>
-            首页
-          </Link>
-          <Link to="/login" className='pr-2'>登录</Link>
-        </div>
-
-        <h2 className="text-lg font-bold mb-8">新用户注册</h2>
+    <>
+      <form onSubmit={handleSubmit}>
         <label htmlFor="username" className="block mb-2">头像</label>
         <label className="my-2 mx-auto cursor-pointer relative flex w-36 h-36">
           <input type="file" className="hidden" onChange={handleAvatarChange} />
@@ -119,11 +148,11 @@ const Register = () => {
           />
         </div>
         <button type="submit" className="w-full p-3 bg-orange-400 text-white rounded hover:bg-orange-500">
-          注册
+          {userId ? "更新" : "注册"}
         </button>
       </form>
-    </div>
+    </>
   );
 };
 
-export default Register;
+export default UserForm;

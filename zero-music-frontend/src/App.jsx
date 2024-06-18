@@ -3,8 +3,9 @@ import Sidebar from './components/Sidebar'
 import TopBar from './components/TopBar'
 import PlayerControl from './components/PlayerControl'
 import Home from './pages/Home'
-import Login from './pages/login'
-import Register from './pages/register'
+import Login from './pages/users/login'
+import Register from './pages/users/register'
+import UpdateUser from './pages/users/update'
 import Favorites from './pages/favorites'
 import PlaylistsRoutes from './pages/playlists/playlistsRoutes'
 import DriveRoutes from './pages/drive/driveRoutes'
@@ -26,7 +27,7 @@ import { useSelector } from 'react-redux';
 const ProtectedRoute = ({ }) => {
   const { userId } = useSelector((state) => state.userState);
   if (!userId) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/users/login" replace />;
   }
   return <Outlet />;
 };
@@ -60,14 +61,15 @@ function App() {
               {
                 <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
+                  <Route path="/users/login" element={<Login />} />
+                  <Route path="/users/register" element={<Register />} />
                   <Route path="/search/:q" element={<SearchResults />} />
                   <Route path="/playing/:trackId" element={<Playing />} />
                   <Route path="/forbidden" element={<div>Forbidden</div>} />
                   <Route path="*" element={<Home />} />
 
                   <Route element={<ProtectedRoute />}>
+                    <Route path="/users/update" element={<UpdateUser />} />
                     {PlaylistsRoutes}
                     {DriveRoutes}
                     {PostsRoutes}
