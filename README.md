@@ -1,34 +1,43 @@
-## TODO
+# Zero Music
 
-- Log in immediately after registering.
-- Upload avatar when registering.
+A full-stack online music app, developed using MERN stack (React, Express.js, MongoDB) and Electron. Libraries including Tailwind CSS, Redux, Socket.IO are adopted.
 
-**Player Control:**
+[comment]: <> (TODO: Demo images)
 
-- Mute
-- Change prev/next track icon
+**Features:**
 
-**Favorites:**
+- Favoriting music & Adding music to playlists from context menu
+- Creating and managing playlists
+- Personal music cloud drive
+- Posting thoughts with music & Viewing friends' posts
+- Personal messaging (Socket.IO)
+- User authentication with JWT
 
-- Change the default cover when there is no favorite track.
+## How to run
 
-## Done
-- If refreshed after logging in, the topbar briefly shows as not logged in (before the session is retrieved).
+**Tools needed:** Node v20.13.1, npm 10.5.2, MongoDB (local or cloud like Atlas)
 
-## .env.local
+[comment]: <> (TODO: MongoDB db setup)
+
+**Dependency Installation:** `npm install` for both the frontend and backend.
+
+**Backend:**
+
+Inside the backend directory, create a `.env` file specifying environment variables as below:
 
 ```
-GOOGLE_ID=
-GOOGLE_SECRET=
-MONGO_URI=
-NEXTAUTH_URL=
-JWT_SIGNING_PRIVATE_KEY=
-AUTH_SECRET=
-AWS_REGION=
-AWS_BUCKET_NAME=
-AWS_ACCESS_KEY_ID=
-AWS_SECRET_ACCESS_KEY=
-PROXY_ADDR= # Proxy for uploading files to AWS
-# SPOTIFY_ID=
-# SPOTIFY_SECRET=
+PORT=""            # The port for backend
+MONGO_URI=""       # MongoDB URI, local or cloud. E.g., "mongodb://localhost:27017/zero-music"
+JWT_SECRET_KEY=""  # Secret key for JWT, which can be generated using `openssl rand -base64 64`
 ```
+
+Run: `node app.js`
+
+**Frontend:**
+
+Inside the `.env.local` file, specify `VITE_SERVER_URL=` as the backend URL, *without a slash at the end*.
+E.g., `"http://localhost:3000"`
+
+Start React frontend: `npm run dev`
+
+Start Electron client: `npm run electron:start`
