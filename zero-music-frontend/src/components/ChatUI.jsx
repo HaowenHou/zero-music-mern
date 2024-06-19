@@ -86,7 +86,7 @@ export default function ChatUI({ userId, receiverId, senderAvatar, receiverAvata
       <form onSubmit={sendMessage} className="flex items-center">
         <input type="text" value={message}
           onChange={(e) => setMessage(e.target.value)} className="border w-full h-10 rounded-lg px-2" />
-        <button type="submit" className="bg-orange-400 text-white ml-2 w-16 h-10 rounded-lg">{t("send")}</button>
+        <button type="submit" className="bg-orange-400 text-white ml-2 w-16 h-10 rounded-lg">{t("sendMessage")}</button>
       </form>
     </div>
   );
