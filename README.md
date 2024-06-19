@@ -1,4 +1,4 @@
-# Zero Music
+# ZeroMusic - Online Music Application
 
 English | [简体中文](README.zh-CN.md)
 
@@ -76,7 +76,7 @@ Start Electron client: `npm run electron:start`
 
 Change language: Set `fallbackLng` in `src/i18n.js`. Supports `en` and `zh-CN`.
 
-## Other Details
+## Miscellaneous
 
 - Note that only admin can manage tracks. A user can be set as admin using mongosh:
 
@@ -88,7 +88,7 @@ Change language: Set `fallbackLng` in `src/i18n.js`. Supports `en` and `zh-CN`.
 
 - Due to unstable network connection during development, clould storage service like AWS S3 were not utilized. Instead, all the files are stored on the local file system.
 
-- Code clarity and optimization are important. But, as this project was written to learn web development, they were not the primary focus.
+- While code clarity and optimization are important, they were not the primary focus because this project was written to learn web development.
 
 <details>
 

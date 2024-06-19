@@ -1,8 +1,8 @@
-# Zero Music
+# ZeroMusic - 在线音乐应用
 
 [English](README.md) | 简体中文
 
-一个全栈在线音乐应用，使用 MERN 技术栈（React, Express.js, MongoDB）和 Electron 开发，同时使用 Tailwind CSS, Redux, Socket.IO 等库。
+一个全栈在线音乐应用，使用 MERN 技术栈（React, Express.js, MongoDB）和 Electron 开发，使用的库包括 Tailwind CSS, Redux, Socket.IO 等。
 
 <p align="center">
     <img src="https://github.com/HaowenHou/zero-music-mern/blob/main/.github/assets/zh-CN/home.png?raw=true" width="90%">
@@ -10,13 +10,13 @@
 
 ## 功能
 
-- :star: 收藏音乐 & 添加音乐到歌单（通过右键菜单）
+- :star: 收藏音乐 & 添加音乐到歌单（右键菜单）
 
 <p align="center">
     <img src="https://github.com/HaowenHou/zero-music-mern/blob/main/.github/assets/zh-CN/add-to-playlist.png?raw=true" width="40%">
 </p>
 
-- :speech_balloon: 分享评论 & 查看他人对歌曲的评论
+- :speech_balloon: 评论歌曲 & 查看他人的评论
 
 <p align="center">
     <img src="https://github.com/HaowenHou/zero-music-mern/blob/main/.github/assets/zh-CN/comments.png?raw=true" height="auto" width="80%">
@@ -33,7 +33,7 @@
     <img src="https://github.com/HaowenHou/zero-music-mern/blob/main/.github/assets/zh-CN/posts.png?raw=true" width="60%">
 </p>
 
-- :blush: 个人资料页面，展示个人收藏、歌单和动态
+- :blush: 个人主页，展示个人收藏、歌单和动态
 
 <p align="center">
     <img src="https://github.com/HaowenHou/zero-music-mern/blob/main/.github/assets/zh-CN/profile.png?raw=true" height="auto" width="80%">
@@ -51,11 +51,11 @@
 
 **所需工具:** Node v20.13.1, npm 10.5.2, MongoDB（本地或云端，如 Atlas）
 
-**依赖安装:** 前端后端的目录内使用 `npm install` 安装依赖
+**依赖安装:** 分别在前端和后端的目录内使用 `npm install` 安装依赖
 
 **后端:**
 
-在后端目录下创建一个 `.env` 文件，指定如下环境变量：
+在后端目录下创建 `.env` 文件，指定如下环境变量：
 
 ```env
 PORT=""            # 后端端口
@@ -67,28 +67,28 @@ JWT_SECRET_KEY=""  # JWT 的密钥，可以使用 `openssl rand -base64 64` 生�
 
 **前端:**
 
-在 `.env.local` 文件中指定 `VITE_SERVER_URL=` 为后端 URL，*末尾不要加斜杠*。
+在 `.env.local` 文件中指定 `VITE_SERVER_URL=` 为后端 URL，*末尾无斜杠*。
 比如"http://localhost:3000"
 
 启动 React 前端: `npm run dev`
 
 启动 Electron 客户端: `npm run electron:start`
 
-更改语言: 在 `src/i18n.js` 中设置 `fallbackLng`。支持 `en` 和 `zh-CN`。
+更改语言: 在 `src/i18n.js` 中设置 `fallbackLng`，支持 `en` 和 `zh-CN`。
 
-## 其他细节
+## 其他
 
-- 只有管理员可以管理音乐。可以使用 mongosh 将用户设置为管理员：
+- 只有管理员可以管理音乐，可以使用 mongosh 将用户设置为管理员：
 
     ```shell
     db.users.findOneAndUpdate({_id: ObjectId('xxx')}, {$set: {role: "admin"}})
     ```
 
-- 由于该项目一开始是用 Next.js 编写的，后来分离成 React 和 Express，前端仍然遵循基于文件目录的路由，使用 `[xxx]` 表示动态路由。
+- 由于该项目一开始用 Next.js 编写，后来分离成 React 和 Express，前端仍然遵循基于文件目录的路由，`[xxx]` 表示动态路由。
 
-- 由于开发期间网络连接不稳定，未使用 AWS S3 等云存储服务，而是将所有文件都存储在本地文件系统中。
+- 由于开发时的网络问题，未使用 AWS S3 等云存储服务，而是将所有文件都存储在本地文件系统中。
 
-- 代码清晰度和优化很重要，但由于这个项目是为了学习 Web 开发而编写的，因此没有特别关注。
+- 由于这个项目是为了学习 Web 开发而编写的，因此没有特别关注代码清晰度和优化。
 
 <details>
 
